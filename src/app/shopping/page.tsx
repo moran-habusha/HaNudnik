@@ -84,7 +84,7 @@ export default function ShoppingPage() {
       .eq('apartment_id', aptId)
       .eq('is_bought', false)
       .order('created_at', { ascending: true })
-    setItems(active ?? [])
+    setItems((active ?? []) as ShoppingItem[])
 
     const activeProductIds = new Set((active ?? []).map(i => i.product_id).filter(Boolean))
 
@@ -104,7 +104,7 @@ export default function ShoppingPage() {
       seen.add(key)
       return true
     })
-    setBoughtItems(filtered)
+    setBoughtItems(filtered as ShoppingItem[])
   }
 
   function subscribeRealtime(aptId: string) {
