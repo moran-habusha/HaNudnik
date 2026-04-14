@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HaNudnik — 4 Players Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #e5e7eb; font-family: system-ui, sans-serif; padding: 32px; direction: rtl; }
+  button { border: none; cursor: pointer; font-family: system-ui, sans-serif; }
+  p { margin: 0; }
+  .phone { width: 375px; background: #f9fafb; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.2); border: 8px solid #1f2937; flex-shrink: 0; }
+  .row { display: flex; gap: 28px; align-items: flex-start; overflow-x: auto; padding-bottom: 32px; }
+  .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 8px; text-align: center; }
+  h2 { font-size: 13px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin: 24px 0 8px; }
+  .section-title { font-size: 28px; font-weight: 900; color: #111827; margin: 40px 0 16px; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: DASHBOARD -->
+<!-- ============================================================ -->
+<div class="section-title">1 — Dashboard</div>
+<div class="row">
+
+  <!-- DASHBOARD STATE 1: יום רגיל -->
+  <div>
+    <div class="label">יום רגיל</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <!-- Shared Header -->
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:20px;font-weight:900;color:#4f46e5;">HaNudnik</div>
+          <div style="font-size:12px;color:#9ca3af;">הדירה שלנו</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="background:#f3f4f6;border-radius:20px;padding:6px 14px;font-size:13px;color:#374151;font-weight:600;">🏠 בבית</div>
+          <div style="display:flex;flex-direction:column;gap:4px;cursor:pointer;">
+            <div style="width:20px;height:2px;background:#374151;border-radius:2px;"></div>
+            <div style="width:20px;height:2px;background:#374151;border-radius:2px;"></div>
+            <div style="width:20px;height:2px;background:#374151;border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Content -->
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <!-- Scores card -->
+        <div style="background:white;border-radius:16px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-size:14px;font-weight:700;color:#111827;">ניקוד שבועי</span>
+            <span style="font-size:18px;">📊</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
+                <span style="font-size:12px;font-weight:600;color:#111827;">🥇 מורן <span style="color:#9ca3af;font-weight:400;">(את)</span></span>
+                <span style="font-size:12px;font-weight:700;color:#d97706;">8 נק'</span>
+              </div>
+              <div style="background:#fef3c7;border-radius:99px;height:7px;"><div style="background:#f59e0b;border-radius:99px;height:7px;width:100%;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
+                <span style="font-size:12px;font-weight:600;color:#111827;">🥈 דנה</span>
+                <span style="font-size:12px;font-weight:700;color:#6b7280;">6 נק'</span>
+              </div>
+              <div style="background:#f3f4f6;border-radius:99px;height:7px;"><div style="background:#9ca3af;border-radius:99px;height:7px;width:75%;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
+                <span style="font-size:12px;font-weight:600;color:#111827;">🥉 יונתן</span>
+                <span style="font-size:12px;font-weight:700;color:#d97706;">4 נק'</span>
+              </div>
+              <div style="background:#fff7ed;border-radius:99px;height:7px;"><div style="background:#d97706;border-radius:99px;height:7px;width:50%;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;">
+                <span style="font-size:12px;font-weight:600;color:#111827;">4 מיכל</span>
+                <span style="font-size:12px;font-weight:700;color:#3b82f6;">2 נק'</span>
+              </div>
+              <div style="background:#eff6ff;border-radius:99px;height:7px;"><div style="background:#3b82f6;border-radius:99px;height:7px;width:25%;"></div></div>
+            </div>
+          </div>
+        </div>
+        <!-- Section label -->
+        <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">משימות היום</div>
+        <!-- 1. נדחה — אשפה -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-size:14px;font-weight:700;color:#111827;">אשפה</span>
+                <span style="background:#fef2f2;color:#ef4444;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">נדחה מ-27/3</span>
+                <span style="background:#fff7ed;color:#d97706;font-size:10px;font-weight:800;padding:2px 7px;border-radius:8px;">×2</span>
+              </div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל יום</div>
+            </div>
+            <button style="background:#4f46e5;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">אני על זה</button>
+          </div>
+        </div>
+        <!-- 2. פתוחות — כלים -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111827;">כלים</div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל יום</div>
+            </div>
+            <button style="background:#4f46e5;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">אני על זה</button>
+          </div>
+        </div>
+        <!-- 3. פתוחות — שואב אבק -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111827;">שואב אבק</div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל שבוע</div>
+            </div>
+            <button style="background:#4f46e5;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">אני על זה</button>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom nav -->
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD STATE 2: מטלה נלקחה + וטו + קבועה -->
+  <div>
+    <div class="label">מטלה נלקחה · וטו · קבועה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:20px;font-weight:900;color:#4f46e5;">HaNudnik</div>
+          <div style="font-size:12px;color:#9ca3af;">הדירה שלנו</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="background:#f3f4f6;border-radius:20px;padding:6px 14px;font-size:13px;color:#374151;font-weight:600;">🏠 בבית</div>
+          <div style="display:flex;flex-direction:column;gap:4px;cursor:pointer;">
+            <div style="width:20px;height:2px;background:#374151;border-radius:2px;"></div>
+            <div style="width:20px;height:2px;background:#374151;border-radius:2px;"></div>
+            <div style="width:20px;height:2px;background:#374151;border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <!-- Compact scores -->
+        <div style="background:white;border-radius:16px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:14px;font-weight:700;color:#111827;">ניקוד שבועי</span>
+            <span style="font-size:16px;">📊</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;white-space:nowrap;">🥇 מורן (את)</span><div style="flex:1;background:#fef3c7;border-radius:99px;height:6px;"><div style="background:#f59e0b;border-radius:99px;height:6px;width:100%;"></div></div><span style="font-size:11px;font-weight:700;color:#d97706;width:22px;text-align:left;">8</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;">🥈 דנה</span><div style="flex:1;background:#f3f4f6;border-radius:99px;height:6px;"><div style="background:#9ca3af;border-radius:99px;height:6px;width:75%;"></div></div><span style="font-size:11px;font-weight:700;color:#6b7280;width:22px;text-align:left;">6</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;">🥉 יונתן</span><div style="flex:1;background:#fff7ed;border-radius:99px;height:6px;"><div style="background:#d97706;border-radius:99px;height:6px;width:50%;"></div></div><span style="font-size:11px;font-weight:700;color:#d97706;width:22px;text-align:left;">4</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;">4 מיכל</span><div style="flex:1;background:#eff6ff;border-radius:99px;height:6px;"><div style="background:#3b82f6;border-radius:99px;height:6px;width:25%;"></div></div><span style="font-size:11px;font-weight:700;color:#3b82f6;width:22px;text-align:left;">2</span></div>
+          </div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">משימות היום</div>
+        <!-- 1. שוחרר ×2 — ניקוי שירותים -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-size:14px;font-weight:700;color:#111827;">ניקוי שירותים</span>
+                <span style="background:#fff7ed;color:#d97706;font-size:10px;font-weight:800;padding:2px 7px;border-radius:8px;">שוחרר 🔥</span>
+                <span style="background:#fff7ed;color:#d97706;font-size:10px;font-weight:800;padding:2px 7px;border-radius:8px;">×2</span>
+              </div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל שבוע</div>
+            </div>
+            <button style="background:#4f46e5;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">אני על זה</button>
+          </div>
+        </div>
+        <!-- 2. שלקחתי ללא תזכורת — ניקוי מטבח -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);border:2px solid #dbeafe;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111827;">ניקוי מטבח</div>
+              <div style="font-size:11px;color:#3b82f6;margin-top:3px;font-weight:600;">לקחתי על עצמי</div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button style="background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:600;padding:6px 10px;border-radius:10px;">תזכורת</button>
+              <button style="background:#f0fdf4;color:#15803d;font-size:11px;font-weight:600;padding:6px 10px;border-radius:10px;">בוצע ✓</button>
+            </div>
+          </div>
+        </div>
+        <!-- 3. פתוחות — שואב אבק (וטו של יונתן — אחרים יכולים לקחת) -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-size:14px;font-weight:700;color:#111827;">שואב אבק</span>
+                <span style="background:#f5f3ff;color:#7c3aed;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">🛡️ וטו של יונתן</span>
+              </div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל שבוע</div>
+            </div>
+            <button style="background:#4f46e5;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">אני על זה</button>
+          </div>
+        </div>
+        <!-- 3. של אחרים — כלים (דנה) -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#111827;">כלים</div>
+              <div style="font-size:11px;color:#4f46e5;margin-top:3px;font-weight:600;">דנה על זה · תזכורת ב-18:00</div>
+            </div>
+            <button style="background:#f3f4f6;color:#9ca3af;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;" disabled>נלקחה</button>
+          </div>
+        </div>
+        <!-- 4. של אחרים — אשפה (קבוע מיכל) -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-size:14px;font-weight:700;color:#111827;">אשפה</span>
+                <span style="background:#f5f3ff;color:#7c3aed;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">📌 קבוע: מיכל</span>
+              </div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל יום</div>
+            </div>
+            <button style="background:#f3f4f6;color:#9ca3af;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;" disabled>קבועה</button>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom nav -->
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD STATE 3: ניצחון + מודאל וטו -->
+  <div>
+    <div class="label">התראת ניצחון + מודאל וטו</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;filter:blur(2px);">
+        <div>
+          <div style="font-size:20px;font-weight:900;color:#4f46e5;">HaNudnik</div>
+          <div style="font-size:12px;color:#9ca3af;">הדירה שלנו</div>
+        </div>
+        <div style="background:#f3f4f6;border-radius:20px;padding:6px 14px;font-size:13px;color:#374151;font-weight:600;">🏠 בבית</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;filter:blur(2px);">
+        <!-- Winner banner -->
+        <div style="background:#fef9c3;border:1.5px solid #facc15;border-radius:14px;padding:14px;">
+          <div style="font-size:14px;font-weight:800;color:#92400e;">🏆 ניצחת השבוע! 8 נקודות. בחר/י וטו לשבוע הקרוב</div>
+          <div style="font-size:12px;color:#4f46e5;font-weight:600;margin-top:6px;cursor:pointer;text-decoration:underline;">בחרי וטו עכשיו</div>
+        </div>
+        <!-- Scores card -->
+        <div style="background:white;border-radius:16px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:14px;font-weight:700;color:#111827;">ניקוד שבועי</span>
+            <span style="font-size:16px;">📊</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;white-space:nowrap;">🥇 מורן (את)</span><div style="flex:1;background:#fef3c7;border-radius:99px;height:6px;"><div style="background:#f59e0b;border-radius:99px;height:6px;width:100%;"></div></div><span style="font-size:11px;font-weight:700;color:#d97706;width:22px;text-align:left;">8</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;">🥈 דנה</span><div style="flex:1;background:#f3f4f6;border-radius:99px;height:6px;"><div style="background:#9ca3af;border-radius:99px;height:6px;width:75%;"></div></div><span style="font-size:11px;font-weight:700;color:#6b7280;width:22px;text-align:left;">6</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;">🥉 יונתן</span><div style="flex:1;background:#fff7ed;border-radius:99px;height:6px;"><div style="background:#d97706;border-radius:99px;height:6px;width:50%;"></div></div><span style="font-size:11px;font-weight:700;color:#d97706;width:22px;text-align:left;">4</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:11px;width:82px;font-weight:600;">4 מיכל</span><div style="flex:1;background:#eff6ff;border-radius:99px;height:6px;"><div style="background:#3b82f6;border-radius:99px;height:6px;width:25%;"></div></div><span style="font-size:11px;font-weight:700;color:#3b82f6;width:22px;text-align:left;">2</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;filter:blur(2px);">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+      <!-- VETO MODAL OVERLAY -->
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;border-radius:28px;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:20px;margin:16px;width:100%;max-width:330px;box-shadow:0 8px 40px rgba(0,0,0,0.25);">
+          <div style="text-align:center;margin-bottom:4px;">
+            <div style="font-size:28px;">🏆</div>
+            <div style="font-size:16px;font-weight:900;color:#111827;margin-top:4px;">ניצחת השבוע!</div>
+            <div style="font-size:12px;color:#6b7280;margin-top:6px;line-height:1.5;">בחרי משימה שלא תצטרכי לעשות<br>השבוע הקרוב</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px;">
+            <!-- כלים — selected, ×7 -->
+            <div style="border:2px solid #7c3aed;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;background:#f5f3ff;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:13px;font-weight:700;color:#111827;">כלים</span>
+                <span style="background:#7c3aed;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">×7 השבוע</span>
+              </div>
+              <div style="width:16px;height:16px;border-radius:50%;border:2px solid #7c3aed;background:#7c3aed;display:flex;align-items:center;justify-content:center;"><div style="width:6px;height:6px;background:white;border-radius:50%;"></div></div>
+            </div>
+            <!-- ניקוי שירותים — ×2 -->
+            <div style="border:2px solid #e5e7eb;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:13px;font-weight:700;color:#111827;">ניקוי שירותים</span>
+                <span style="background:#f3f4f6;color:#6b7280;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">×2 השבוע</span>
+              </div>
+              <div style="width:16px;height:16px;border-radius:50%;border:2px solid #d1d5db;"></div>
+            </div>
+            <!-- שואב אבק — ×1 -->
+            <div style="border:2px solid #e5e7eb;border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:13px;font-weight:700;color:#111827;">שואב אבק</span>
+                <span style="background:#f3f4f6;color:#6b7280;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">×1 השבוע</span>
+              </div>
+              <div style="width:16px;height:16px;border-radius:50%;border:2px solid #d1d5db;"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:16px;">
+            <button style="flex:1;background:#f3f4f6;color:#374151;font-size:13px;font-weight:600;padding:10px;border-radius:12px;">אחר כך</button>
+            <button style="flex:1;background:#111827;color:white;font-size:13px;font-weight:700;padding:10px;border-radius:12px;">אשר וטו</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row dashboard -->
+
+<!-- ============================================================ -->
+<!-- SECTION 2: TASKS -->
+<!-- ============================================================ -->
+<div class="section-title">2 — מטלות</div>
+<div class="row">
+
+  <!-- TASKS STATE 1: רשימת מטלות -->
+  <div>
+    <div class="label">רשימת מטלות</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+          <span style="font-size:17px;font-weight:800;color:#111827;">מטלות</span>
+        </div>
+        <button style="background:#4f46e5;color:white;font-size:12px;font-weight:700;padding:7px 14px;border-radius:10px;">+ הוסף</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <!-- כלים — כל יום -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:space-between;">
+          <div><div style="font-size:14px;font-weight:700;color:#111827;">כלים</div><div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל יום</div></div>
+          <div style="display:flex;gap:10px;"><span style="font-size:16px;cursor:pointer;">✏️</span><span style="font-size:16px;cursor:pointer;">🗑️</span></div>
+        </div>
+        <!-- שואב אבק — פעם בשבוע עם יום -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:space-between;">
+          <div><div style="font-size:14px;font-weight:700;color:#111827;">שואב אבק</div><div style="font-size:11px;color:#9ca3af;margin-top:2px;">פעם בשבוע, בימי שלישי</div></div>
+          <div style="display:flex;gap:10px;"><span style="font-size:16px;cursor:pointer;">✏️</span><span style="font-size:16px;cursor:pointer;">🗑️</span></div>
+        </div>
+        <!-- ניקוי שירותים — פעמיים בשבוע + קבוע שלי -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <span style="font-size:14px;font-weight:700;color:#111827;">ניקוי שירותים</span>
+              <span style="background:#f5f3ff;color:#7c3aed;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">📌 שלי</span>
+            </div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:2px;">פעמיים בשבוע, בימים ראשון וחמישי · <span style="color:#4f46e5;font-weight:600;cursor:pointer;text-decoration:underline;">שחרר</span></div>
+          </div>
+          <div style="display:flex;gap:10px;"><span style="font-size:16px;cursor:pointer;">✏️</span><span style="font-size:16px;cursor:pointer;">🗑️</span></div>
+        </div>
+        <!-- הוצאת אשפה — ממתין לאישור -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <span style="font-size:14px;font-weight:700;color:#111827;">הוצאת אשפה</span>
+              <span style="background:#f3f4f6;color:#6b7280;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;">⏳ ממתין לאישור</span>
+            </div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל יום</div>
+          </div>
+        </div>
+        <!-- כביסה — בוקר וערב -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:space-between;">
+          <div><div style="font-size:14px;font-weight:700;color:#111827;">כביסה</div><div style="font-size:11px;color:#9ca3af;margin-top:2px;">בוקר וערב</div></div>
+          <div style="display:flex;gap:10px;"><span style="font-size:16px;cursor:pointer;">✏️</span><span style="font-size:16px;cursor:pointer;">🗑️</span></div>
+        </div>
+      </div>
+      <!-- Bottom nav -->
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASKS STATE 2: בקש מטלה קבועה modal -->
+  <div>
+    <div class="label">בקש מטלה קבועה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;filter:blur(2px);">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;color:#6b7280;">←</span>
+          <span style="font-size:17px;font-weight:800;color:#111827;">מטלות</span>
+        </div>
+        <button style="background:#4f46e5;color:white;font-size:12px;font-weight:700;padding:7px 14px;border-radius:10px;">+ הוסף</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;filter:blur(2px);">
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);"><div style="font-size:14px;font-weight:700;color:#111827;">כלים</div><div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל יום</div></div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);"><div style="font-size:14px;font-weight:700;color:#111827;">שואב אבק</div><div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל שבוע</div></div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);"><div style="font-size:14px;font-weight:700;color:#111827;">ניקוי שירותים</div><div style="font-size:11px;color:#9ca3af;margin-top:2px;">כל שבוע</div></div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;filter:blur(2px);">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+      <!-- Modal -->
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;border-radius:28px;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:20px;margin:16px;width:100%;max-width:330px;box-shadow:0 8px 40px rgba(0,0,0,0.25);">
+          <div style="font-size:16px;font-weight:900;color:#111827;margin-bottom:8px;">📌 בקש מטלה קבועה</div>
+          <div style="font-size:12px;color:#6b7280;line-height:1.6;margin-bottom:14px;">אם כל הדיירים יאשרו, המטלה תוצמד אליך</div>
+          <div style="background:#f5f3ff;border-radius:12px;padding:10px 14px;margin-bottom:14px;">
+            <div style="font-size:13px;font-weight:700;color:#7c3aed;">שואב אבק</div>
+          </div>
+          <div style="font-size:12px;color:#6b7280;margin-bottom:16px;">ממתינים לאישור: <span style="font-weight:600;color:#374151;">דנה, יונתן, מיכל</span></div>
+          <div style="display:flex;gap:10px;">
+            <button style="flex:1;background:#f3f4f6;color:#374151;font-size:13px;font-weight:600;padding:10px;border-radius:12px;">ביטול</button>
+            <button style="flex:1;background:#111827;color:white;font-size:13px;font-weight:700;padding:10px;border-radius:12px;">בקש אישור</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row tasks -->
+
+<!-- ============================================================ -->
+<!-- SECTION 3: BOT -->
+<!-- ============================================================ -->
+<div class="section-title">3 — בוט</div>
+<div class="row">
+
+  <!-- iPhone Push — הודעת בוקר -->
+  <div>
+    <div class="label">iPhone Push — הודעת בוקר</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:660px;background:#1a1a2e;background-image:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);">
+      <!-- Status bar -->
+      <div style="padding:14px 20px 4px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+        <span style="font-size:15px;font-weight:600;color:white;">9:00</span>
+        <span style="font-size:11px;color:rgba(255,255,255,0.8);">📶 WiFi 🔋</span>
+      </div>
+      <!-- Lock screen clock -->
+      <div style="text-align:center;padding:20px 0 20px;flex-shrink:0;">
+        <p style="font-size:68px;font-weight:200;color:white;letter-spacing:-2px;line-height:1;">09:00</p>
+        <p style="font-size:15px;color:rgba(255,255,255,0.75);margin-top:4px;">יום שישי, 3 באפריל</p>
+      </div>
+      <!-- iOS notification -->
+      <div style="margin:0 12px;background:rgba(255,255,255,0.18);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:20px;overflow:hidden;" dir="rtl">
+        <div style="padding:12px 14px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:24px;height:24px;background:#111;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">🤖</div>
+            <span style="font-size:12px;font-weight:600;color:white;letter-spacing:0.3px;">HANUDNIK</span>
+            <span style="font-size:11px;color:rgba(255,255,255,0.5);margin-right:auto;">עכשיו</span>
+          </div>
+          <p style="font-size:14px;color:white;line-height:1.45;">בוקר טוב מורן! יש לך 3 מטלות להיום 📋</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- iPhone Push — תזכורת מטלה -->
+  <div>
+    <div class="label">iPhone Push — תזכורת מטלה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:660px;background:#1a1a2e;background-image:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);">
+      <!-- Status bar -->
+      <div style="padding:14px 20px 4px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+        <span style="font-size:15px;font-weight:600;color:white;">18:00</span>
+        <span style="font-size:11px;color:rgba(255,255,255,0.8);">📶 WiFi 🔋</span>
+      </div>
+      <!-- Lock screen clock -->
+      <div style="text-align:center;padding:20px 0 20px;flex-shrink:0;">
+        <p style="font-size:68px;font-weight:200;color:white;letter-spacing:-2px;line-height:1;">18:00</p>
+        <p style="font-size:15px;color:rgba(255,255,255,0.75);margin-top:4px;">יום שישי, 3 באפריל</p>
+      </div>
+      <!-- iOS notification — no action buttons, just text -->
+      <div style="margin:0 12px;background:rgba(255,255,255,0.18);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:20px;overflow:hidden;" dir="rtl">
+        <div style="padding:12px 14px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:24px;height:24px;background:#111;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;">🤖</div>
+            <span style="font-size:12px;font-weight:600;color:white;letter-spacing:0.3px;">HANUDNIK</span>
+            <span style="font-size:11px;color:rgba(255,255,255,0.5);margin-right:auto;">עכשיו</span>
+          </div>
+          <p style="font-size:14px;color:white;line-height:1.45;">הלו! מה עם לעשות כלים. סיימת כבר?</p>
+          <p style="font-size:12px;color:rgba(255,255,255,0.55);margin-top:5px;">לחצי להיכנס לבוט ולסמן ✓</p>
+        </div>
+      </div>
+      <!-- iOS hint — no action buttons -->
+      <div style="text-align:center;margin-top:12px;">
+        <p style="font-size:11px;color:rgba(255,255,255,0.35);">iOS — לחיצה פותחת את האפליקציה</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- BOT STATE 1: הודעת בוקר -->
+  <div>
+    <div class="label">הודעת בוקר — ציבורי</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:14px 16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <div style="width:36px;height:36px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:#111827;">HaNudnik</div>
+          <div style="font-size:11px;color:#9ca3af;">השוכן הדיגיטלי שלך</div>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <!-- Bubble 1 -->
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <div style="width:30px;height:30px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🤖</div>
+          <div>
+            <div style="background:white;border-radius:4px 14px 14px 14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);max-width:240px;">
+              <div style="font-size:13px;color:#111827;line-height:1.5;">בוקר טוב מורן! הגיע הזמן לתפוס מטלות להיום 💪</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button style="background:#4f46e5;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">הירשמי למטלות</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom nav -->
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOT STATE 2: ויתור -->
+  <div>
+    <div class="label">ויתור — התראה לאחרים</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:14px 16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <div style="width:36px;height:36px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:#111827;">HaNudnik</div>
+          <div style="font-size:11px;color:#9ca3af;">השוכן הדיגיטלי שלך</div>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <div style="width:30px;height:30px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🤖</div>
+          <div>
+            <div style="background:white;border-radius:4px 14px 14px 14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);max-width:240px;">
+              <div style="font-size:13px;color:#111827;line-height:1.5;">מורן ויתרה על ניקוי שירותים 😬 מי רוצה לקחת ב-150%?</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button style="background:#4f46e5;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">תן לי את זה</button>
+              <button style="background:#f3f4f6;color:#374151;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">לא תודה</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOT STATE 3: בדיקת לילה -->
+  <div>
+    <div class="label">בדיקת לילה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:14px 16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <div style="width:36px;height:36px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🤖</div>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:#111827;">HaNudnik</div>
+          <div style="font-size:11px;color:#9ca3af;">השוכן הדיגיטלי שלך</div>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <div style="width:30px;height:30px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">🤖</div>
+          <div>
+            <div style="background:white;border-radius:4px 14px 14px 14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);max-width:240px;">
+              <div style="font-size:11px;color:#9ca3af;margin-bottom:4px;">07:00</div>
+              <div style="font-size:13px;color:#111827;line-height:1.5;">כלים לא בוצע אתמול - מה עשית עם זה?</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button style="background:#15803d;color:white;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">סיימתי, שכחתי לסמן ✓</button>
+              <button style="background:#f3f4f6;color:#374151;font-size:12px;font-weight:600;padding:7px 14px;border-radius:10px;">לא הספקתי</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row bot -->
+
+<!-- ============================================================ -->
+<!-- SECTION 4: SHOPPING -->
+<!-- ============================================================ -->
+<div class="section-title">4 — קניות</div>
+<div class="row">
+
+  <!-- SHOPPING STATE 1: רשימה פעילה -->
+  <div>
+    <div class="label">רשימה פעילה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">רשימת קניות</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:8px;">
+          <input style="flex:1;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:9px 12px;font-size:13px;font-family:system-ui,sans-serif;direction:rtl;" placeholder="הוסף פריט..." />
+          <button style="background:#4f46e5;color:white;font-size:13px;font-weight:600;padding:9px 14px;border-radius:10px;">הוסף</button>
+        </div>
+        <!-- Item 1 -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;">
+          <div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#111827;">חלב</div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:1px;">כמות: 2</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button style="background:#15803d;color:white;font-size:11px;font-weight:600;padding:6px 10px;border-radius:8px;">✓ קניתי</button>
+            <button style="background:#fef2f2;color:#ef4444;font-size:13px;font-weight:700;padding:6px 10px;border-radius:8px;">✕</button>
+          </div>
+        </div>
+        <!-- Item 2 -->
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;">
+          <div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmYHIaxUXZrnasdmT2qijibfIM4Mdpy3EBLQ&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#111827;">לחם</div>
+            <div style="font-size:11px;color:#9ca3af;margin-top:1px;">כמות: 1</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button style="background:#15803d;color:white;font-size:11px;font-weight:600;padding:6px 10px;border-radius:8px;">✓ קניתי</button>
+            <button style="background:#fef2f2;color:#ef4444;font-size:13px;font-weight:700;padding:6px 10px;border-radius:8px;">✕</button>
+          </div>
+        </div>
+        <!-- Collapsed bought -->
+        <div style="background:white;border-radius:12px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+          <span style="font-size:13px;font-weight:600;color:#6b7280;">▸ נקנה (2)</span>
+          <span style="font-size:11px;color:#9ca3af;">הצג</span>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING STATE 2: מודאל קנייה + חוסר -->
+  <div>
+    <div class="label">מודאל קנייה + חוסר</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;filter:blur(2px);">
+        <span style="font-size:18px;color:#6b7280;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">רשימת קניות</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;filter:blur(2px);">
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div><div style="flex:1;"><div style="font-size:13px;font-weight:700;">חלב</div><div style="font-size:11px;color:#9ca3af;">כמות: 2</div></div></div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmYHIaxUXZrnasdmT2qijibfIM4Mdpy3EBLQ&s" style="width:100%;height:100%;object-fit:cover;" /></div><div style="flex:1;"><div style="font-size:13px;font-weight:700;">לחם</div><div style="font-size:11px;color:#9ca3af;">כמות: 1</div></div></div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;filter:blur(2px);">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;border-radius:28px;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:20px;margin:16px;width:100%;max-width:330px;box-shadow:0 8px 40px rgba(0,0,0,0.25);">
+          <div style="width:72px;height:72px;border-radius:14px;overflow:hidden;margin:0 auto 12px;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div style="font-size:16px;font-weight:800;color:#111827;text-align:center;margin-bottom:2px;">חלב</div>
+          <div style="font-size:12px;color:#9ca3af;text-align:center;margin-bottom:14px;">ביקשת: ×2</div>
+          <button style="width:100%;background:#15803d;color:white;font-size:13px;font-weight:700;padding:11px;border-radius:12px;margin-bottom:14px;">קניתי ✓</button>
+          <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:8px;">כמה קנית בפועל?</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:14px;">
+            <button style="width:36px;height:36px;background:#f3f4f6;border-radius:50%;font-size:18px;font-weight:700;color:#374151;display:flex;align-items:center;justify-content:center;">−</button>
+            <span style="font-size:20px;font-weight:800;color:#111827;">1</span>
+            <button style="width:36px;height:36px;background:#f3f4f6;border-radius:50%;font-size:18px;font-weight:700;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
+          </div>
+          <button style="width:100%;background:#111827;color:white;font-size:13px;font-weight:700;padding:11px;border-radius:12px;">אשר חוסר (1)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING STATE 3: חיפוש תמונות -->
+  <div>
+    <div class="label">חיפוש תמונה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;color:#6b7280;">←</span><span style="font-size:15px;font-weight:700;color:#111827;">בחר תמונה — חלב</span></div>
+        <span style="color:#9ca3af;font-size:16px;cursor:pointer;">✕</span>
+      </div>
+      <div style="padding:12px 16px;border-bottom:1px solid #f3f4f6;" dir="rtl">
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1;background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:9px 12px;font-size:13px;color:#374151;display:flex;align-items:center;gap:6px;"><span>🔍</span><span>חלב</span></div>
+          <button style="background:#4f46e5;color:white;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:600;">חפש</button>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:14px;" dir="rtl">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <div style="border:3px solid #4f46e5;border-radius:10px;overflow:hidden;position:relative;cursor:pointer;">
+            <div style="height:80px;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+            <div style="position:absolute;top:4px;right:4px;width:18px;height:18px;background:#4f46e5;border-radius:50%;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:10px;">✓</span></div>
+          </div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;cursor:pointer;"><div style="height:80px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;font-size:32px;">🍼</div></div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;cursor:pointer;"><div style="height:80px;overflow:hidden;"><img src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRbabRPi3Go67BfOB1Blp24aK2PYbVOqSArHHUuuS99lxHL2K227YMvA9z-B32UIkPbDEHtiZNFnIsSbONslV2bB6owRXfZlDoYP6S1gq_UtmH3GpmHydmv6lTCHfE3HUr6G2jEfw&usqp=CAc" style="width:100%;height:100%;object-fit:cover;" /></div></div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;cursor:pointer;"><div style="height:80px;overflow:hidden;"><img src="https://res.cloudinary.com/shufersal/image/upload/f_auto,q_auto/v1551800922/prod/product_images/products_large/MZL66_L_P_7296073693284_1.png" style="width:100%;height:100%;object-fit:cover;" /></div></div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;cursor:pointer;"><div style="height:80px;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div></div>
+          <div style="border:1.5px solid #e5e7eb;border-radius:10px;overflow:hidden;cursor:pointer;"><div style="height:80px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;font-size:32px;">🧃</div></div>
+        </div>
+      </div>
+      <div style="padding:12px 16px;border-top:1px solid #f3f4f6;">
+        <button style="width:100%;background:#4f46e5;color:white;border-radius:10px;padding:12px;font-size:14px;font-weight:600;">בחר תמונה</button>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING STATE 4: נקנה + הוסף שוב -->
+  <div>
+    <div class="label">נקנה + הוסף שוב</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;color:#6b7280;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">רשימת קניות</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:8px;">
+          <input style="flex:1;background:white;border:1.5px solid #e5e7eb;border-radius:10px;padding:9px 12px;font-size:13px;font-family:system-ui,sans-serif;direction:rtl;" placeholder="הוסף פריט..." />
+          <button style="background:#4f46e5;color:white;font-size:13px;font-weight:600;padding:9px 14px;border-radius:10px;">הוסף</button>
+        </div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;">
+          <div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRbabRPi3Go67BfOB1Blp24aK2PYbVOqSArHHUuuS99lxHL2K227YMvA9z-B32UIkPbDEHtiZNFnIsSbONslV2bB6owRXfZlDoYP6S1gq_UtmH3GpmHydmv6lTCHfE3HUr6G2jEfw&usqp=CAc" style="width:100%;height:100%;object-fit:cover;" /></div>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#111827;">סבון כלים</div><div style="font-size:11px;color:#9ca3af;margin-top:1px;">כמות: 1</div></div>
+          <div style="display:flex;gap:6px;">
+            <button style="background:#15803d;color:white;font-size:11px;font-weight:600;padding:6px 10px;border-radius:8px;">✓ קניתי</button>
+            <button style="background:#fef2f2;color:#ef4444;font-size:13px;font-weight:700;padding:6px 10px;border-radius:8px;">✕</button>
+          </div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+          <span style="font-size:13px;font-weight:600;color:#6b7280;">▸ נקנה (2)</span>
+          <span style="font-size:11px;color:#9ca3af;">הצג</span>
+        </div>
+        <!-- Expanded bought section -->
+        <div style="background:white;border-radius:12px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:12px;font-weight:700;color:#6b7280;margin-bottom:8px;">▾ נקנה (2)</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f9fafb;opacity:0.7;">
+            <div style="width:36px;height:36px;border-radius:8px;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:600;text-decoration:line-through;color:#6b7280;">חלב</div><div style="font-size:10px;color:#9ca3af;">×2</div></div>
+            <button style="font-size:10px;color:#4f46e5;font-weight:600;background:#eff6ff;padding:3px 8px;border-radius:6px;">הוסף שוב</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;opacity:0.7;">
+            <div style="width:36px;height:36px;border-radius:8px;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmYHIaxUXZrnasdmT2qijibfIM4Mdpy3EBLQ&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:600;text-decoration:line-through;color:#6b7280;">לחם</div><div style="font-size:10px;color:#9ca3af;">×1</div></div>
+            <button style="font-size:10px;color:#4f46e5;font-weight:600;background:#eff6ff;padding:3px 8px;border-radius:6px;">הוסף שוב</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING STATE 5: הוספת פריט -->
+  <div>
+    <div class="label">הוספת פריט</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;color:#6b7280;">←</span><span style="font-size:17px;font-weight:800;color:#111827;">רשימת קניות</span></div>
+        <button style="background:#4f46e5;color:white;font-size:12px;font-weight:700;padding:7px 14px;border-radius:10px;">+ הוסף</button>
+      </div>
+      <div style="flex:1;padding:16px;filter:blur(1.5px);">
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);margin-bottom:10px;display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div><div style="flex:1;"><div style="font-size:13px;font-weight:700;">חלב</div></div></div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmYHIaxUXZrnasdmT2qijibfIM4Mdpy3EBLQ&s" style="width:100%;height:100%;object-fit:cover;" /></div><div style="flex:1;"><div style="font-size:13px;font-weight:700;">לחם</div></div></div>
+      </div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10;border-radius:28px;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:22px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <p style="font-weight:800;font-size:16px;color:#111;">פריט חדש</p>
+            <span style="font-size:18px;color:#9ca3af;cursor:pointer;">✕</span>
+          </div>
+          <!-- בחירת תמונה -->
+          <div style="margin-bottom:14px;">
+            <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;">תמונה</p>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:52px;height:52px;border-radius:10px;border:1.5px dashed #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#f9fafb;">
+                <span style="font-size:20px;color:#9ca3af;">📷</span>
+              </div>
+              <button style="background:#f3f4f6;color:#374151;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;">חפש תמונה</button>
+            </div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;">שם הפריט</p>
+            <div style="border:1.5px solid #4f46e5;border-radius:10px;padding:10px 14px;font-size:14px;color:#111;">שמן זית</div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;">כמות</p>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <button style="width:34px;height:34px;background:#f3f4f6;border-radius:8px;font-size:16px;color:#374151;display:flex;align-items:center;justify-content:center;">−</button>
+              <span style="font-weight:700;font-size:16px;color:#111;">1</span>
+              <button style="width:34px;height:34px;background:#f3f4f6;border-radius:8px;font-size:16px;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button style="flex:1;background:#f3f4f6;color:#374151;border-radius:10px;padding:11px;font-size:13px;font-weight:600;">ביטול</button>
+            <button style="flex:1;background:#4f46e5;color:white;border-radius:10px;padding:11px;font-size:13px;font-weight:700;">הוסף</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;position:relative;z-index:11;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING STATE 6: עריכת מוצר -->
+  <div>
+    <div class="label">עריכת מוצר</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;color:#6b7280;">←</span><span style="font-size:17px;font-weight:800;color:#111827;">רשימת קניות</span></div>
+        <button style="background:#4f46e5;color:white;font-size:12px;font-weight:700;padding:7px 14px;border-radius:10px;">+ הוסף</button>
+      </div>
+      <div style="flex:1;padding:16px;filter:blur(1.5px);">
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div><div style="font-size:13px;font-weight:700;">חלב</div></div>
+      </div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10;border-radius:28px;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:22px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <p style="font-weight:800;font-size:16px;color:#111;">עריכת פריט</p>
+            <span style="font-size:18px;color:#9ca3af;cursor:pointer;">✕</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div style="width:60px;height:60px;border-radius:14px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+            <button style="background:#f3f4f6;color:#374151;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;">החלף תמונה</button>
+          </div>
+          <div style="margin-bottom:14px;">
+            <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;">שם הפריט</p>
+            <div style="border:1.5px solid #4f46e5;border-radius:10px;padding:10px 14px;font-size:14px;color:#111;">חלב</div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;">כמות</p>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <button style="width:34px;height:34px;background:#f3f4f6;border-radius:8px;font-size:16px;color:#374151;display:flex;align-items:center;justify-content:center;">−</button>
+              <span style="font-weight:700;font-size:16px;color:#111;">2</span>
+              <button style="width:34px;height:34px;background:#f3f4f6;border-radius:8px;font-size:16px;color:#374151;display:flex;align-items:center;justify-content:center;">+</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button style="flex:1;background:#f3f4f6;color:#374151;border-radius:10px;padding:11px;font-size:13px;font-weight:600;">ביטול</button>
+            <button style="flex:1;background:#4f46e5;color:white;border-radius:10px;padding:11px;font-size:13px;font-weight:700;">שמור</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;position:relative;z-index:11;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING STATE 7: מודאל מחיקה -->
+  <div>
+    <div class="label">מודאל מחיקה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;flex-shrink:0;filter:blur(1.5px);">
+        <span style="font-size:18px;color:#6b7280;">←</span><span style="font-size:17px;font-weight:800;color:#111827;">רשימת קניות</span>
+      </div>
+      <div style="flex:1;padding:16px;filter:blur(1.5px);">
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);margin-bottom:10px;display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div><div style="font-size:13px;font-weight:700;">חלב</div></div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);display:flex;align-items:center;gap:10px;"><div style="width:44px;height:44px;border-radius:10px;flex-shrink:0;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmYHIaxUXZrnasdmT2qijibfIM4Mdpy3EBLQ&s" style="width:100%;height:100%;object-fit:cover;" /></div><div style="font-size:13px;font-weight:700;">לחם</div></div>
+      </div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:24px;z-index:10;border-radius:28px;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:24px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.25);">
+          <p style="font-weight:800;font-size:16px;color:#111;margin-bottom:8px;">מחיקת פריט</p>
+          <p style="font-size:14px;color:#374151;margin-bottom:22px;">למחוק את "חלב" מהרשימה?</p>
+          <div style="display:flex;gap:8px;">
+            <button style="flex:1;background:#f3f4f6;color:#374151;border-radius:10px;padding:12px;font-size:13px;font-weight:600;">ביטול</button>
+            <button style="flex:1;background:#ef4444;color:white;border-radius:10px;padding:12px;font-size:13px;font-weight:700;">מחק</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;position:relative;z-index:11;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#4f46e5;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOPPING STATE 8: פולסקרין תמונה -->
+  <div>
+    <div class="label">פולסקרין תמונה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;background:#111827;position:relative;">
+      <div style="position:absolute;top:16px;right:16px;z-index:10;">
+        <button style="width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:50%;color:white;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+        <div style="width:180px;height:180px;border-radius:24px;overflow:hidden;"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyNO-Hdijlh_LmCMGEgG40JcanxD9jk2q6w&s" style="width:100%;height:100%;object-fit:cover;" /></div>
+        <p style="color:white;font-size:18px;font-weight:700;">חלב</p>
+        <p style="color:rgba(255,255,255,0.5);font-size:13px;">×2</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border-top:1px solid rgba(255,255,255,0.1);display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#818cf8;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row shopping -->
+
+<!-- ============================================================ -->
+<!-- SECTION 5: LAUNDRY -->
+<!-- ============================================================ -->
+<div class="section-title">5 — כביסה</div>
+<div class="row">
+
+  <!-- LAUNDRY STATE 1: ריק -->
+  <div>
+    <div class="label">ריק</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">כביסה</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <button style="width:100%;background:#4f46e5;color:white;border-radius:12px;padding:12px;font-size:14px;font-weight:700;">הפעלתי מכונה 🧺</button>
+        <div style="background:white;border-radius:14px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:8px;">הבקשה שלי</div>
+          <div style="font-size:12px;color:#9ca3af;font-style:italic;">לא הוספת בקשה עדיין</div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNDRY STATE 1b: מודאל "כמה זמן?" -->
+  <div>
+    <div class="label">מודאל — כמה זמן?</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;filter:blur(1.5px);">
+        <span style="font-size:18px;color:#6b7280;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">כביסה</span>
+      </div>
+      <div style="flex:1;filter:blur(1.5px);"></div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:20px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+          <p style="font-weight:700;font-size:15px;color:#111;margin-bottom:4px;">כמה זמן התוכנית?</p>
+          <p style="font-size:11px;color:#9ca3af;margin-bottom:14px;">לדוגמה: 90, 60, 45</p>
+          <div style="display:flex;align-items:center;gap:8px;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 14px;margin-bottom:16px;">
+            <input type="text" placeholder="דקות" style="flex:1;border:none;font-size:14px;color:#111;outline:none;background:transparent;text-align:right;" />
+            <span style="font-size:12px;color:#9ca3af;">דקות</span>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button style="flex:1;background:#f3f4f6;color:#374151;border-radius:10px;padding:10px;font-size:13px;font-weight:500;">ביטול</button>
+            <button style="flex:1;background:#4f46e5;color:white;border-radius:10px;padding:10px;font-size:13px;font-weight:600;">אשר</button>
+          </div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;position:relative;z-index:11;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNDRY STATE 1c: כביסה פעילה -->
+  <div>
+    <div class="label">כביסה פעילה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">כביסה</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <div style="background:white;border-radius:14px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);border:1px solid #dbeafe;">
+          <p style="font-size:13px;color:#4f46e5;font-weight:600;">🧺 כביסה רצה</p>
+          <p style="font-size:11px;color:#9ca3af;margin-top:4px;">הופעלה: 14:30 · סיום: ~16:00</p>
+          <button style="width:100%;margin-top:12px;background:#f0fdf4;color:#15803d;border-radius:10px;padding:9px;font-size:13px;font-weight:600;">הכביסה הסתיימה ✓</button>
+        </div>
+        <div style="background:white;border-radius:14px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:8px;">הבקשה שלי</div>
+          <div style="font-size:13px;color:#374151;">בגדי ספורט נקיים</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">שאר הדיירים</div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:3px;">דנה</div>
+          <div style="font-size:13px;color:#111827;">חולצות ללבן</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:3px;">יונתן</div>
+          <div style="font-size:12px;color:#9ca3af;font-style:italic;">ריק</div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNDRY STATE 2: עם בקשות -->
+  <div>
+    <div class="label">עם בקשות דיירים</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">כביסה</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+        <button style="width:100%;background:#4f46e5;color:white;border-radius:12px;padding:12px;font-size:14px;font-weight:700;">הפעלתי מכונה 🧺</button>
+        <div style="background:white;border-radius:14px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:8px;">הבקשה שלי</div>
+          <div style="font-size:13px;color:#374151;">בגדי ספורט נקיים</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">שאר הדיירים</div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:3px;">דנה</div>
+          <div style="font-size:13px;color:#111827;">חולצות ללבן</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:3px;">יונתן</div>
+          <div style="font-size:12px;color:#9ca3af;font-style:italic;">ריק</div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAUNDRY STATE 3: מודאל סיום -->
+  <div>
+    <div class="label">מודאל — מה בוצע?</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;filter:blur(1.5px);">
+        <span style="font-size:18px;color:#6b7280;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">כביסה</span>
+      </div>
+      <div style="flex:1;filter:blur(1.5px);"></div>
+      <!-- Modal -->
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10;" dir="rtl">
+        <div style="background:white;border-radius:20px;padding:20px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,0.2);">
+          <p style="font-weight:700;font-size:15px;color:#111;margin-bottom:4px;">מה בוצע?</p>
+          <p style="font-size:11px;color:#9ca3af;margin-bottom:14px;">מה שלא תסמני יישמר לכביסה הבאה</p>
+          <!-- מורן -->
+          <div style="font-size:11px;font-weight:700;color:#C7CEEA;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">מורן (את)</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f3f4f6;">
+            <div style="width:18px;height:18px;border-radius:4px;background:#4f46e5;border:2px solid #4f46e5;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-size:10px;font-weight:700;">✓</span></div>
+            <p style="font-size:13px;color:#111;">בגדי ספורט נקיים</p>
+          </div>
+          <!-- דנה -->
+          <div style="font-size:11px;font-weight:700;color:#B5EAD7;text-transform:uppercase;letter-spacing:1px;margin-top:10px;margin-bottom:6px;">דנה</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f3f4f6;">
+            <div style="width:18px;height:18px;border-radius:4px;background:#4f46e5;border:2px solid #4f46e5;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:white;font-size:10px;font-weight:700;">✓</span></div>
+            <p style="font-size:13px;color:#111;">חולצות ללבן</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f3f4f6;">
+            <div style="width:18px;height:18px;border-radius:4px;border:2px solid #d1d5db;flex-shrink:0;"></div>
+            <p style="font-size:13px;color:#111;">מגבות</p>
+          </div>
+          <!-- יונתן -->
+          <div style="font-size:11px;font-weight:700;color:#A8D8EA;text-transform:uppercase;letter-spacing:1px;margin-top:10px;margin-bottom:6px;">יונתן</div>
+          <div style="font-size:12px;color:#9ca3af;font-style:italic;padding-bottom:8px;border-bottom:1px solid #f3f4f6;">ריק</div>
+          <p style="font-size:11px;color:#f59e0b;margin-top:8px;">מגבות של דנה יישמרו לכביסה הבאה</p>
+          <button style="width:100%;margin-top:14px;background:#111827;color:white;border-radius:10px;padding:10px;font-size:13px;font-weight:600;">אשר וסיים</button>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;position:relative;z-index:11;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row laundry -->
+
+<!-- ============================================================ -->
+<!-- SECTION 6: CALENDAR -->
+<!-- ============================================================ -->
+<div class="section-title">6 — לוח שנה</div>
+<div class="row">
+
+  <!-- CALENDAR STATE 1: גריד חודשי עם פסים צבעוניים -->
+  <!-- צבעי דיירים: מורן=#C7CEEA, דנה=#B5EAD7, יונתן=#A8D8EA, מיכל=#FFD9A0 -->
+  <div>
+    <div class="label">גריד חודשי + פסים צבעוניים</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:14px 16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+          <span style="font-size:17px;font-weight:800;color:#111827;">לוח שנה</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="color:#9ca3af;font-size:16px;">‹</span>
+          <span style="font-size:13px;font-weight:700;color:#111;">אפריל 2026</span>
+          <span style="color:#9ca3af;font-size:16px;">›</span>
+        </div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;">
+        <div style="background:white;border-radius:16px;padding:10px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:6px;">
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#9ca3af;padding:3px 0;">ש</div>
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#9ca3af;padding:3px 0;">ו</div>
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#9ca3af;padding:3px 0;">ה</div>
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#9ca3af;padding:3px 0;">ד</div>
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#9ca3af;padding:3px 0;">ג</div>
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#9ca3af;padding:3px 0;">ב</div>
+            <div style="text-align:center;font-size:10px;font-weight:700;color:#9ca3af;padding:3px 0;">א</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px;">
+            <!-- Week 1 -->
+            <div style="padding:2px;"></div><div style="padding:2px;"></div>
+            <!-- 1 today -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;border-radius:50%;background:#4f46e5;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;">1</div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">2</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">3</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">4</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#9ca3af;display:flex;align-items:center;justify-content:center;">5</div></div>
+            <!-- Week 2 -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">6</div></div>
+            <!-- 7 Fri — מורן event bar -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">7</div>
+              <div style="width:22px;height:5px;border-radius:3px;background:#C7CEEA;"></div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">8</div></div>
+            <!-- 9 Wed — shared event (מורן+דנה, split bar) -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">9</div>
+              <div style="width:22px;height:5px;border-radius:3px;overflow:hidden;display:flex;">
+                <div style="flex:1;background:#C7CEEA;"></div>
+                <div style="flex:1;background:#B5EAD7;"></div>
+              </div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">10</div></div>
+            <!-- 11 Mon — דנה event -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">11</div>
+              <div style="width:22px;height:5px;border-radius:3px;background:#B5EAD7;"></div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#9ca3af;display:flex;align-items:center;justify-content:center;">12</div></div>
+            <!-- Week 3 -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">13</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">14</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">15</div></div>
+            <!-- 16 Wed — יונתן event -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">16</div>
+              <div style="width:22px;height:5px;border-radius:3px;background:#A8D8EA;"></div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">17</div></div>
+            <!-- 18 Fri — shared 4 people (split into 4) -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">18</div>
+              <div style="width:22px;height:5px;border-radius:3px;overflow:hidden;display:flex;">
+                <div style="flex:1;background:#C7CEEA;"></div>
+                <div style="flex:1;background:#B5EAD7;"></div>
+                <div style="flex:1;background:#A8D8EA;"></div>
+                <div style="flex:1;background:#FFD9A0;"></div>
+              </div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#9ca3af;display:flex;align-items:center;justify-content:center;">19</div></div>
+            <!-- Week 4 -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">20</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">21</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">22</div></div>
+            <!-- 23 Wed — מיכל event -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">23</div>
+              <div style="width:22px;height:5px;border-radius:3px;background:#FFD9A0;"></div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">24</div></div>
+            <!-- 25 Fri — מורן event -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;">
+              <div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">25</div>
+              <div style="width:22px;height:5px;border-radius:3px;background:#C7CEEA;"></div>
+            </div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#9ca3af;display:flex;align-items:center;justify-content:center;">26</div></div>
+            <!-- Week 5 -->
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">27</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">28</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">29</div></div>
+            <div style="padding:2px;display:flex;flex-direction:column;align-items:center;gap:1px;"><div style="width:26px;height:26px;font-size:11px;color:#374151;display:flex;align-items:center;justify-content:center;">30</div></div>
+            <div style="padding:2px;"></div><div style="padding:2px;"></div><div style="padding:2px;"></div>
+          </div>
+          <!-- Legend -->
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;padding-top:8px;border-top:1px solid #f3f4f6;">
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:50%;background:#C7CEEA;"></div><span style="font-size:10px;color:#374151;">מורן</span></div>
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:50%;background:#B5EAD7;"></div><span style="font-size:10px;color:#374151;">דנה</span></div>
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:50%;background:#A8D8EA;"></div><span style="font-size:10px;color:#374151;">יונתן</span></div>
+            <div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:50%;background:#FFD9A0;"></div><span style="font-size:10px;color:#374151;">מיכל</span></div>
+          </div>
+        </div>
+        <!-- Upcoming events -->
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:4px;">אירועים קרובים</p>
+        <div style="background:white;border-radius:12px;border:1px solid #f3f4f6;padding:10px 12px;display:flex;gap:10px;align-items:center;">
+          <div style="width:5px;height:36px;border-radius:3px;background:#C7CEEA;flex-shrink:0;"></div>
+          <div style="background:#f0f0f8;border-radius:6px;padding:5px 8px;text-align:center;min-width:34px;">
+            <p style="font-size:9px;color:#6b7280;font-weight:500;">אפר׳</p>
+            <p style="font-size:14px;font-weight:700;color:#111;">7</p>
+          </div>
+          <div><p style="font-weight:600;font-size:12px;">ריצה בפארק</p><p style="font-size:10px;color:#9ca3af;margin-top:1px;">07:00 · מורן</p></div>
+        </div>
+        <div style="background:white;border-radius:12px;border:1px solid #f3f4f6;padding:10px 12px;display:flex;gap:10px;align-items:center;">
+          <div style="width:5px;height:36px;border-radius:3px;background:linear-gradient(#C7CEEA 50%,#B5EAD7 50%);flex-shrink:0;"></div>
+          <div style="background:#f0f0f8;border-radius:6px;padding:5px 8px;text-align:center;min-width:34px;">
+            <p style="font-size:9px;color:#6b7280;font-weight:500;">אפר׳</p>
+            <p style="font-size:14px;font-weight:700;color:#111;">9</p>
+          </div>
+          <div><p style="font-weight:600;font-size:12px;">ארוחת שבת</p><p style="font-size:10px;color:#9ca3af;margin-top:1px;">19:00 · מורן + דנה</p></div>
+        </div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALENDAR STATE 2: מודאל יום -->
+  <div>
+    <div class="label">מודאל יום — 9 אפריל (משותף)</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+      <div style="background:white;padding:14px 16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between;filter:blur(2px);">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;color:#6b7280;">←</span><span style="font-size:17px;font-weight:800;color:#111827;">לוח שנה</span></div>
+        <button style="background:#4f46e5;color:white;font-size:12px;font-weight:700;padding:7px 14px;border-radius:10px;">+ הוסף</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;filter:blur(2px);">
+        <div style="background:white;border-radius:16px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,0.07);height:200px;"></div>
+      </div>
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;filter:blur(2px);">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:flex-end;border-radius:28px;" dir="rtl">
+        <div style="background:white;border-radius:20px 20px 0 0;padding:20px;width:100%;box-shadow:0 -4px 30px rgba(0,0,0,0.2);">
+          <div style="font-size:15px;font-weight:800;color:#111827;margin-bottom:14px;">חמישי, 9 באפריל</div>
+          <!-- Event 1: מורן solo -->
+          <div style="display:flex;gap:10px;align-items:stretch;margin-bottom:10px;">
+            <div style="width:5px;border-radius:3px;background:#C7CEEA;flex-shrink:0;"></div>
+            <div style="flex:1;border-radius:12px;padding:10px 12px;background:#f8f8fb;">
+              <div style="font-size:13px;font-weight:700;color:#111;">ריצה בפארק</div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">07:00 · מורן</div>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;"><span style="font-size:13px;cursor:pointer;">✏️</span><span style="font-size:13px;cursor:pointer;">🗑️</span></div>
+          </div>
+          <!-- Event 2: shared מורן + דנה -->
+          <div style="display:flex;gap:10px;align-items:stretch;margin-bottom:14px;">
+            <div style="width:5px;border-radius:3px;background:linear-gradient(#C7CEEA 50%,#B5EAD7 50%);flex-shrink:0;"></div>
+            <div style="flex:1;border-radius:12px;padding:10px 12px;background:#f0fdf7;">
+              <div style="font-size:13px;font-weight:700;color:#111;">ארוחת שבת</div>
+              <div style="font-size:11px;color:#9ca3af;margin-top:2px;">19:00 · מורן + דנה</div>
+              <div style="display:flex;gap:4px;margin-top:5px;">
+                <div style="width:18px;height:18px;border-radius:50%;background:#C7CEEA;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#555;">מ</div>
+                <div style="width:18px;height:18px;border-radius:50%;background:#B5EAD7;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#555;">ד</div>
+                <div style="width:18px;height:18px;border-radius:50%;background:#f3f4f6;border:1.5px dashed #d1d5db;display:flex;align-items:center;justify-content:center;font-size:8px;color:#9ca3af;">י</div>
+                <div style="width:18px;height:18px;border-radius:50%;background:#f3f4f6;border:1.5px dashed #d1d5db;display:flex;align-items:center;justify-content:center;font-size:8px;color:#9ca3af;">מ</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;"><span style="font-size:13px;cursor:pointer;">✏️</span><span style="font-size:13px;cursor:pointer;">🗑️</span></div>
+          </div>
+          <button style="width:100%;background:#f3f4f6;color:#4f46e5;font-size:13px;font-weight:700;padding:11px;border-radius:12px;">+ הוסף אירוע ליום זה</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row calendar -->
+
+<!-- ============================================================ -->
+<!-- SECTION 7: HISTORY -->
+<!-- ============================================================ -->
+<div class="section-title">7 — היסטוריה</div>
+<div class="row">
+
+  <!-- HISTORY STATE 1 -->
+  <div>
+    <div class="label">טבלת היסטוריה</div>
+    <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+      <div style="background:white;padding:16px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;color:#6b7280;cursor:pointer;">←</span>
+        <span style="font-size:17px;font-weight:800;color:#111827;">היסטוריה</span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;">
+
+        <!-- Summary table -->
+        <div style="background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <!-- Table header -->
+          <div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 1fr;background:#f9fafb;border-bottom:1px solid #f3f4f6;padding:8px 12px;">
+            <div style="font-size:10px;font-weight:700;color:#6b7280;">שבוע</div>
+            <div style="font-size:10px;font-weight:700;color:#6b7280;text-align:center;">מורן</div>
+            <div style="font-size:10px;font-weight:700;color:#6b7280;text-align:center;">דנה</div>
+            <div style="font-size:10px;font-weight:700;color:#6b7280;text-align:center;">יונתן</div>
+            <div style="font-size:10px;font-weight:700;color:#6b7280;text-align:center;">מיכל</div>
+          </div>
+          <!-- Row: 24/3 -->
+          <div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 1fr;padding:10px 12px;border-bottom:1px solid #f9fafb;align-items:center;">
+            <div style="font-size:11px;font-weight:700;color:#374151;">24/3</div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:800;color:#d97706;">8</div><div style="font-size:13px;line-height:1;">🥇</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">6</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">4</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">2</div></div>
+          </div>
+          <!-- Row: 17/3 -->
+          <div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 1fr;padding:10px 12px;border-bottom:1px solid #f9fafb;align-items:center;">
+            <div style="font-size:11px;font-weight:700;color:#374151;">17/3</div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">7</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:800;color:#d97706;">9</div><div style="font-size:13px;line-height:1;">🥇</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">3</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">5</div></div>
+          </div>
+          <!-- Row: 10/3 -->
+          <div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 1fr;padding:10px 12px;align-items:center;">
+            <div style="font-size:11px;font-weight:700;color:#374151;">10/3</div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">8</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">6</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:800;color:#d97706;">10</div><div style="font-size:13px;line-height:1;">🥇</div></div>
+            <div style="text-align:center;"><div style="font-size:13px;font-weight:700;color:#374151;">4</div></div>
+          </div>
+        </div>
+
+        <!-- Bar chart: last week -->
+        <div style="background:white;border-radius:14px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:12px;">השוואה — שבוע 24/3</div>
+          <div style="display:flex;align-items:flex-end;gap:8px;height:80px;direction:ltr;">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;">
+              <span style="font-size:10px;font-weight:700;color:#374151;">8</span>
+              <div style="background:#f59e0b;border-radius:4px 4px 0 0;width:100%;height:64px;"></div>
+              <span style="font-size:9px;color:#6b7280;">מורן</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;">
+              <span style="font-size:10px;font-weight:700;color:#374151;">6</span>
+              <div style="background:#9ca3af;border-radius:4px 4px 0 0;width:100%;height:48px;"></div>
+              <span style="font-size:9px;color:#6b7280;">דנה</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;">
+              <span style="font-size:10px;font-weight:700;color:#374151;">4</span>
+              <div style="background:#d97706;border-radius:4px 4px 0 0;width:100%;height:32px;"></div>
+              <span style="font-size:9px;color:#6b7280;">יונתן</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;">
+              <span style="font-size:10px;font-weight:700;color:#374151;">2</span>
+              <div style="background:#3b82f6;border-radius:4px 4px 0 0;width:100%;height:16px;"></div>
+              <span style="font-size:9px;color:#6b7280;">מיכל</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Bottom nav -->
+      <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /row history -->
+
+  <!-- BILLS: חשבונות -->
+  <h2 style="font-size:16px;font-weight:800;color:#111;margin:36px 0 8px;">💳 חשבונות</h2>
+  <div style="display:flex;gap:28px;align-items:flex-start;overflow-x:auto;padding-bottom:32px;">
+
+    <div>
+      <div class="label">רשימת חשבונות</div>
+      <div class="phone" style="display:flex;flex-direction:column;height:760px;">
+        <div style="background:white;border-bottom:1px solid #f3f4f6;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;color:#9ca3af;">→</span>
+            <span style="font-size:16px;font-weight:700;color:#111827;">💳 חשבונות</span>
+          </div>
+          <button style="background:#111827;color:white;border:none;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;">+ הוסף</button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:16px;" dir="rtl">
+          <!-- Unpaid -->
+          <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:8px;">ממתינים לתשלום</p>
+          <div style="background:white;border:1px solid #fee2e2;border-radius:14px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+              <div>
+                <p style="font-weight:700;color:#111827;margin-bottom:2px;">חשמל</p>
+                <p style="font-size:12px;color:#9ca3af;">מרץ 2026 · לתשלום עד 10.4</p>
+              </div>
+              <p style="font-weight:800;color:#111827;">₪320</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;background:#f0fdf4;color:#15803d;border:none;border-radius:10px;padding:9px;font-size:13px;font-weight:600;cursor:pointer;">שולם ✓</button>
+              <button style="background:#fef2f2;color:#ef4444;border:none;border-radius:10px;padding:9px 12px;font-size:14px;cursor:pointer;">🗑</button>
+            </div>
+          </div>
+          <div style="background:white;border:1px solid #fee2e2;border-radius:14px;padding:14px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+              <div>
+                <p style="font-weight:700;color:#111827;margin-bottom:2px;">אינטרנט</p>
+                <p style="font-size:12px;color:#9ca3af;">מרץ 2026 · לתשלום עד 15.4</p>
+              </div>
+              <p style="font-weight:800;color:#111827;">₪160</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;background:#f0fdf4;color:#15803d;border:none;border-radius:10px;padding:9px;font-size:13px;font-weight:600;cursor:pointer;">שולם ✓</button>
+              <button style="background:#fef2f2;color:#ef4444;border:none;border-radius:10px;padding:9px 12px;font-size:14px;cursor:pointer;">🗑</button>
+            </div>
+          </div>
+          <!-- Paid -->
+          <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:8px;">שולמו</p>
+          <div style="background:white;border:1px solid #f3f4f6;border-radius:14px;padding:14px;opacity:0.55;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <p style="font-weight:600;color:#374151;text-decoration:line-through;margin-bottom:2px;">מים</p>
+                <p style="font-size:12px;color:#9ca3af;">פברואר 2026</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <p style="font-weight:600;color:#9ca3af;">₪90</p>
+                <span style="color:#22c55e;font-size:14px;">✓</span>
+              </div>
+            </div>
+          </div>
+          <div style="background:white;border:1px solid #f3f4f6;border-radius:14px;padding:14px;opacity:0.55;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <p style="font-weight:600;color:#374151;text-decoration:line-through;margin-bottom:2px;">ארנונה</p>
+                <p style="font-size:12px;color:#9ca3af;">פברואר 2026</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <p style="font-weight:600;color:#9ca3af;">₪580</p>
+                <span style="color:#22c55e;font-size:14px;">✓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Bottom nav -->
+        <div style="background:white;border-top:1px solid #f3f4f6;display:flex;padding:6px 0 4px;flex-shrink:0;">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🏠</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בית</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">✅</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">מטלות</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🤖</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">בוט</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">🛒</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">קניות</span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;"><span style="font-size:18px;">☰</span><span style="font-size:9px;font-weight:600;color:#9ca3af;">עוד</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="label">מודאל — הוספת חשבון</div>
+      <div class="phone" style="display:flex;flex-direction:column;height:760px;position:relative;">
+        <div style="background:white;border-bottom:1px solid #f3f4f6;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;filter:blur(2px);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:18px;color:#9ca3af;">→</span>
+            <span style="font-size:16px;font-weight:700;color:#111827;">💳 חשבונות</span>
+          </div>
+          <button style="background:#111827;color:white;border:none;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;">+ הוסף</button>
+        </div>
+        <div style="flex:1;filter:blur(2px);"></div>
+        <!-- Modal -->
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:flex-end;justify-content:center;padding:16px;z-index:10;" dir="rtl">
+          <div style="background:white;border-radius:20px;width:100%;padding:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <span style="font-size:16px;font-weight:700;color:#111827;">הוספת חשבון</span>
+              <span style="color:#9ca3af;font-size:18px;cursor:pointer;">✕</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:4px;">סוג חשבון</p>
+                <div style="border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:14px;color:#6b7280;">חשמל, מים, אינטרנט...</div>
+              </div>
+              <div>
+                <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:4px;">סכום (₪)</p>
+                <div style="border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:14px;color:#6b7280;">0</div>
+              </div>
+              <div>
+                <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:4px;">תאריך אחרון לתשלום</p>
+                <div style="border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:14px;color:#6b7280;">dd/mm/yyyy</div>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <div style="flex:1;">
+                  <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:4px;">חודש</p>
+                  <div style="border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:14px;color:#374151;background:#f9fafb;">מרץ</div>
+                </div>
+                <div style="flex:1;">
+                  <p style="font-size:12px;font-weight:600;color:#374151;margin-bottom:4px;">שנה</p>
+                  <div style="border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;font-size:14px;color:#374151;background:#f9fafb;">2026</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:18px;">
+              <button style="flex:1;border:1px solid #e5e7eb;border-radius:12px;padding:12px;font-size:14px;background:white;color:#374151;cursor:pointer;">ביטול</button>
+              <button style="flex:1;background:#111827;color:white;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;">הוספה</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /row history -->
+
+</body>
+</html>
