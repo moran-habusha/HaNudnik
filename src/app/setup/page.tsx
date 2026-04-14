@@ -43,7 +43,7 @@ export default function SetupPage() {
 
     const { data: invite, error: inviteError } = await supabase
       .from('invites')
-      .select('*, apartments(mode)')
+      .select('*')
       .eq('id', inviteCode.trim())
       .gt('expires_at', new Date().toISOString())
       .is('used_by', null)
