@@ -1457,11 +1457,11 @@ export default function Dashboard() {
                 ) : (
                   <>
                     <div className="bg-gray-50 rounded-xl p-3 text-sm text-gray-700 whitespace-pre-line mb-3 leading-relaxed border border-gray-200 font-mono text-xs">
-                      {`היי! 🏠\nהוזמנת להצטרף לדירה של ${apartment.name} באפליקציה HaNudnik.\n\nלהצטרפות, פתח את האפליקציה ובחר "הצטרפות לדירה קיימת".\n\nקוד ההזמנה שלך:\n${inviteCode}\n\n(הקוד תקף ל-72 שעות)`}
+                      {`היי! 🏠\nהוזמנת להצטרף לדירה של ${apartment.name} באפליקציה HaNudnik.\n\nלהורדת האפליקציה: https://hanudnik.vercel.app\n\nלהצטרפות, פתח את האפליקציה ובחר "הצטרפות לדירה קיימת".\n\nקוד ההזמנה שלך:\n${inviteCode}\n\n(הקוד תקף ל-72 שעות)`}
                     </div>
                     <button
                       onClick={() => {
-                        navigator.clipboard.writeText(`היי! 🏠\nהוזמנת להצטרף לדירה של ${apartment.name} באפליקציה HaNudnik.\n\nלהצטרפות, פתח את האפליקציה ובחר "הצטרפות לדירה קיימת".\n\nקוד ההזמנה שלך:\n${inviteCode}\n\n(הקוד תקף ל-72 שעות)`)
+                        navigator.clipboard.writeText(`היי! 🏠\nהוזמנת להצטרף לדירה של ${apartment.name} באפליקציה HaNudnik.\n\nלהורדת האפליקציה: https://hanudnik.vercel.app\n\nלהצטרפות, פתח את האפליקציה ובחר "הצטרפות לדירה קיימת".\n\nקוד ההזמנה שלך:\n${inviteCode}\n\n(הקוד תקף ל-72 שעות)`)
                         setInviteCopied(true)
                         setTimeout(() => setInviteCopied(false), 2500)
                       }}
