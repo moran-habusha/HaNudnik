@@ -49,7 +49,7 @@ export default function SetupPage() {
       .is('used_by', null)
       .single()
 
-    if (inviteError || !invite) { setError('קישור לא תקין או שפג תוקפו'); setLoading(false); return }
+    if (inviteError || !invite) { setError(`debug: code="${inviteCode.trim()}" err=${inviteError?.message ?? 'no row'}`); setLoading(false); return }
 
     const { count } = await supabase
       .from('profiles')
