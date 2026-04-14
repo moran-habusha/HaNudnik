@@ -44,12 +44,12 @@ export default function SetupPage() {
     const { data: invite, error: inviteError } = await supabase
       .from('invites')
       .select('*')
-      .eq('id', inviteCode.trim())
+      .eq('id', inviteCode.replace(/\s+/g, ''))
       .gt('expires_at', new Date().toISOString())
       .is('used_by', null)
       .single()
 
-    if (inviteError || !invite) { setError(`debug: code="${inviteCode.trim()}" err=${inviteError?.message ?? 'no row'}`); setLoading(false); return }
+    if (inviteError || !invite) { setError('קישור לא תקין או שפג תוקפו'); setLoading(false); return }
 
     const { count } = await supabase
       .from('profiles')
@@ -59,7 +59,7 @@ export default function SetupPage() {
     if ((count ?? 0) >= 5) { setError('הדירה מלאה (מקסימום 5 דיירים)'); setLoading(false); return }
 
     await supabase.from('profiles').update({ apartment_id: invite.apartment_id }).eq('id', user.id)
-    await supabase.from('invites').update({ used_by: user.id, used_at: new Date().toISOString() }).eq('id', inviteCode.trim())
+    await supabase.from('invites').update({ used_by: user.id, used_at: new Date().toISOString() }).eq('id', inviteCode.replace(/\s+/g, ''))
 
     // read mode after joining — RLS now allows it since profile is updated
     const { data: apt } = await supabase.from('apartments').select('mode').eq('id', invite.apartment_id).single()
