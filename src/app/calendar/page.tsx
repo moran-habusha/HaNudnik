@@ -806,7 +806,7 @@ export default function CalendarPage() {
             <p className="text-sm text-gray-500 mb-5">{profiles.find(p => p.id === userId)?.gender === 'female' ? 'האם את בטוחה שברצונך למחוק את האירוע?' : 'האם אתה בטוח שברצונך למחוק את האירוע?'}</p>
             <div className="flex gap-2">
               <button onClick={() => setConfirmDeleteId(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm text-gray-600 hover:bg-gray-50">ביטול</button>
-              <button onClick={() => { deleteEvent(confirmDeleteId); setConfirmDeleteId(null) }} className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-red-600">{profiles.find(p => p.id === userId)?.gender === 'female' ? 'מחקי' : 'מחק'}</button>
+              <button onClick={() => { deleteEvent(confirmDeleteId); setConfirmDeleteId(null) }} className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-red-600">מחק</button>
             </div>
           </div>
         </div>
