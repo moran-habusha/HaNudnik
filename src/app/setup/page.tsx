@@ -58,6 +58,7 @@ export default function SetupPage() {
 
     if ((count ?? 0) >= 5) { setError('הדירה מלאה (מקסימום 5 דיירים)'); setLoading(false); return }
 
+    await supabase.from('bot_messages').delete().eq('user_id', user.id)
     await supabase.from('profiles').update({ apartment_id: invite.apartment_id }).eq('id', user.id)
     await supabase.from('invites').update({ used_by: user.id, used_at: new Date().toISOString() }).eq('id', inviteCode.replace(/\s+/g, ''))
 

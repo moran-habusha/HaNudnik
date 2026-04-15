@@ -29,8 +29,8 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-gray-400 text-sm">טוען...</div>
+    <div className="h-screen overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#ede9f5' }}>
+      <img src="/HaNudnik Logo.png" alt="HaNudnik" className="w-48 h-48 object-contain" />
     </div>
   )
 }
