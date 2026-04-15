@@ -49,6 +49,6 @@ self.addEventListener('fetch', event => {
       const clone = response.clone();
       caches.open(CACHE).then(cache => cache.put(event.request, clone));
       return response;
-    }).catch(() => caches.match(event.request))
+    }).catch(() => caches.match(event.request).then(r => r || new Response('', { status: 503 })))
   );
 });
