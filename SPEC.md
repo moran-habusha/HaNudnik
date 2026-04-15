@@ -729,10 +729,17 @@ Claiming does not auto-complete. Both must be explicitly set.
     - PWA install: הוספה למסך הבית דרך כרום → "הוסף למסך הבית" ✅
 
 **בדיקות אחרי דיפלויד:**
-11. **פוש אנדרואיד** — איך ההודעה מגיעה, כפתורי פעולה עובדים ❌
-12. **Calendar reminders cron** — יצירת אירוע עם תזכורת + בדיקה שהודעת הבוט נשלחת ביום הנכון ❌
-13. **Crons ב-Supabase pg_cron** — `auto_activate_future_away`, `auto_return_from_away`, morning nudge, 14:00, 17:00, 22:00, 07:00 overnight ❌
+11. **פוש אנדרואיד** — הודעה מגיעה ✅; badge icon מותאם (monochrome) ✅; לחיצה פותחת בוט ✅; כפתורי פעולה — לא נבדק עדיין
+12. **Calendar reminders cron** — `send_calendar_reminders` תוקנה (כפתור go_calendar + related_id) + נוספה ל-pg_cron ✅; נבדק ידנית ✅
+13. **Crons ב-Supabase pg_cron** — כל ה-crons נוספו ✅: `auto_activate_future_away`, `auto_return_from_away`, `ensure_today_instances`, `schedule_morning_nudges_for_all`, `process_scheduled_messages` (כל 15 דקות), overnight 07:00, inactivity+bills+calendar 09:00, 14:00, 17:00, laundry 19:00, nightly 22:00, weekly (שישי), monthly (1 לחודש)
 14. **App download link** — נוסף לקישור ההזמנה: `https://hanudnik.vercel.app` ✅
+
+**Push notifications — מומש ✅ (15/04/2026):**
+- VAPID keys נוצרו + נשמרו ב-Vercel + Supabase Edge Function secrets
+- טבלת `push_subscriptions` (user_id, endpoint, p256dh, auth, platform)
+- Edge Function `send-push` — מופעלת ב-Database Webhook על INSERT ב-bot_messages
+- SW: push handler + notificationclick (פותח /bot)
+- Client: `PushSubscribe` component בדף הבוט — בקשת הרשאה פעם אחת, שמירת subscription
 
 **תיקונים ממתינים:**
 - מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען

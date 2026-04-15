@@ -329,26 +329,53 @@ export default function BotPage() {
       return
     }
 
-    if (baseAction === 'calendar_confirm') {
+    if (baseAction === 'calendar_confirm' || baseAction === 'calendar_decline') {
       const eventId = actionId || msg.related_id
+      const newStatus = baseAction === 'calendar_confirm' ? 'confirmed' : 'declined'
       if (eventId) {
         await supabase
           .from('calendar_invitees')
-          .update({ status: 'confirmed' })
+          .update({ status: newStatus })
           .eq('event_id', eventId)
           .eq('user_id', myUserId)
-      }
-      return
-    }
 
-    if (baseAction === 'calendar_decline') {
-      const eventId = actionId || msg.related_id
-      if (eventId) {
-        await supabase
+        // שליחת הודעה למארגן + מוזמנים מאושרים
+        const { data: event } = await supabase
+          .from('calendar_events')
+          .select('title, event_date, created_by, apartment_id')
+          .eq('id', eventId)
+          .single()
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('display_name, gender')
+          .eq('id', myUserId!)
+          .single()
+        const { data: invitees } = await supabase
           .from('calendar_invitees')
-          .update({ status: 'declined' })
+          .select('user_id, status')
           .eq('event_id', eventId)
-          .eq('user_id', myUserId)
+        if (event && profile) {
+          const actionWord = newStatus === 'confirmed'
+            ? (profile.gender === 'female' ? 'אישרה' : 'אישר')
+            : (profile.gender === 'female' ? 'ביטלה' : 'ביטל')
+          const dateDisplay = new Date(event.event_date + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'long' })
+          const notifMsg = `${profile.display_name} ${actionWord} הגעה לאירוע "${event.title}" (${dateDisplay})`
+          const notifyIds = [
+            event.created_by,
+            ...(invitees ?? []).filter(i => i.user_id !== myUserId && i.status === 'confirmed').map(i => i.user_id)
+          ].filter(id => id !== myUserId)
+          for (const uid of notifyIds) {
+            await supabase.from('bot_messages').insert({
+              user_id: uid,
+              apartment_id: event.apartment_id,
+              message: notifMsg,
+              buttons: null,
+              triggered_by: 'calendar_rsvp_update',
+              related_id: eventId,
+              is_read: false,
+            })
+          }
+        }
       }
       return
     }
