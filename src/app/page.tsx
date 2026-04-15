@@ -29,7 +29,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="h-screen overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#ede9f5' }}>
+    <div className="h-screen overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#BBBBF7' }}>
       <img src="/HaNudnik Logo.png" alt="HaNudnik" className="w-48 h-48 object-contain" />
     </div>
   )
