@@ -57,6 +57,7 @@ export default function CalendarPage() {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
   const [savingReminder, setSavingReminder] = useState(false)
   const [pendingRsvp, setPendingRsvp] = useState<Record<string, 'confirmed' | 'declined'>>({}) // eventId -> pending status
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
@@ -612,7 +613,7 @@ export default function CalendarPage() {
                         {e.created_by === userId ? (
                           <div className="flex gap-2">
                             <button onClick={() => openEdit(e)} className="flex-1 border border-gray-200 rounded-lg py-2 text-sm text-gray-600 hover:bg-gray-100">עריכה</button>
-                            <button onClick={() => deleteEvent(e.id)} className="flex-1 bg-red-50 text-red-500 rounded-lg py-2 text-sm hover:bg-red-100">מחיקה</button>
+                            <button onClick={() => setConfirmDeleteId(e.id)} className="flex-1 bg-red-50 text-red-500 rounded-lg py-2 text-sm hover:bg-red-100">מחיקה</button>
                           </div>
                         ) : (() => {
                           const myInvite = evInvitees.find(i => i.user_id === userId)
@@ -794,6 +795,18 @@ export default function CalendarPage() {
                 disabled={!newTitle.trim() || !newDate}
                 className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-40"
               >{editingEvent ? 'שמור' : 'הוסף'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {confirmDeleteId && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" dir="rtl">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
+            <p className="text-base font-medium text-gray-800 mb-1">מחיקת אירוע</p>
+            <p className="text-sm text-gray-500 mb-5">האם את/ה בטוח/ה שברצונך למחוק את האירוע?</p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmDeleteId(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm text-gray-600 hover:bg-gray-50">ביטול</button>
+              <button onClick={() => { deleteEvent(confirmDeleteId); setConfirmDeleteId(null) }} className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-red-600">מחק</button>
             </div>
           </div>
         </div>
