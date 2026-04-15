@@ -803,7 +803,7 @@ export default function CalendarPage() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" dir="rtl">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
             <p className="text-base font-medium text-gray-800 mb-1">מחיקת אירוע</p>
-            <p className="text-sm text-gray-500 mb-5">האם את/ה בטוח/ה שברצונך למחוק את האירוע?</p>
+            <p className="text-sm text-gray-500 mb-5">{profiles.find(p => p.id === userId)?.gender === 'female' ? 'האם את בטוחה שברצונך למחוק את האירוע?' : 'האם אתה בטוח שברצונך למחוק את האירוע?'}</p>
             <div className="flex gap-2">
               <button onClick={() => setConfirmDeleteId(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm text-gray-600 hover:bg-gray-50">ביטול</button>
               <button onClick={() => { deleteEvent(confirmDeleteId); setConfirmDeleteId(null) }} className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-red-600">מחק</button>
