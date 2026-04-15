@@ -45,6 +45,7 @@ export default function AuthPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-sm p-8">
         <div className="text-center mb-8">
+          <img src="/HaNudnikCharacter_thick_outline_White.png" alt="HaNudnik" className="w-20 h-20 object-contain mx-auto mb-2" />
           <h1 className="text-3xl font-bold text-gray-900">HaNudnik</h1>
           <p className="text-gray-500 text-sm mt-1">הדייר הדיגיטלי שלך</p>
         </div>
