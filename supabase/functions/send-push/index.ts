@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
         tag: record.triggered_by || 'hanudnik',
         data: { url: '/bot', msg_id: record.id },
         ...(!isIos && buttons.length > 0 ? {
-          actions: buttons.slice(0, 2).map((b: { label: string; action: string }) => ({ action: b.action, title: b.label }))
+          actions: [{ action: buttons[0].action, title: buttons[0].label }]
         } : {})
       })
 
