@@ -20,28 +20,30 @@ function getPlatform(): 'ios' | 'android' {
 export default function PushSubscribe() {
   useEffect(() => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return
-    if (localStorage.getItem('push_subscribed')) return
 
     async function subscribe() {
-      localStorage.setItem('push_debug', 'started')
       try {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
-        if (!user) { localStorage.setItem('push_debug', 'no user'); return }
-        localStorage.setItem('push_debug', 'got user: ' + user.id)
+        if (!user) return
 
-        const permission = await Notification.requestPermission()
-        localStorage.setItem('push_debug', 'permission: ' + permission)
-        if (permission !== 'granted') return
-
-        localStorage.setItem('push_debug', 'vapid key: ' + (VAPID_PUBLIC_KEY ? 'exists' : 'MISSING'))
         const reg = await navigator.serviceWorker.ready
-        const sub = await reg.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-        })
-        localStorage.setItem('push_debug', 'subscribed!')
 
+        // בדוק אם יש כבר subscription במכשיר הזה
+        let sub = await reg.pushManager.getSubscription()
+
+        if (!sub) {
+          // אין subscription — בקש הרשאה ותצור
+          const permission = await Notification.requestPermission()
+          if (permission !== 'granted') return
+
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+          })
+        }
+
+        // שמור ב-DB (upsert — בטוח לקרוא כל פעם)
         const { endpoint, keys } = sub.toJSON() as {
           endpoint: string
           keys: { p256dh: string; auth: string }
@@ -55,26 +57,8 @@ export default function PushSubscribe() {
           platform: getPlatform(),
         }, { onConflict: 'user_id,endpoint' })
 
-        localStorage.setItem('push_subscribed', '1')
       } catch (e) {
-        localStorage.setItem('push_debug', 'error: ' + String(e))
-        // שמור שגיאה בבוט לדיבאג
-        try {
-          const supabase = createClient()
-          const { data: { user } } = await supabase.auth.getUser()
-          if (user) {
-            const { data: profile } = await supabase.from('profiles').select('apartment_id').eq('id', user.id).single()
-            if (profile?.apartment_id) {
-              await supabase.from('bot_messages').insert({
-                user_id: user.id,
-                apartment_id: profile.apartment_id,
-                message: `[debug push] שגיאה: ${String(e)}`,
-                triggered_by: 'push_debug',
-                is_read: false,
-              })
-            }
-          }
-        } catch {}
+        console.error('push subscribe error', e)
       }
     }
 

@@ -29,6 +29,8 @@ Deno.serve(async (req) => {
       .select('*')
       .eq('user_id', record.user_id)
 
+    console.log('user_id:', record.user_id, 'subs found:', subs?.length ?? 0)
+
     if (!subs?.length) {
       return new Response('no subscriptions', { status: 200 })
     }
@@ -59,7 +61,9 @@ Deno.serve(async (req) => {
 
       try {
         await webpush.sendNotification(pushSub, notifPayload)
+        console.log('push sent to', sub.endpoint.slice(0, 50))
       } catch (e: unknown) {
+        console.error('push error:', e)
         const err = e as { statusCode?: number }
         if (err.statusCode === 410 || err.statusCode === 404) {
           await supabase.from('push_subscriptions').delete().eq('id', sub.id)
