@@ -52,7 +52,23 @@ export default function PushSubscribe() {
 
         localStorage.setItem('push_subscribed', '1')
       } catch (e) {
-        console.error('push subscribe error', e)
+        // שמור שגיאה בבוט לדיבאג
+        try {
+          const supabase = createClient()
+          const { data: { user } } = await supabase.auth.getUser()
+          if (user) {
+            const { data: profile } = await supabase.from('profiles').select('apartment_id').eq('id', user.id).single()
+            if (profile?.apartment_id) {
+              await supabase.from('bot_messages').insert({
+                user_id: user.id,
+                apartment_id: profile.apartment_id,
+                message: `[debug push] שגיאה: ${String(e)}`,
+                triggered_by: 'push_debug',
+                is_read: false,
+              })
+            }
+          }
+        } catch {}
       }
     }
 
