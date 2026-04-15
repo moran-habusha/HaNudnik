@@ -45,7 +45,7 @@ Deno.serve(async (req) => {
       const body = (isIos ? record.ios_message : null) || record.message || 'הנודניק שלח לך הודעה'
 
       const buttons = record.buttons
-        ? (typeof record.buttons === 'string' ? JSON.parse(record.buttons) : record.buttons) as Array<{ label: string }>
+        ? (typeof record.buttons === 'string' ? JSON.parse(record.buttons) : record.buttons) as Array<{ label: string; action: string }>
         : []
 
       const notifPayload = JSON.stringify({
@@ -53,9 +53,9 @@ Deno.serve(async (req) => {
         body,
         badge: 'https://hanudnik.vercel.app/icon-badge.png',
         tag: record.triggered_by || 'hanudnik',
-        data: { url: '/bot' },
+        data: { url: '/bot', msg_id: record.id },
         ...(!isIos && buttons.length > 0 ? {
-          actions: buttons.slice(0, 2).map((b) => ({ action: 'open', title: b.label }))
+          actions: buttons.slice(0, 2).map((b: { label: string; action: string }) => ({ action: b.action, title: b.label }))
         } : {})
       })
 

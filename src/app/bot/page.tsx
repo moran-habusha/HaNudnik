@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import PushSubscribe from '@/components/PushSubscribe'
 
 type BotMessage = {
@@ -31,7 +31,9 @@ export default function BotPage() {
   const [savingVeto, setSavingVeto] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const unreadRef = useRef<HTMLDivElement>(null)
+  const pushActionHandled = useRef(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = createClient()
 
   useEffect(() => {
@@ -76,6 +78,20 @@ export default function BotPage() {
     if (firstUnreadIndex !== null) unreadRef.current?.scrollIntoView({ behavior: 'instant' })
     else bottomRef.current?.scrollIntoView({ behavior: 'instant' })
   }, [loading])
+
+  // auto-execute action from push notification button
+  useEffect(() => {
+    if (!myUserId || loading || pushActionHandled.current) return
+    const pushAction = searchParams.get('action')
+    const pushMsgId = searchParams.get('msg')
+    if (!pushAction || !pushMsgId) return
+    const targetMsg = messages.find(m => m.id === pushMsgId)
+    if (!targetMsg) return
+    const btn = targetMsg.buttons?.find(b => b.action === pushAction)
+    if (!btn) return
+    pushActionHandled.current = true
+    handleAction(targetMsg, pushAction, btn.label)
+  }, [myUserId, loading, messages])
 
   // realtime: new messages
   useEffect(() => {

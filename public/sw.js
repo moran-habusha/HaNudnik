@@ -1,4 +1,4 @@
-const CACHE = 'hanudnik-v3';
+const CACHE = 'hanudnik-v4';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -29,11 +29,15 @@ self.addEventListener('push', event => {
 
 self.addEventListener('notificationclick', event => {
   event.notification.close()
-  const url = event.notification.data?.url || '/bot'
+  const data = event.notification.data || {}
+  const baseUrl = data.url || '/bot'
+  const url = (event.action && data.msg_id)
+    ? `${baseUrl}?action=${encodeURIComponent(event.action)}&msg=${encodeURIComponent(data.msg_id)}`
+    : baseUrl
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
-      const existing = list.find(c => c.url.includes(url))
-      if (existing) return existing.focus()
+      const existing = list.find(c => c.url.includes('/bot'))
+      if (existing && !event.action) return existing.focus()
       return clients.openWindow(url)
     })
   )
