@@ -738,8 +738,21 @@ Claiming does not auto-complete. Both must be explicitly set.
 - VAPID keys נוצרו + נשמרו ב-Vercel + Supabase Edge Function secrets
 - טבלת `push_subscriptions` (user_id, endpoint, p256dh, auth, platform)
 - Edge Function `send-push` — מופעלת ב-Database Webhook על INSERT ב-bot_messages
-- SW: push handler + notificationclick (פותח /bot)
-- Client: `PushSubscribe` component בדף הבוט — בקשת הרשאה פעם אחת, שמירת subscription
+- SW: push handler + notificationclick (פותח /bot); badge icon monochrome
+- Client: `PushSubscribe` component בדף הבוט — בכל כניסה בודק `pushManager.getSubscription()` ושומר לDB (ללא localStorage flag)
+- נבדק ✅ — פוש מגיע לאנדרואיד; לחיצה פותחת /bot
+- אוטומטי (crons) — נבדק ✅ (16/04/2026); `schedule-morning-nudges` תוקן מ-00:00 ל-07:00 ישראל (04:00 UTC)
+
+**כפתורי action בפוש (16/04/2026) ✅:**
+- כפתור action בהתראה → פותח `/bot?action=X&msg=Y` → בוט מבצע את הaction אוטומטית
+- בוט: `useSearchParams` קורא params + `useEffect` מפעיל `handleAction` בטעינה
+- גילוי: Chrome אנדרואיד עם `dir:rtl` מציג כפתורים בסדר הפוך ויזואלית אבל `event.action` מתאים לסדר המערך → חוסר התאמה. פתרון: הסרת `dir:rtl` מאפשרויות ההתראה ✅
+- מגבלה: כפתור אחד בהתראה (הראשון ברשימה); שאר הכפתורים זמינים בתוך הבוט
+
+**תיקונים (16/04/2026):**
+- Calendar: הוסף dialog אישור לפני מחיקת אירוע (מגדרי) ✅
+- `complete_task` RPC: מסמן `done_at = now()` (לא `is_done`) — זה הfield שקובע אם המשימה בוצעה ✅
+- `schedule-morning-nudges` cron: תוקן ל-`0 4 * * *` (07:00 ישראל) ✅
 
 **תיקונים ממתינים:**
 - מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
