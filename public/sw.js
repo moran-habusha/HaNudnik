@@ -22,7 +22,6 @@ self.addEventListener('push', event => {
     tag: data.tag || 'hanudnik',
     data: data.data || { url: '/bot' },
     actions: data.actions || [],
-    dir: 'rtl',
   }
   event.waitUntil(self.registration.showNotification(title, options))
 })
