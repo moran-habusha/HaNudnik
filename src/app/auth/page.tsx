@@ -42,7 +42,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="h-screen overflow-hidden bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-sm p-8">
         <div className="text-center mb-8">
           <img src="/HaNudnikCharacter_thick_outline_White.png" alt="HaNudnik" className="w-20 h-20 object-contain mx-auto mb-2" />
