@@ -698,6 +698,14 @@ Claiming does not auto-complete. Both must be explicitly set.
 - Laundry cancel machine: new `cancel_laundry_machine()` RPC — deletes next-stage task instances, optionally restores requests from history, deletes history record, deletes machine row ✅
 - Calendar invite notifications: moved to `send_calendar_invite_notifications()` SECURITY DEFINER (client-side insert was blocked by RLS) ✅
 - Calendar edit: newly added invitees get bot message with updated title ✅
+- Bug fix: invite join — `inviteCode.replace(/\s+/g, '')` instead of `.trim()` — fixes "קישור לא תקין" when copy-pasted invite code has extra spaces or newlines ✅
+- Splash screen: `page.tsx` shows `#BBBBF7` background + HaNudnik Logo for min 1.5s (auth check runs in parallel); `manifest.json` background_color updated to match ✅
+- Auth page: HaNudnik character image added above title ✅
+- `ask_apartment_type`: fixed message format — `!` after name + `E'\n'` before body text ✅
+- `send_onboarding_message_solo`: fixed `|| chr(10) ||` appearing as literal text inside string — replaced with `E'\n'` ✅
+- Chat history cleared on join: `joinApartment` now deletes `bot_messages` for the user before joining a new apartment ✅
+- Service worker: `SwRegister` component — registers `/sw.js`, auto-reloads on `controllerchange`, calls `reg.update()` on `visibilitychange`/`focus` to detect new deploys automatically ✅
+- Scroll fix: removed `pb-16` from `body` in layout; added `h-16` spacer div inside `BottomNav` (only renders when nav is visible) — eliminates unnecessary scroll on auth/setup/splash screens ✅
 
 ### In Progress / Next (priority order)
 
@@ -712,18 +720,22 @@ Claiming does not auto-complete. Both must be explicitly set.
 8. **notify_resident_joined** — מורן מקבלת הודעה כשעידן מצטרף לדירה שכבר מולטי ✅
 9. **לפני דיפלויד:**
    - **תיקון כל ה— ל-** בכל הודעות הבוט + UI ✅ (SQL functions + קבצי tsx)
-   - מחיקת test users + דירה ישנה + יצירת דירה חדשה לפני דיפלויד
+   - מחיקת test users + דירה ישנה ✅
+   - `create_apartment` תוקן — הוסף `created_by = auth.uid()` לכל המטלות ✅
 
 **דיפלויד:**
-9. **PWA setup** (service worker, Web Push) + **Vercel deployment**
+10. **Vercel deployment** — האפליקציה באוויר ב-`hanudnik.vercel.app` ✅
+    - Crons הועברו מ-Vercel ל-Supabase pg_cron (Vercel Hobby מגביל ל-cron אחד ביום)
+    - PWA install: הוספה למסך הבית דרך כרום → "הוסף למסך הבית" ✅
 
 **בדיקות אחרי דיפלויד:**
-10. **פוש באנדרואיד** — איך ההודעה מגיעה, כפתורי פעולה עובדים, Web Push tag מחליף הודעה שטרם נפתחה ❌
-11. **Calendar reminders cron** — יצירת אירוע עם תזכורת + בדיקה שהודעת הבוט נשלחת ביום הנכון ❌
-12. **Crons** — `auto_activate_future_away` (🧳 מופעלת בחצות יום היציאה) + `auto_return_from_away` (חזרה אוטומטית בחצות יום החזרה) ❌
-13. **Crons יומיים** — morning nudge, 14:00, 17:00, 22:00, 07:00 overnight check — לוודא שרצים אוטומטית בזמן הנכון (לא רק בהפעלה ידנית) ❌
-14. **PWA install** — הוספה למסך הבית, התנהגות כאפליקציה עצמאית ❌
-15. **App download link** — הוספת קישור להורדה בהודעת הזמנה + אונבורדינג
+11. **פוש אנדרואיד** — איך ההודעה מגיעה, כפתורי פעולה עובדים ❌
+12. **Calendar reminders cron** — יצירת אירוע עם תזכורת + בדיקה שהודעת הבוט נשלחת ביום הנכון ❌
+13. **Crons ב-Supabase pg_cron** — `auto_activate_future_away`, `auto_return_from_away`, morning nudge, 14:00, 17:00, 22:00, 07:00 overnight ❌
+14. **App download link** — נוסף לקישור ההזמנה: `https://hanudnik.vercel.app` ✅
+
+**תיקונים ממתינים:**
+- מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
 
 ### לוז בדיקות — מחזור הוצאת/הזמנת דיירים
 יש לבצע ברצף על דירת הטסט (בסדר הזה):

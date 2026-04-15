@@ -1,4 +1,4 @@
-const CACHE = 'hanudnik-v2';
+const CACHE = 'hanudnik-v3';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -11,6 +11,33 @@ self.addEventListener('activate', event => {
     ).then(() => self.clients.claim())
   );
 });
+
+self.addEventListener('push', event => {
+  const data = event.data?.json() || {}
+  const title = data.title || 'HaNudnik 🏠'
+  const options = {
+    body: data.body || '',
+    icon: data.icon || '/icon-192.png',
+    badge: data.badge || '/icon-192.png',
+    tag: data.tag || 'hanudnik',
+    data: data.data || { url: '/bot' },
+    actions: data.actions || [],
+    dir: 'rtl',
+  }
+  event.waitUntil(self.registration.showNotification(title, options))
+})
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close()
+  const url = event.notification.data?.url || '/bot'
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      const existing = list.find(c => c.url.includes(url))
+      if (existing) return existing.focus()
+      return clients.openWindow(url)
+    })
+  )
+})
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
