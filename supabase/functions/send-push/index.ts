@@ -1,5 +1,3 @@
-// @ts-ignore Deno edge runtime
-import "@supabase/functions-js/edge-runtime.d.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import webpush from 'npm:web-push@3.6.7'
 
@@ -51,8 +49,7 @@ Deno.serve(async (req) => {
       const notifPayload = JSON.stringify({
         title: 'HaNudnik 🏠',
         body,
-        icon: '/icon-192.png',
-        badge: '/icon-192.png',
+        badge: 'https://hanudnik.vercel.app/icon-badge.png',
         tag: record.triggered_by || 'hanudnik',
         data: { url: '/bot' },
         ...(!isIos && buttons.length > 0 ? {
