@@ -1,4 +1,4 @@
-const CACHE = 'hanudnik-v1';
+const CACHE = 'hanudnik-v2';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
