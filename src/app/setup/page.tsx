@@ -76,7 +76,7 @@ export default function SetupPage() {
   }
 
   return (
-    <div className="h-screen overflow-hidden bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-sm p-8" dir="rtl">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">ברוך הבא!</h1>

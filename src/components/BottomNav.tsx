@@ -64,6 +64,8 @@ export default function BottomNav() {
 
   return (
     <>
+      {/* Spacer so content isn't hidden behind fixed nav */}
+      <div className="h-16 flex-shrink-0" />
       {/* More overlay */}
       {moreOpen && (
         <div className="fixed inset-0 z-40" onClick={() => setMoreOpen(false)}>
