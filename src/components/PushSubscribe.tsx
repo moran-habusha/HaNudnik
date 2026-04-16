@@ -24,7 +24,8 @@ export default function PushSubscribe() {
     async function subscribe() {
       try {
         const supabase = createClient()
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { session } } = await supabase.auth.getSession()
+        const user = session?.user
         if (!user) return
 
         const reg = await navigator.serviceWorker.ready
@@ -48,13 +49,21 @@ export default function PushSubscribe() {
           endpoint: string
           keys: { p256dh: string; auth: string }
         }
+        const platform = getPlatform()
+
+        // מחק subscriptions ישנות של אותו משתמש+פלטפורמה עם endpoint שונה
+        await supabase.from('push_subscriptions')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('platform', platform)
+          .neq('endpoint', endpoint)
 
         await supabase.from('push_subscriptions').upsert({
           user_id: user.id,
           endpoint,
           p256dh: keys.p256dh,
           auth: keys.auth,
-          platform: getPlatform(),
+          platform,
         }, { onConflict: 'user_id,endpoint' })
 
       } catch (e) {
