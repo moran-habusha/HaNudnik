@@ -60,7 +60,8 @@ export default function TasksPage() {
 
   useEffect(() => {
     async function load() {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { session } } = await supabase.auth.getSession()
+      const user = session?.user
       if (!user) { router.push('/auth'); return }
       setMyUserId(user.id)
       const { data: profile } = await supabase.from('profiles').select('apartment_id').eq('id', user.id).single()

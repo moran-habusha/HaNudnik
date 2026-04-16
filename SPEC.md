@@ -753,8 +753,13 @@ Claiming does not auto-complete. Both must be explicitly set.
 - Calendar: הוסף dialog אישור לפני מחיקת אירוע (מגדרי) ✅
 - `complete_task` RPC: מסמן `done_at = now()` (לא `is_done`) — זה הfield שקובע אם המשימה בוצעה ✅
 - `schedule-morning-nudges` cron: תוקן ל-`0 4 * * *` (07:00 ישראל) ✅
+- `schedule_morning_nudges_for_all`: תוקן לשמש timezone ישראל — `(current_date + '8 hours') AT TIME ZONE 'Asia/Jerusalem'`; לפני התיקון הנאדניק הגיע ב-11:00 ✅
+- `schedule_task_reminder`: נוצרה פונקציה חסרה — מאפשרת תזכורות למטלות לעבוד ✅
+- Dashboard הושלמו: מוזגו `doneTasks` ו-`doneSlots` לרשימה אחת ממוינת לפי `done_at` ✅
+- `send_nightly_reminder`: תוקן CASE של slot — נוסף `when 'night' then 'לילה'`; לפני כן slot=night הציג "night" באנגלית ✅
 
 **תיקונים ממתינים:**
+- האפליקציה זורקת משתמשים החוצה לפעמים — מתאפס אחרי רענון/כניסה מחדש; צריך לבדוק מה גורם לריסט הsession
 - מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
 
 ### לוז בדיקות — מחזור הוצאת/הזמנת דיירים

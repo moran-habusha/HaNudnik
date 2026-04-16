@@ -41,8 +41,8 @@ export default function BotPage() {
     async function load() {
       let user
       try {
-        const { data } = await supabase.auth.getUser()
-        user = data.user
+        const { data } = await supabase.auth.getSession()
+        user = data.session?.user ?? null
       } catch { return }
       if (cancelled) return
       if (!user) { router.push('/auth'); return }

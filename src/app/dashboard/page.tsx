@@ -112,7 +112,8 @@ export default function Dashboard() {
     let channel: ReturnType<typeof supabase.channel> | null = null
 
     async function load() {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { session } } = await supabase.auth.getSession()
+      const user = session?.user
       if (!user) { router.push('/auth'); return }
       setMyUserId(user.id)
 
@@ -1121,36 +1122,19 @@ export default function Dashboard() {
           {(doneTasks.length > 0 || doneSlots.length > 0) && (
             <div className="mt-2 space-y-2">
               <p className="text-xs font-semibold text-gray-300 uppercase mt-3 mb-1">הושלמו</p>
-              {doneTasks.map(task => (
+              {[...doneTasks, ...doneSlots].sort((a, b) => new Date(b.done_at!).getTime() - new Date(a.done_at!).getTime()).map(task => (
                 <div key={task.instance_id ?? task.task_id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 opacity-50">
                   <div className="flex items-center justify-between">
-                    <p className="font-medium text-gray-700 line-through">{task.title}</p>
+                    <p className="font-medium text-gray-700 line-through">
+                      {task.title}
+                      {task.slot && <span className="text-gray-400 font-normal mr-1">· {SLOT_LABELS[task.slot]}</span>}
+                    </p>
                     <div className="flex items-center gap-2">
                       <p className="text-xs text-gray-400">{apartment?.mode !== 'solo' ? (task.done_by_name ?? '') : ''}{task.done_at ? `${apartment?.mode !== 'solo' && task.done_by_name ? ' · ' : ''}${formatDoneAt(task.done_at)}` : ''}</p>
                       <span className="text-green-500">✓</span>
                       {task.done_by && task.instance_id && (
                         <button
-                          onClick={() => setUncompleteModal({ instanceId: task.instance_id!, taskTitle: task.title, doneByName: task.done_by_name ?? '', isMine: task.done_by === myUserId })}
-                          className="text-xs text-gray-400 hover:text-red-400 underline"
-                        >בטל</button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {[...doneSlots].sort((a, b) => new Date(b.done_at!).getTime() - new Date(a.done_at!).getTime()).map(slot => (
-                <div key={slot.instance_id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 opacity-50">
-                  <div className="flex items-center justify-between">
-                    <p className="font-medium text-gray-700 line-through">
-                      {slot.title}
-                      <span className="text-gray-400 font-normal mr-1">· {SLOT_LABELS[slot.slot ?? '']}</span>
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <p className="text-xs text-gray-400">{apartment?.mode !== 'solo' ? (slot.done_by_name ?? '') : ''}{slot.done_at ? `${apartment?.mode !== 'solo' && slot.done_by_name ? ' · ' : ''}${formatDoneAt(slot.done_at)}` : ''}</p>
-                      <span className="text-green-500">✓</span>
-                      {slot.done_by && slot.instance_id && (
-                        <button
-                          onClick={() => setUncompleteModal({ instanceId: slot.instance_id!, taskTitle: `${slot.title} · ${SLOT_LABELS[slot.slot ?? '']}`, doneByName: slot.done_by_name ?? '', isMine: slot.done_by === myUserId })}
+                          onClick={() => setUncompleteModal({ instanceId: task.instance_id!, taskTitle: task.slot ? `${task.title} · ${SLOT_LABELS[task.slot]}` : task.title, doneByName: task.done_by_name ?? '', isMine: task.done_by === myUserId })}
                           className="text-xs text-gray-400 hover:text-red-400 underline"
                         >בטל</button>
                       )}

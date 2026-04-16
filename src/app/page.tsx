@@ -10,10 +10,11 @@ export default function Home() {
 
   useEffect(() => {
     async function checkAuth() {
-      const [{ data: { user } }] = await Promise.all([
-        supabase.auth.getUser(),
+      const [{ data: { session } }] = await Promise.all([
+        supabase.auth.getSession(),
         new Promise(r => setTimeout(r, 1500)),
       ])
+      const user = session?.user
       if (!user) { router.push('/auth'); return }
 
       const { data: profile } = await supabase
