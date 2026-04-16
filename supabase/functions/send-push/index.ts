@@ -60,7 +60,7 @@ Deno.serve(async (req) => {
       })
 
       try {
-        await webpush.sendNotification(pushSub, notifPayload)
+        await webpush.sendNotification(pushSub, notifPayload, { urgency: 'high', TTL: 3600 })
         console.log('push sent to', sub.endpoint.slice(0, 50))
       } catch (e: unknown) {
         console.error('push error:', e)
