@@ -757,9 +757,30 @@ Claiming does not auto-complete. Both must be explicitly set.
 - `schedule_task_reminder`: נוצרה פונקציה חסרה — מאפשרת תזכורות למטלות לעבוד ✅
 - Dashboard הושלמו: מוזגו `doneTasks` ו-`doneSlots` לרשימה אחת ממוינת לפי `done_at` ✅
 - `send_nightly_reminder`: תוקן CASE של slot — נוסף `when 'night' then 'לילה'`; לפני כן slot=night הציג "night" באנגלית ✅
+- Session reset: כל הדפים עברו מ-`getUser()` ל-`getSession()` — מונע יציאה מהאפליקציה בגלל כשל רשת ✅
+- Push subscriptions: `PushSubscribe.tsx` מוחק subscription ישנה לאותו user+platform לפני upsert — מונע כפילויות כשChrome מחדש FCM token ✅
+- `send-push` Edge Function: נוסף `urgency: 'high', TTL: 3600` — פוש מגיע גם כשהאפליקציה סגורה ✅
+- ביקורת כפתורי פוש מלאה: כל פונקציות הבוט עודכנו לכפתור אחד מקסימום בהתראה (Chrome Android bug — כפתור שני תמיד יירה בטעות) ✅
+  - `send_task_reminder`: "תן לי לסמן" → `go_dashboard`
+  - `send_nightly_reminder` claimed: "תן לי לראות" → `nightly_mark_my`; unclaimed: "תראה לי" → `nightly_mark_unclaimed`
+  - `send_overnight_check`: "סיימתי, שכחתי לסמן ✓" → `overnight_done`
+  - `send_bill_reminder`: "אני על זה" → `bill_add` / `bill_pay`
+  - `send_weekly_summary`: "בחרי/בחר וטו" לפי gender → `go_veto`
+  - `send_monthly_summary`: "בחרי/בחר וטו חודשי" לפי gender → `go_veto`
+  - `notify_calendar_invites`: "תראה לי" → `go_calendar`
+  - `send_calendar_invite_notifications`: "הזמינה/הזמין" לפי gender + "תראה לי" → `go_calendar`
+  - `send_calendar_reminders`: "תראה לי" → `go_calendar`
+  - `notify_forfeit_to_others`: "תראה לי" → `go_dashboard`
+  - `return_from_away`: "כן, רוצה בחזרה ✓" → `reclaim_fixed_task`
+  - `ask_going_solo`: ללא כפתורים בפוש (החלטה קריטית — משתמש חייב לפתוח אפליקציה)
+
+**תיקונים (17/04/2026):**
+- `go_veto` נוסף ל-`NAV_ACTIONS` — כפתור לא מסומן __done__ בפתיחת המודל, רק אחרי אישור וטו בפועל ✅
+- `go_veto` handler: חסימת פתיחת מודל אם כבר נבחר וטו לאותו source (weekly/monthly) — מונע שינוי וטו שכבר נקבע ✅
+- Double-submit protection: `savingEvent` ב-calendar + `loading` ב-shopping (`saveProductAndItem`, `confirmReAdd`) — כפתורים מושבתים בזמן שמירה ✅
+- `ensure_today_instances`: תוקן לעבוד מה-cron (ללא auth) — כעת כשנקראת ללא `auth.uid()` מריצה את עצמה על כל הדירות; לפני כן instances לא נוצרו בחצות → תזכורת הבוקר הציגה "אין מטלות" גם כשהיו מטלות ✅
 
 **תיקונים ממתינים:**
-- האפליקציה זורקת משתמשים החוצה לפעמים — מתאפס אחרי רענון/כניסה מחדש; צריך לבדוק מה גורם לריסט הsession
 - מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
 
 ### לוז בדיקות — מחזור הוצאת/הזמנת דיירים

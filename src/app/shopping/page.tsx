@@ -178,7 +178,8 @@ export default function ShoppingPage() {
   }
 
   async function saveProductAndItem(imageUrl: string | null) {
-    if (!pendingName || !apartmentId || !userId) return
+    if (!pendingName || !apartmentId || !userId || loading) return
+    setLoading(true)
 
     const { data: product, error: productError } = await supabase
       .from('products')
@@ -208,6 +209,7 @@ export default function ShoppingPage() {
       product_id: finalProduct?.id ?? null,
     })
     if (itemError) console.error('shopping_item insert error:', itemError)
+    setLoading(false)
     setNewItemQty(1)
     setPendingNote('')
     setPendingName(null)
@@ -256,7 +258,8 @@ export default function ShoppingPage() {
   }
 
   async function confirmReAdd() {
-    if (!reAddItem_ || !apartmentId || !userId) return
+    if (!reAddItem_ || !apartmentId || !userId || loading) return
+    setLoading(true)
     if (reAddItem_.product_id) {
       await supabase.from('products').update({ note: reAddNote || null }).eq('id', reAddItem_.product_id)
     }
@@ -267,6 +270,7 @@ export default function ShoppingPage() {
       added_by: userId,
       product_id: reAddItem_.product_id,
     })
+    setLoading(false)
     setReAddItem(null)
     if (apartmentId) fetchItems(apartmentId)
   }
@@ -503,7 +507,7 @@ export default function ShoppingPage() {
                 <img src={selectedImage} alt="" className="w-full rounded-xl object-cover max-h-64" />
                 <div className="flex gap-2 w-full">
                   <button onClick={() => setSelectedImage(null)} className="flex-1 border border-gray-200 rounded-xl py-2.5 text-sm">חזרה לחיפוש</button>
-                  <button onClick={() => { saveProductAndItem(selectedImage); setSelectedImage(null) }} className="flex-1 bg-indigo-600 text-white rounded-xl py-2.5 text-sm font-semibold">אשר ✓</button>
+                  <button onClick={() => { saveProductAndItem(selectedImage); setSelectedImage(null) }} disabled={loading} className="flex-1 bg-indigo-600 text-white rounded-xl py-2.5 text-sm font-semibold disabled:opacity-40">{loading ? '...' : 'אשר ✓'}</button>
                 </div>
               </div>
             ) : (
@@ -521,7 +525,7 @@ export default function ShoppingPage() {
                   ) : (
                     <div className="flex gap-2">
                       <button onClick={() => setConfirmNoImage(false)} className="flex-1 border border-gray-200 rounded-lg py-2 text-sm">ביטול</button>
-                      <button onClick={() => saveProductAndItem(null)} className="flex-1 bg-indigo-600 text-white rounded-lg py-2 text-sm font-medium">אשר - שמור ללא תמונה</button>
+                      <button onClick={() => saveProductAndItem(null)} disabled={loading} className="flex-1 bg-indigo-600 text-white rounded-lg py-2 text-sm font-medium disabled:opacity-40">{loading ? '...' : 'אשר - שמור ללא תמונה'}</button>
                     </div>
                   )}
                 </div>
@@ -602,7 +606,7 @@ export default function ShoppingPage() {
             />
             <div className="flex gap-2">
               <button onClick={() => setReAddItem(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
-              <button onClick={confirmReAdd} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium">הוסף לרשימה</button>
+              <button onClick={confirmReAdd} disabled={loading} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-40">{loading ? '...' : 'הוסף לרשימה'}</button>
             </div>
           </div>
         </div>

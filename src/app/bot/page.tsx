@@ -29,6 +29,7 @@ export default function BotPage() {
   const [activeVetos, setActiveVetos] = useState<{ task_id: string; user_id: string; source: string }[]>([])
   const [selectedVetoTaskId, setSelectedVetoTaskId] = useState<string | null>(null)
   const [savingVeto, setSavingVeto] = useState(false)
+  const [vetoMsgId, setVetoMsgId] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement>(null)
   const unreadRef = useRef<HTMLDivElement>(null)
   const pushActionHandled = useRef(false)
@@ -156,7 +157,7 @@ export default function BotPage() {
     const doneAction = (NEGATIVE_ACTIONS.has(action) || NEGATIVE_ACTIONS.has(baseAction)) ? '__rejected__' : '__done__'
 
     // navigation-only actions don't disable the message
-    const NAV_ACTIONS = new Set(['go_tasks', 'go_dashboard', 'go_shopping', 'go_calendar', 'go_bills', 'go_settings'])
+    const NAV_ACTIONS = new Set(['go_tasks', 'go_dashboard', 'go_shopping', 'go_calendar', 'go_bills', 'go_settings', 'go_veto'])
     if (!NAV_ACTIONS.has(action) && !NAV_ACTIONS.has(baseAction)) {
       // disable the message buttons by updating it
       await supabase.from('bot_messages').update({
@@ -241,6 +242,7 @@ export default function BotPage() {
     if (action === 'go_veto') {
       const source = msg.triggered_by === 'monthly_winner' ? 'monthly' : 'weekly'
       setVetoSource(source)
+      setVetoMsgId(msg.id)
       setSelectedVetoTaskId(null)
       const [{ data: candidates }, { data: vetos }] = await Promise.all([
         supabase.rpc('get_veto_candidates'),
@@ -248,7 +250,8 @@ export default function BotPage() {
       ])
       setVetoCandidates(candidates ?? [])
       setActiveVetos(vetos ?? [])
-      setShowVetoModal(true)
+      const alreadyPicked = (vetos ?? []).some((v: { user_id: string; source: string }) => v.user_id === myUserId && v.source === source)
+      if (!alreadyPicked) setShowVetoModal(true)
       return
     }
 
@@ -502,6 +505,11 @@ export default function BotPage() {
     if (!selectedVetoTaskId) return
     setSavingVeto(true)
     await supabase.rpc('set_veto', { p_task_id: selectedVetoTaskId, p_source: vetoSource })
+    if (vetoMsgId) {
+      await supabase.from('bot_messages').update({
+        buttons: [{ label: '✓ בחרתי וטו', action: '__done__' }]
+      }).eq('id', vetoMsgId)
+    }
     setSavingVeto(false)
     setShowVetoModal(false)
     const msgs = await fetchMessages(myUserId!)

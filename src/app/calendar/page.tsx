@@ -56,6 +56,7 @@ export default function CalendarPage() {
   const [newReminderDays, setNewReminderDays] = useState<number[]>([])
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
   const [savingReminder, setSavingReminder] = useState(false)
+  const [savingEvent, setSavingEvent] = useState(false)
   const [pendingRsvp, setPendingRsvp] = useState<Record<string, 'confirmed' | 'declined'>>({}) // eventId -> pending status
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
   const router = useRouter()
@@ -223,7 +224,8 @@ export default function CalendarPage() {
   }
 
   async function saveEvent() {
-    if (!newTitle.trim() || !newDate || !apartmentId || !userId) return
+    if (!newTitle.trim() || !newDate || !apartmentId || !userId || savingEvent) return
+    setSavingEvent(true)
 
     if (editingEvent) {
       await supabase.from('calendar_events').update({
@@ -306,6 +308,7 @@ export default function CalendarPage() {
       }
     }
 
+    setSavingEvent(false)
     setShowAddModal(false)
     setEditingEvent(null)
     await fetchEvents(apartmentId)
@@ -793,9 +796,9 @@ export default function CalendarPage() {
               <button onClick={() => setShowAddModal(false)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
               <button
                 onClick={saveEvent}
-                disabled={!newTitle.trim() || !newDate}
+                disabled={!newTitle.trim() || !newDate || savingEvent}
                 className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-40"
-              >{editingEvent ? 'שמור' : 'הוסף'}</button>
+              >{savingEvent ? '...' : editingEvent ? 'שמור' : 'הוסף'}</button>
             </div>
           </div>
         </div>
