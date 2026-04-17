@@ -568,7 +568,7 @@ Claiming does not auto-complete. Both must be explicitly set.
 
 - `notify_away`: updated message to use gender inflection ("יצאה/יצא", "שלה/שלו"); added `triggered_by = 'away_notify'`; message: "✈️ [שם] יצאה/יצא לחופשה עד DD/MM. המטלות הקבועות שלה/שלו ייפתחו לשאר הדיירים."
 - Dashboard laundry machine banner: changed wash emoji from 🫧 (unsupported on Windows 10) to 🌊; dryer remains ♨️
-- `return_from_away`: clicking "חזרתי" twice sends duplicate messages — button should be disabled after first press (known UX issue, not yet fixed)
+- `return_from_away`: clicking "חזרתי" twice sends duplicate messages — button disabled after first press via `savingAway` (intentionally not reset) ✅
 - `notify_forfeit` / `notify_forfeit_to_others`: fixed message "ב200%" → "ב-150%" (matches actual multiplier); replaced "היום" with slot label (morning→בוקר, noon→צהריים, evening→ערב) or DD/MM for non-slot tasks
 - `send_bill_reminder`: fixed `bill_type_id` → `bill_type` column name; fixed `text = uuid` type mismatch with explicit cast; `bill_pay` bot action now navigates to `/bills`
 - Bills page: `get_expected_bills()` now returns `emoji` column; שכר דירה shows 🔑 emoji hardcoded; `bill_pay` action added to bot page handler
@@ -786,7 +786,8 @@ Claiming does not auto-complete. Both must be explicitly set.
 **תיקונים (18/04/2026):**
 - `send_weekly_summary`: type של הודעת מנצח תוקן מ-`weekly_winner` ל-`winner` — תואם את מה שהדשבורד מחפש ✅
 - `send_weekly_summary` cron (job 16): הוזז מ-`0 21 * * 5` (שבת חצות) ל-`0 4 * * 0` (ראשון 07:00 ישראל) ✅
-- `get_veto_candidates`: תת-מטלות כביסה (hang/dry/fold) נכנסות לוטו לפי `laundry_method`; multiple_daily ו-specific_days נספרים נכון ✅
+- `get_veto_candidates`: תת-מטלות כביסה (hang/dry/fold) נכנסות לוטו לפי `laundry_method`; multiple_daily ו-specific_days נספרים נכון; `laundry_fold` נכלל גם בשיטת hang (לא רק dry) ✅
+- Dashboard: הוסרה קריאת `create_winner_notification` — הנוטיפיקציה נוצרת ב-`send_weekly_summary` ישירות ✅
 - מחזור הוצאת/הזמנת דיירים נבדק ✅
 
 **בדיקות ממתינות:**
