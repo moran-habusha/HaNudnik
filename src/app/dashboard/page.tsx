@@ -150,7 +150,6 @@ export default function Dashboard() {
       setApartment(apt)
 
       if (apt?.mode === 'shared') {
-        await supabase.rpc('create_winner_notification')
         const [
           { data: s },
           { data: notifs },
