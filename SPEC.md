@@ -789,6 +789,10 @@ Claiming does not auto-complete. Both must be explicitly set.
 - `get_veto_candidates`: תת-מטלות כביסה (hang/dry/fold) נכנסות לוטו לפי `laundry_method`; multiple_daily ו-specific_days נספרים נכון ✅
 - מחזור הוצאת/הזמנת דיירים נבדק ✅
 
+**בדיקות ממתינות:**
+- תזכורת בוקר: לוודא שהספירה כוללת מטלות multiple_daily (אוכל/טיול לרובי) — תיקון `send_morning_nudge` עדיין לא אושש בלייב
+- יום ראשון 19/04: סיכום שבוע מגיע ב-07:00 ✓ + באנר מנצח צהוב מופיע למנצח/ת
+
 **תיקונים ממתינים:**
 - מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
 
