@@ -45,6 +45,7 @@ export default function ShoppingPage() {
   const [reAddNote, setReAddNote] = useState('')
   const [fullscreenNote, setFullscreenNote] = useState<string | null>(null)
   const [deletingBoughtItem, setDeletingBoughtItem] = useState<ShoppingItem | null>(null)
+  const [savingEdit, setSavingEdit] = useState(false)
   const [allProducts, setAllProducts] = useState<{ id: string; name: string; image_url: string | null; note: string | null }[]>([])
   const router = useRouter()
   const supabase = createClient()
@@ -286,7 +287,8 @@ export default function ShoppingPage() {
   }
 
   async function saveEditActive(imageUrl?: string) {
-    if (!editingActive) return
+    if (!editingActive || savingEdit) return
+    setSavingEdit(true)
     const updates: Record<string, unknown> = {}
     if (editName.trim() && editName.trim() !== editingActive.name) updates.name = editName.trim()
     if (editActiveQty !== editingActive.quantity) updates.quantity = editActiveQty
@@ -301,6 +303,7 @@ export default function ShoppingPage() {
     }
     setEditingActive(null)
     setImageResults([])
+    setSavingEdit(false)
     if (apartmentId) fetchItems(apartmentId)
   }
 
@@ -706,7 +709,7 @@ export default function ShoppingPage() {
             {/* Fixed bottom */}
             <div className="p-4 pt-2 flex gap-2">
               <button onClick={() => { setEditingActive(null); setImageResults([]); setSelectedImage(null) }} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
-              <button onClick={() => { saveEditActive(selectedImage ?? undefined); setSelectedImage(null) }} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium">שמור שינויים</button>
+              <button onClick={() => { saveEditActive(selectedImage ?? undefined); setSelectedImage(null) }} disabled={savingEdit} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-60">{savingEdit ? '...' : 'שמור שינויים'}</button>
             </div>
           </div>
         </div>

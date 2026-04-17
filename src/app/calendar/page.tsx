@@ -58,6 +58,7 @@ export default function CalendarPage() {
   const [savingReminder, setSavingReminder] = useState(false)
   const [savingEvent, setSavingEvent] = useState(false)
   const [pendingRsvp, setPendingRsvp] = useState<Record<string, 'confirmed' | 'declined'>>({}) // eventId -> pending status
+  const [savingRsvp, setSavingRsvp] = useState<string | null>(null) // eventId being saved
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -233,6 +234,7 @@ export default function CalendarPage() {
         description: newDesc.trim() || null,
         event_date: newDate,
         event_time: newTime || null,
+        reminder_days_before: newReminderDays.length > 0 ? newReminderDays : null,
       }).eq('id', editingEvent.id)
 
       // Find existing invitees from local state
@@ -332,6 +334,42 @@ export default function CalendarPage() {
     }
     await fetchEvents(apartmentId)
     setSavingReminder(false)
+  }
+
+  async function saveRsvp(eventId: string) {
+    if (!userId || !apartmentId || savingRsvp) return
+    const newStatus = pendingRsvp[eventId]
+    const ev = events.find(e => e.id === eventId)
+    const evInvitees = invitees[eventId] ?? []
+    const myInvite = evInvitees.find(i => i.user_id === userId)
+    if (!newStatus || !myInvite || newStatus === myInvite.status) return
+    setSavingRsvp(eventId)
+    await supabase.from('calendar_invitees').update({ status: newStatus }).eq('event_id', eventId).eq('user_id', userId)
+    const myProfile = profiles.find(p => p.id === userId)
+    const myName = nameOf(userId)
+    const dateDisplay = new Date((ev?.event_date ?? '') + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'long' })
+    const actionWord = newStatus === 'confirmed'
+      ? (myProfile?.gender === 'female' ? 'אישרה' : 'אישר')
+      : (myProfile?.gender === 'female' ? 'ביטלה' : 'ביטל')
+    const msg = `${myName} ${actionWord} הגעה לאירוע "${ev?.title}" (${dateDisplay})`
+    const notifyIds = [
+      ev?.created_by,
+      ...evInvitees.filter(i => i.user_id !== userId && i.status === 'confirmed').map(i => i.user_id)
+    ].filter((id): id is string => !!id && id !== userId)
+    for (const uid of notifyIds) {
+      await supabase.from('bot_messages').insert({
+        user_id: uid,
+        apartment_id: apartmentId,
+        message: msg,
+        buttons: null,
+        triggered_by: 'calendar_rsvp_update',
+        related_id: eventId,
+        is_read: false,
+      })
+    }
+    setPendingRsvp(prev => { const n = {...prev}; delete n[eventId]; return n })
+    await fetchEvents(apartmentId)
+    setSavingRsvp(null)
   }
 
   function myReminderDays(event: CalendarEvent): number[] {
@@ -624,41 +662,8 @@ export default function CalendarPage() {
                           if (!myInvite) return !e.description && !isShared ? <p className="text-xs text-gray-400">אין פרטים נוספים</p> : null
                           const myProfile = profiles.find(p => p.id === userId)
                           const canArrive = myProfile?.gender === 'female' ? 'יכולה' : 'יכול'
-                          const myName = nameOf(userId!)
                           const effectiveStatus = pendingRsvp[e.id] ?? myInvite.status
                           const hasChange = pendingRsvp[e.id] !== undefined && pendingRsvp[e.id] !== myInvite.status
-
-                          async function saveRsvp() {
-                            const newStatus = pendingRsvp[e.id]
-                            if (!newStatus || newStatus === myInvite!.status) return
-                            await supabase.from('calendar_invitees').update({ status: newStatus }).eq('event_id', e.id).eq('user_id', userId!)
-
-                            const dateDisplay = new Date(e.event_date + 'T12:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'long' })
-                            const actionWord = newStatus === 'confirmed'
-                              ? (myProfile?.gender === 'female' ? 'אישרה' : 'אישר')
-                              : (myProfile?.gender === 'female' ? 'ביטלה' : 'ביטל')
-                            const msg = `${myName} ${actionWord} הגעה לאירוע "${e.title}" (${dateDisplay})`
-
-                            const notifyIds = [
-                              e.created_by,
-                              ...evInvitees.filter(i => i.user_id !== userId && i.status === 'confirmed').map(i => i.user_id)
-                            ].filter(id => id !== userId)
-
-                            for (const uid of notifyIds) {
-                              await supabase.from('bot_messages').insert({
-                                user_id: uid,
-                                apartment_id: apartmentId,
-                                message: msg,
-                                buttons: null,
-                                triggered_by: 'calendar_rsvp_update',
-                                related_id: e.id,
-                                is_read: false,
-                              })
-                            }
-
-                            setPendingRsvp(prev => { const n = {...prev}; delete n[e.id]; return n })
-                            await fetchEvents(apartmentId!)
-                          }
 
                           return (
                             <div className="flex flex-col gap-2 mt-1">
@@ -678,10 +683,11 @@ export default function CalendarPage() {
                               </div>
                               {hasChange && (
                                 <button
-                                  onClick={saveRsvp}
-                                  className="w-full bg-indigo-600 text-white rounded-lg py-2 text-sm font-medium"
+                                  onClick={() => saveRsvp(e.id)}
+                                  disabled={savingRsvp === e.id}
+                                  className="w-full bg-indigo-600 text-white rounded-lg py-2 text-sm font-medium disabled:opacity-60"
                                 >
-                                  שמור שינויים
+                                  {savingRsvp === e.id ? '...' : 'שמור שינויים'}
                                 </button>
                               )}
                             </div>

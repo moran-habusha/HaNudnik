@@ -60,6 +60,7 @@ export default function Dashboard() {
   const [vetos, setVetos] = useState<Veto[]>([])
   const [vetoCandidates, setVetoCandidates] = useState<{ task_id: string; task_title: string; weekly_count: number }[]>([])
   const [claimingInstance, setClaimingInstance] = useState<string | null>(null)
+  const [savingClaim, setSavingClaim] = useState(false)
   const [reminderTime, setReminderTime] = useState('')
   const [delayingInstance, setDelayingInstance] = useState<string | null>(null)
   const [delayTime, setDelayTime] = useState('')
@@ -78,6 +79,7 @@ export default function Dashboard() {
   const [showLeaveModal, setShowLeaveModal] = useState(false)
   const [leavingApartment, setLeavingApartment] = useState(false)
   const [uncompleteModal, setUncompleteModal] = useState<{ instanceId: string; taskTitle: string; doneByName: string; isMine: boolean } | null>(null)
+  const [penaltyClaimModal, setPenaltyClaimModal] = useState<{ instanceId: string; claimedAt: string } | null>(null)
   const [requestingUncomplete, setRequestingUncomplete] = useState(false)
 
   const [showRemoveModal, setShowRemoveModal] = useState(false)
@@ -272,24 +274,30 @@ export default function Dashboard() {
   }
 
   async function confirmClaim() {
-    if (!claimingInstance) return
+    if (!claimingInstance || savingClaim) return
+    setSavingClaim(true)
     const { error } = await supabase.rpc('claim_task', {
       p_instance_id: claimingInstance,
       p_reminder_time: reminderTime,
     })
-    if (error) { alert('שגיאה: ' + error.message); return }
+    if (error) { alert('שגיאה: ' + error.message); setSavingClaim(false); return }
     await supabase.rpc('schedule_reminder_after_claim', {
       p_instance_id: claimingInstance,
       p_reminder_time: reminderTime,
       p_user_id: myUserId,
     })
     setClaimingInstance(null)
+    setSavingClaim(false)
     fetchTasks()
   }
 
   async function cancelClaim(instanceId: string, claimedAt: string | null) {
     const isPenalty = claimedAt && (Date.now() - new Date(claimedAt).getTime()) > 30 * 60 * 1000
-    if (isPenalty && !confirm('עברו יותר מ-30 דקות - יורדו לך 0.5 נקודות. להמשיך?')) return
+    if (isPenalty) { setPenaltyClaimModal({ instanceId, claimedAt }); return }
+    await executeCancelClaim(instanceId, false)
+  }
+
+  async function executeCancelClaim(instanceId: string, isPenalty: boolean) {
     const { error } = await supabase.rpc('cancel_claim', { p_instance_id: instanceId })
     if (error) { alert('שגיאה: ' + error.message); return }
     if (apartment?.mode === 'shared') {
@@ -516,7 +524,7 @@ export default function Dashboard() {
     const startDate = awayStartInput || today
     const returnDate = awayDateInput || null
     const { error: awayErr } = await supabase.rpc('set_away', { p_return_date: returnDate, p_start_date: startDate })
-    if (awayErr) { console.error('set_away error:', awayErr); alert('שגיאה: ' + awayErr.message); return }
+    if (awayErr) { console.error('set_away error:', awayErr); alert('שגיאה: ' + awayErr.message); setSavingAway(false); return }
     if (startDate <= today) {
       window.location.reload()
       return
@@ -743,14 +751,18 @@ export default function Dashboard() {
             <div className="flex-1">
               <p className="text-sm font-semibold text-yellow-900">{winnerNotif.title}</p>
               <p className="text-xs text-yellow-800 mt-0.5">{winnerNotif.body}</p>
-              {needsVetoPick.includes('weekly') && (
+              {needsVetoPick.includes('weekly') ? (
                 <button
                   onClick={() => openVetoModal('weekly')}
-                  className="mt-2 text-xs font-medium text-yellow-900 underline"
-                >בחר וטו עכשיו</button>
+                  className="mt-2 text-xs font-semibold text-yellow-900 bg-yellow-200 hover:bg-yellow-300 rounded-full px-3 py-1"
+                >בחר וטו עכשיו →</button>
+              ) : (
+                <p className="text-xs text-yellow-700 mt-1">הוטו נבחר ✓</p>
               )}
             </div>
-            <button onClick={() => dismissWinner(winnerNotif.id)} className="text-yellow-400 hover:text-yellow-600 text-lg leading-none">✕</button>
+            {!needsVetoPick.includes('weekly') && (
+              <button onClick={() => dismissWinner(winnerNotif.id)} className="text-yellow-400 hover:text-yellow-600 text-lg leading-none">✕</button>
+            )}
           </div>
         )}
 
@@ -1166,7 +1178,7 @@ export default function Dashboard() {
             />
             <div className="flex gap-2 mt-4">
               <button onClick={() => setClaimingInstance(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
-              <button onClick={confirmClaim} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium">{apartment?.mode === 'solo' ? `${profile?.gender === 'female' ? 'קבעי' : 'קבע'} תזכורת ✓` : 'אני על זה ✓'}</button>
+              <button onClick={confirmClaim} disabled={savingClaim} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-60">{savingClaim ? '...' : apartment?.mode === 'solo' ? `${profile?.gender === 'female' ? 'קבעי' : 'קבע'} תזכורת ✓` : 'אני על זה ✓'}</button>
             </div>
           </div>
         </div>
@@ -1348,6 +1360,26 @@ export default function Dashboard() {
                 disabled={requestingUncomplete}
                 className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-40"
               >{requestingUncomplete ? '...' : uncompleteModal.isMine ? 'כן, בטל ביצוע' : 'שלח בקשה'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Penalty cancel claim modal */}
+      {penaltyClaimModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-gray-900">ביטול קלייים</h2>
+              <button onClick={() => setPenaltyClaimModal(null)} className="text-gray-400">✕</button>
+            </div>
+            <p className="text-sm text-gray-500 mb-5">עברו יותר מ-30 דקות — יורדו לך 0.5 נקודות. להמשיך?</p>
+            <div className="flex gap-2">
+              <button onClick={() => setPenaltyClaimModal(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">לא, חזור</button>
+              <button
+                onClick={() => { const m = penaltyClaimModal; setPenaltyClaimModal(null); executeCancelClaim(m.instanceId, true) }}
+                className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium"
+              >כן, בטל קלייים</button>
             </div>
           </div>
         </div>
@@ -1560,8 +1592,8 @@ export default function Dashboard() {
             </div>
             <p className="text-sm text-gray-500 mb-3">
               {vetoSource === 'monthly'
-                ? 'בחר/י משימה שלא תצטרך/י לעשות ב-7 הימים הקרובים'
-                : 'בחר/י משימה שלא תצטרך/י לעשות השבוע הקרוב'}
+                ? (profile?.gender === 'female' ? 'בחרי משימה שלא תצטרכי לעשות ב-7 הימים הקרובים' : 'בחר משימה שלא תצטרך לעשות ב-7 הימים הקרובים')
+                : (profile?.gender === 'female' ? 'בחרי משימה שלא תצטרכי לעשות השבוע הקרוב' : 'בחר משימה שלא תצטרך לעשות השבוע הקרוב')}
             </p>
             <div className="space-y-2 max-h-60 overflow-y-auto">
               {vetoCandidates.length === 0 && (

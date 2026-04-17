@@ -48,6 +48,8 @@ export default function LaundryPage() {
   const [savingMachine, setSavingMachine] = useState(false)
   const [doneChecked, setDoneChecked] = useState<Set<string>>(new Set())
   const [history, setHistory] = useState<LaundryHistoryRecord[]>([])
+  const [showDismissModal, setShowDismissModal] = useState(false)
+  const [dismissRestoreRequests, setDismissRestoreRequests] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const router = useRouter()
   const supabase = createClient()
@@ -217,16 +219,16 @@ export default function LaundryPage() {
 
   async function dismissMachine() {
     if (!apartmentId || !machine) return
-    const type = machine.machine_type === 'dry' ? 'המייבש' : 'המכונה'
-    if (!confirm(`לבטל את הפעלת ${type}?`)) return
+    setDismissRestoreRequests(false)
+    setShowDismissModal(true)
+  }
 
-    const restoreRequests = machine.machine_type === 'wash'
-      ? confirm('ביטול ההפעלה יחזיר את הבקשות כביסה שסומנו בהפעלה הזאת')
-      : false
-
+  async function confirmDismissMachine() {
+    if (!apartmentId || !machine) return
+    setShowDismissModal(false)
     await supabase.rpc('cancel_laundry_machine', {
       p_apartment_id: apartmentId,
-      p_restore_requests: restoreRequests,
+      p_restore_requests: dismissRestoreRequests,
     })
     setMachine(null)
   }
@@ -499,6 +501,32 @@ export default function LaundryPage() {
                 disabled={!durationInput || parseInt(durationInput) <= 0 || savingMachine}
                 className="flex-1 bg-indigo-600 text-white rounded-xl py-3 text-sm font-semibold disabled:opacity-40"
               >{savingMachine ? '...' : 'הפעלתי 🧺'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Dismiss machine modal */}
+      {showDismissModal && machine && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-gray-900">ביטול הפעלת {machine.machine_type === 'dry' ? 'המייבש' : 'המכונה'}</h2>
+              <button onClick={() => setShowDismissModal(false)} className="text-gray-400">✕</button>
+            </div>
+            {machine.machine_type === 'wash' && (
+              <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 mb-4 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={dismissRestoreRequests}
+                  onChange={e => setDismissRestoreRequests(e.target.checked)}
+                  className="w-4 h-4 accent-indigo-600"
+                />
+                <span className="text-sm text-gray-700">החזר את בקשות הכביסה שסומנו בהפעלה הזאת</span>
+              </label>
+            )}
+            <div className="flex gap-2">
+              <button onClick={() => setShowDismissModal(false)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">חזור</button>
+              <button onClick={confirmDismissMachine} className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium">בטל הפעלה</button>
             </div>
           </div>
         </div>

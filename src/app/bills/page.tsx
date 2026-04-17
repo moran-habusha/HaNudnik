@@ -101,6 +101,9 @@ export default function BillsPage() {
   const [quickAdd, setQuickAdd] = useState<{ bill: ExpectedBill; amount: string; due_date: string } | null>(null)
   const [fadingOut, setFadingOut] = useState<Set<string>>(new Set())
   const [confirmUnmark, setConfirmUnmark] = useState<string | null>(null)
+  const [confirmDeleteBillId, setConfirmDeleteBillId] = useState<string | null>(null)
+  const [confirmDeleteTypeId, setConfirmDeleteTypeId] = useState<string | null>(null)
+  const [savingRentPaid, setSavingRentPaid] = useState<string | null>(null)
   const [pageLoading, setPageLoading] = useState(true)
   const [loading, setLoading] = useState(false)
 
@@ -282,6 +285,8 @@ export default function BillsPage() {
   }
 
   async function markRentPaid(r: RentReminder) {
+    if (savingRentPaid) return
+    setSavingRentPaid(r.id)
     const now2 = new Date()
     const month = now2.getMonth() + 1
     const year = now2.getFullYear()
@@ -309,6 +314,7 @@ export default function BillsPage() {
       if (created) await supabase.rpc('mark_bill_paid', { p_bill_id: created.id })
     }
     fetchBills()
+    setSavingRentPaid(null)
   }
 
   function withFade(id: string, action: () => Promise<void>) {
@@ -343,7 +349,6 @@ export default function BillsPage() {
   }
 
   async function deleteBill(billId: string) {
-    if (!confirm('למחוק את החשבון?')) return
     await supabase.from('bills').delete().eq('id', billId)
     await Promise.all([fetchBills(), fetchExpected()])
   }
@@ -378,7 +383,6 @@ export default function BillsPage() {
   }
 
   async function deleteType(id: string) {
-    if (!confirm('להסיר סוג חשבון זה?')) return
     await supabase.rpc('delete_bill_type', { p_id: id })
     await Promise.all([fetchBillTypes(), fetchExpected()])
   }
@@ -504,7 +508,7 @@ export default function BillsPage() {
                   </div>
                   <div className="flex gap-3">
                     <button onClick={() => openEditType(bt)} className="text-xs text-gray-400 hover:text-gray-700 underline">עריכה</button>
-                    <button onClick={() => deleteType(bt.id)} className="text-xs text-red-400 hover:text-red-600">הסר</button>
+                    <button onClick={() => setConfirmDeleteTypeId(bt.id)} className="text-xs text-red-400 hover:text-red-600">הסר</button>
                   </div>
                 </div>
               ))}
@@ -546,7 +550,7 @@ export default function BillsPage() {
                         {r.amount && <p className="text-xs text-gray-500 mt-0.5">₪{r.amount}</p>}
                         {r.notes && <p className="text-xs text-gray-500 mt-0.5">{r.notes}</p>}
                       </div>
-                      <button onClick={() => withFade(r.id, () => markRentPaid(r))} className="bg-green-50 text-green-700 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-green-100">סמן כשולם ✓</button>
+                      <button onClick={() => markRentPaid(r)} disabled={savingRentPaid === r.id} className="bg-green-50 text-green-700 rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-green-100 disabled:opacity-50">{savingRentPaid === r.id ? '...' : 'סמן כשולם ✓'}</button>
                     </div>
                   </div>
                 ))}
@@ -613,7 +617,7 @@ export default function BillsPage() {
                   <div className="flex gap-2 mt-3">
                     <button onClick={() => markPaid(bill.id)} className="flex-1 bg-green-50 text-green-700 rounded-lg py-2 text-sm font-medium hover:bg-green-100">שולם ✓</button>
                     <button onClick={() => { setEditingBill(bill); setEditBillAmount(bill.amount.toString()) }} className="bg-gray-50 text-gray-500 rounded-lg px-3 py-2 text-sm hover:bg-gray-100">עריכה</button>
-                    <button onClick={() => deleteBill(bill.id)} className="bg-red-50 text-red-500 rounded-lg px-3 py-2 text-sm hover:bg-red-100">🗑</button>
+                    <button onClick={() => setConfirmDeleteBillId(bill.id)} className="bg-red-50 text-red-500 rounded-lg px-3 py-2 text-sm hover:bg-red-100">🗑</button>
                   </div>
                 </div>
               ))}
@@ -1020,6 +1024,45 @@ export default function BillsPage() {
                 className="flex-1 bg-orange-500 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-orange-600">
                 כן, בטל תשלום
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Confirm delete bill modal */}
+      {confirmDeleteBillId && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-gray-900">מחיקת חשבון</h2>
+              <button onClick={() => setConfirmDeleteBillId(null)} className="text-gray-400">✕</button>
+            </div>
+            <p className="text-sm text-gray-500 mb-5">למחוק את החשבון?</p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmDeleteBillId(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
+              <button
+                onClick={() => { const id = confirmDeleteBillId; setConfirmDeleteBillId(null); deleteBill(id) }}
+                className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium"
+              >מחק</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm delete bill type modal */}
+      {confirmDeleteTypeId && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-gray-900">הסרת סוג חשבון</h2>
+              <button onClick={() => setConfirmDeleteTypeId(null)} className="text-gray-400">✕</button>
+            </div>
+            <p className="text-sm text-gray-500 mb-5">להסיר סוג חשבון זה?</p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmDeleteTypeId(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
+              <button
+                onClick={() => { const id = confirmDeleteTypeId; setConfirmDeleteTypeId(null); deleteType(id) }}
+                className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium"
+              >הסר</button>
             </div>
           </div>
         </div>

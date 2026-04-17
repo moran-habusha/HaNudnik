@@ -26,7 +26,7 @@ export default function BotPage() {
   const [showVetoModal, setShowVetoModal] = useState(false)
   const [vetoSource, setVetoSource] = useState<'weekly' | 'monthly'>('weekly')
   const [vetoCandidates, setVetoCandidates] = useState<{ task_id: string; task_title: string; weekly_count: number }[]>([])
-  const [activeVetos, setActiveVetos] = useState<{ task_id: string; user_id: string; source: string }[]>([])
+  const [activeVetos, setActiveVetos] = useState<{ task_id: string; user_id: string; source: string; display_name: string }[]>([])
   const [selectedVetoTaskId, setSelectedVetoTaskId] = useState<string | null>(null)
   const [savingVeto, setSavingVeto] = useState(false)
   const [vetoMsgId, setVetoMsgId] = useState<string | null>(null)
@@ -528,9 +528,11 @@ export default function BotPage() {
   function formatTime(iso: string) {
     const d = new Date(iso)
     const now = new Date()
-    const diffDays = Math.floor((now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24))
-    if (diffDays === 0) return d.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
-    if (diffDays === 1) return 'אתמול'
+    const toDateStr = (dt: Date) => dt.toLocaleDateString('he-IL')
+    const yesterday = new Date(now)
+    yesterday.setDate(now.getDate() - 1)
+    if (toDateStr(d) === toDateStr(now)) return d.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
+    if (toDateStr(d) === toDateStr(yesterday)) return 'אתמול'
     return d.toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' })
   }
 
@@ -691,7 +693,7 @@ export default function BotPage() {
                   >
                     <span>
                       {task.task_title}
-                      {takenByOther && <span className="text-xs mr-1 text-gray-400"> - נבחר ע"י {(takenByOther as any).display_name}</span>}
+                      {takenByOther && <span className="text-xs mr-1 text-gray-400"> - נבחר ע"י {takenByOther.display_name}</span>}
                       {alreadyMyOtherVeto && <span className="text-xs mr-1 text-gray-400"> (נבחר)</span>}
                     </span>
                     {task.weekly_count > 1 && (

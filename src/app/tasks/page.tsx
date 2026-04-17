@@ -53,6 +53,9 @@ export default function TasksPage() {
   const [laundryMethod, setLaundryMethod] = useState<'hang' | 'dry'>('hang')
   const [savingLaundryMethod, setSavingLaundryMethod] = useState(false)
   const [fadingOut, setFadingOut] = useState<Set<string>>(new Set())
+  const [confirmDeleteTaskId, setConfirmDeleteTaskId] = useState<string | null>(null)
+  const [confirmReleaseTaskId, setConfirmReleaseTaskId] = useState<string | null>(null)
+  const [requestingFixed, setRequestingFixed] = useState<string | null>(null)
   const emptyForm = { title: '', frequency: 'daily', specific_days: [] as number[], weekly_day: 0, slots: {} as Record<string, string>, emoji: '' }
   const [form, setForm] = useState(emptyForm)
   const router = useRouter()
@@ -151,7 +154,6 @@ export default function TasksPage() {
   }
 
   async function deleteTask(taskId: string) {
-    if (!confirm('למחוק את המשימה לצמיתות?')) return
     withFade(taskId, async () => {
       await supabase.rpc('delete_task', { p_task_id: taskId })
       fetchTasks()
@@ -182,13 +184,15 @@ export default function TasksPage() {
   }
 
   async function requestFixed(taskId: string) {
+    if (requestingFixed) return
+    setRequestingFixed(taskId)
     const { error } = await supabase.rpc('request_fixed_task', { p_task_id: taskId, p_requester_id: myUserId })
     if (error) alert('שגיאה: ' + error.message)
     else fetchTasks()
+    setRequestingFixed(null)
   }
 
   async function releaseFixed(taskId: string) {
-    if (!confirm('לשחרר את המטלה הקבועה?')) return
     await supabase.rpc('release_fixed_task', { p_task_id: taskId })
     fetchTasks()
   }
@@ -328,9 +332,10 @@ export default function TasksPage() {
                     {canRequestFixed && (
                       <button
                         onClick={() => requestFixed(task.task_id)}
-                        className="text-xs text-purple-500 border border-purple-100 rounded-full px-2.5 py-1 hover:bg-purple-50"
+                        disabled={requestingFixed === task.task_id}
+                        className="text-xs text-purple-500 border border-purple-100 rounded-full px-2.5 py-1 hover:bg-purple-50 disabled:opacity-50"
                       >
-                        📌 בקש כמטלה קבועה
+                        {requestingFixed === task.task_id ? '...' : '📌 בקש כמטלה קבועה'}
                       </button>
                     )}
                     {isPending && (
@@ -340,7 +345,7 @@ export default function TasksPage() {
                     )}
                     {isMyFixed && (
                       <button
-                        onClick={() => releaseFixed(task.task_id)}
+                        onClick={() => setConfirmReleaseTaskId(task.task_id)}
                         className="text-xs text-gray-400 border border-gray-100 rounded-full px-2.5 py-1 hover:bg-gray-50"
                       >
                         שחרר
@@ -350,13 +355,53 @@ export default function TasksPage() {
                 </div>
                 <div className="flex gap-1 shrink-0">
                   <button onClick={() => openEdit(task)} className="text-gray-300 hover:text-gray-600 text-sm px-2 py-1">✏️</button>
-                  <button onClick={() => deleteTask(task.task_id)} className="text-gray-300 hover:text-red-400 text-sm px-2 py-1">🗑</button>
+                  <button onClick={() => setConfirmDeleteTaskId(task.task_id)} className="text-gray-300 hover:text-red-400 text-sm px-2 py-1">🗑</button>
                 </div>
               </div>
             </div>
           )
         })}
       </main>
+
+      {/* Confirm delete task modal */}
+      {confirmDeleteTaskId && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-gray-900">מחיקת משימה</h2>
+              <button onClick={() => setConfirmDeleteTaskId(null)} className="text-gray-400">✕</button>
+            </div>
+            <p className="text-sm text-gray-500 mb-5">למחוק את המשימה לצמיתות?</p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmDeleteTaskId(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
+              <button
+                onClick={() => { const id = confirmDeleteTaskId; setConfirmDeleteTaskId(null); deleteTask(id) }}
+                className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium"
+              >מחק</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm release fixed modal */}
+      {confirmReleaseTaskId && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-semibold text-gray-900">שחרור מטלה קבועה</h2>
+              <button onClick={() => setConfirmReleaseTaskId(null)} className="text-gray-400">✕</button>
+            </div>
+            <p className="text-sm text-gray-500 mb-5">לשחרר את המטלה הקבועה?</p>
+            <div className="flex gap-2">
+              <button onClick={() => setConfirmReleaseTaskId(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
+              <button
+                onClick={() => { const id = confirmReleaseTaskId; setConfirmReleaseTaskId(null); releaseFixed(id) }}
+                className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium"
+              >שחרר</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Add modal */}
       {showForm && (
