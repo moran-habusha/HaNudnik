@@ -779,12 +779,20 @@ Claiming does not auto-complete. Both must be explicitly set.
 - `go_veto` handler: חסימת פתיחת מודל אם כבר נבחר וטו לאותו source (weekly/monthly) — מונע שינוי וטו שכבר נקבע ✅
 - Double-submit protection: `savingEvent` ב-calendar + `loading` ב-shopping (`saveProductAndItem`, `confirmReAdd`) — כפתורים מושבתים בזמן שמירה ✅
 - `ensure_today_instances`: תוקן לעבוד מה-cron (ללא auth) — כעת כשנקראת ללא `auth.uid()` מריצה את עצמה על כל הדירות; לפני כן instances לא נוצרו בחצות → תזכורת הבוקר הציגה "אין מטלות" גם כשהיו מטלות ✅
+- Double-submit protection נוסף: `savingClaim` ב-dashboard, `savingRentPaid` ב-bills, `savingRsvp` ב-calendar, `savingEdit` ב-shopping ✅
+- confirm() הוחלף במודלים: מחיקת מטלה, שחרור מטלה קבועה (tasks), מחיקת חשבון/סוג (bills), ביטול תביעה עם קנס (dashboard), ביטול מכונה (laundry) ✅
+- `send_morning_nudge`: קורא ל-`ensure_today_instances()` לפני ספירת מטלות — מונע ספירת 0 כשה-cron של חצות רץ ב-UTC (לפני חצות ישראל) ✅
+
+**תיקונים (18/04/2026):**
+- `send_weekly_summary`: type של הודעת מנצח תוקן מ-`weekly_winner` ל-`winner` — תואם את מה שהדשבורד מחפש ✅
+- `send_weekly_summary` cron (job 16): הוזז מ-`0 21 * * 5` (שבת חצות) ל-`0 4 * * 0` (ראשון 07:00 ישראל) ✅
+- `get_veto_candidates`: תת-מטלות כביסה (hang/dry/fold) נכנסות לוטו לפי `laundry_method`; multiple_daily ו-specific_days נספרים נכון ✅
+- מחזור הוצאת/הזמנת דיירים נבדק ✅
 
 **תיקונים ממתינים:**
 - מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
 
-### לוז בדיקות — מחזור הוצאת/הזמנת דיירים
-יש לבצע ברצף על דירת הטסט (בסדר הזה):
+### ~~לוז בדיקות — מחזור הוצאת/הזמנת דיירים~~ נבדק ✅ (18/04/2026)
 
 **שלב א — הוצאת דיירים (shared → נשאר דייר אחד)**
 - הוצאת דייר → `notify_resident_left` נשלחת לשאר (לא לעוזב)
