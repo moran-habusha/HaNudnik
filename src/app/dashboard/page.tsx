@@ -93,6 +93,7 @@ export default function Dashboard() {
   const [washDoneChecked, setWashDoneChecked] = useState<Set<string>>(new Set())
   const [washEntries, setWashEntries] = useState<{ user_id: string; display_name: string; request: string }[]>([])
   const [savingWash, setSavingWash] = useState(false)
+  const [extraWashAfterDryer, setExtraWashAfterDryer] = useState(false)
   const [machineTimeLeft, setMachineTimeLeft] = useState('')
   const [residents, setResidents] = useState<{ id: string; display_name: string }[]>([])
   const [removingResident, setRemovingResident] = useState(false)
@@ -477,11 +478,23 @@ export default function Dashboard() {
       .maybeSingle()
     setLaundryMachine(machineData ?? null)
     const taskId = tasks.find(t => t.instance_id === showDryerModal)?.task_id
+    const shouldOpenExtraWash = extraWashAfterDryer
     setShowDryerModal(null)
     setDryerDuration('')
+    setExtraWashAfterDryer(false)
     setSavingDryer(false)
     if (taskId) setCompletingTask(taskId)
     setTimeout(() => { setCompletingTask(null); fetchTasks(); fetchScores() }, 600)
+    if (shouldOpenExtraWash) await openExtraWash()
+  }
+
+  async function openExtraWash() {
+    const { data } = await supabase.rpc('get_laundry_requests')
+    const all: { user_id: string; display_name: string; request: string }[] = data ?? []
+    setWashEntries(all.filter(e => e.request?.trim()))
+    setWashDoneChecked(new Set())
+    setWashDuration('')
+    setShowWashModal('extra')
   }
 
   async function openVetoModal(source: 'weekly' | 'monthly' = 'weekly') {
@@ -937,6 +950,15 @@ export default function Dashboard() {
                         )}
                       </div>
                     </div>
+
+                    {(task.task_subtype === 'laundry_hang' || task.task_subtype === 'laundry_dry') && (
+                      <div className="mt-2">
+                        <button
+                          onClick={openExtraWash}
+                          className="text-xs text-blue-500 border border-blue-100 rounded-full px-3 py-1 hover:bg-blue-50"
+                        >🧺 הפעל מכונה נוספת</button>
+                      </div>
+                    )}
 
                     <div className="flex gap-2 mt-3">
                       {task.claimed_by === myUserId ? (
@@ -1739,7 +1761,7 @@ export default function Dashboard() {
               className="w-full border border-gray-200 rounded-xl px-4 py-3 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-3"
               autoFocus
             />
-            <div className="flex gap-2 flex-wrap mb-5">
+            <div className="flex gap-2 flex-wrap mb-4">
               {[45, 60, 75].map(m => (
                 <button
                   key={m}
@@ -1748,6 +1770,15 @@ export default function Dashboard() {
                 >{m} דקות</button>
               ))}
             </div>
+            <button
+              onClick={() => setExtraWashAfterDryer(v => !v)}
+              className={`w-full flex items-center gap-3 p-3 rounded-xl border mb-4 text-sm transition-colors ${extraWashAfterDryer ? 'border-blue-300 bg-blue-50 text-blue-700' : 'border-gray-100 text-gray-500 hover:bg-gray-50'}`}
+            >
+              <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${extraWashAfterDryer ? 'border-blue-500 bg-blue-500' : 'border-gray-300'}`}>
+                {extraWashAfterDryer && <span className="text-white text-xs">✓</span>}
+              </div>
+              🧺 הפעל כביסה נוספת מיד אחרי
+            </button>
             <div className="flex gap-2">
               <button onClick={() => { setShowDryerModal(null); setDryerDuration('') }} className="flex-1 border border-gray-200 rounded-xl py-3 text-sm">ביטול</button>
               <button
