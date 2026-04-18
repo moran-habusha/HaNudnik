@@ -13,6 +13,7 @@ type Task = {
   fixed_user_id: string | null
   fixed_user_name: string | null
   emoji: string | null
+  last_done_at: string | null
 }
 
 const TASK_EMOJIS = ['🍽️','🗑️','🌀','🧹','🧺','🛁','🏺','🚪','🛒','🥛','💦','✨','🐾','💡','🌿','🛋️','🚿','🌱','📦','🔧']
@@ -55,6 +56,7 @@ export default function TasksPage() {
   const [confirmDeleteTaskId, setConfirmDeleteTaskId] = useState<string | null>(null)
   const [confirmReleaseTaskId, setConfirmReleaseTaskId] = useState<string | null>(null)
   const [requestingFixed, setRequestingFixed] = useState<string | null>(null)
+  const [baselineModal, setBaselineModal] = useState<{ taskId: string; taskTitle: string; frequency: 'biweekly' | 'monthly' } | null>(null)
   const emptyForm = { title: '', frequency: 'daily', specific_days: [] as number[], weekly_day: 0, slots: {} as Record<string, string>, emoji: '' }
   const [form, setForm] = useState(emptyForm)
   const router = useRouter()
@@ -88,9 +90,10 @@ export default function TasksPage() {
     return () => { supabase.removeChannel(channel) }
   }, [aptId])
 
-  async function fetchTasks(initial = false) {
+  async function fetchTasks(initial = false): Promise<Task[]> {
     const { data } = await supabase.rpc('get_all_tasks')
-    setTasks(data ?? [])
+    const tasks: Task[] = data ?? []
+    setTasks(tasks)
     if (initial) setPageLoading(false)
 
     // fetch pending fixed task requests
@@ -99,10 +102,13 @@ export default function TasksPage() {
       .select('task_id')
       .eq('status', 'pending')
     setPendingRequests(new Set((reqs ?? []).map((r: { task_id: string }) => r.task_id)))
+    return tasks
   }
 
   async function addTask() {
     if (!form.title.trim()) return
+    const freqForBaseline = form.frequency
+    const titleForBaseline = form.title.trim()
     setLoading(true)
     let config: object | null = null
     if (form.frequency === 'specific_days') config = { days: form.specific_days }
@@ -119,13 +125,19 @@ export default function TasksPage() {
     else {
       setShowForm(false)
       setForm(emptyForm)
-      fetchTasks()
+      const newTasks = await fetchTasks()
+      if (freqForBaseline === 'biweekly' || freqForBaseline === 'monthly') {
+        const newTask = newTasks.find(t => t.title === titleForBaseline && t.frequency === freqForBaseline)
+        if (newTask) setBaselineModal({ taskId: newTask.task_id, taskTitle: newTask.title, frequency: freqForBaseline as 'biweekly' | 'monthly' })
+      }
     }
     setLoading(false)
   }
 
   async function saveEdit() {
     if (!editingTask || !form.title.trim()) return
+    const prevFrequency = editingTask.frequency
+    const editedTaskId = editingTask.task_id
     setLoading(true)
     let config: object | null = null
     if (form.frequency === 'specific_days') config = { days: form.specific_days }
@@ -140,7 +152,15 @@ export default function TasksPage() {
       p_emoji: form.emoji || null,
     })
     if (error) alert('שגיאה: ' + error.message)
-    else { setEditingTask(null); setForm(emptyForm); fetchTasks() }
+    else {
+      setEditingTask(null)
+      setForm(emptyForm)
+      const updatedTasks = await fetchTasks()
+      if ((form.frequency === 'biweekly' || form.frequency === 'monthly') && form.frequency !== prevFrequency) {
+        const edited = updatedTasks.find(t => t.task_id === editedTaskId)
+        if (edited) setBaselineModal({ taskId: edited.task_id, taskTitle: edited.title, frequency: form.frequency as 'biweekly' | 'monthly' })
+      }
+    }
     setLoading(false)
   }
 
@@ -216,6 +236,51 @@ export default function TasksPage() {
         ? f.specific_days.filter(d => d !== day)
         : [...f.specific_days, day],
     }))
+  }
+
+  function formatDate(dateStr: string): string {
+    const d = new Date(dateStr + 'T00:00:00')
+    return d.toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' })
+  }
+
+  function calcNextDue(task: Task): string | null {
+    const cfg = task.frequency_config
+    const configDay = cfg?.day ?? 0
+
+    if (task.frequency === 'biweekly') {
+      if (!task.last_done_at) return null
+      const base = new Date(task.last_done_at + 'T00:00:00')
+      base.setDate(base.getDate() + 14)
+      while (base.getDay() !== configDay) base.setDate(base.getDate() + 1)
+      return base.toISOString().split('T')[0]
+    }
+
+    if (task.frequency === 'monthly') {
+      const today = new Date()
+      let yr = today.getFullYear()
+      let mo = today.getMonth()
+      if (task.last_done_at) {
+        const lastDone = new Date(task.last_done_at + 'T00:00:00')
+        if (lastDone.getMonth() === mo && lastDone.getFullYear() === yr) {
+          mo += 1
+          if (mo > 11) { mo = 0; yr += 1 }
+        }
+      }
+      const d = new Date(yr, mo, 1)
+      while (d.getDay() !== configDay) d.setDate(d.getDate() + 1)
+      return d.toISOString().split('T')[0]
+    }
+
+    return null
+  }
+
+  async function confirmBaseline(doneAt: string | null) {
+    if (!baselineModal) return
+    if (doneAt) {
+      await supabase.rpc('set_task_baseline', { p_task_id: baselineModal.taskId, p_done_at: doneAt })
+      fetchTasks()
+    }
+    setBaselineModal(null)
   }
 
   function freqSummary(task: Task) {
@@ -324,6 +389,19 @@ export default function TasksPage() {
                     )}
                   </div>
                   <p className="text-xs text-gray-400 mt-0.5">{freqSummary(task)}</p>
+                  {(task.frequency === 'biweekly' || task.frequency === 'monthly') && (() => {
+                    const nextDue = calcNextDue(task)
+                    return (
+                      <div className="flex gap-3 mt-0.5">
+                        {task.last_done_at && (
+                          <p className="text-xs text-gray-300">ביצוע אחרון: {formatDate(task.last_done_at)}</p>
+                        )}
+                        {nextDue && (
+                          <p className="text-xs text-indigo-400">ביצוע הבא: {formatDate(nextDue)}</p>
+                        )}
+                      </div>
+                    )
+                  })()}
 
                   {/* fixed task actions */}
                   <div className="mt-2 flex gap-2 flex-wrap">
@@ -397,6 +475,48 @@ export default function TasksPage() {
                 className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium"
               >שחרר</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Baseline modal */}
+      {baselineModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="font-semibold text-gray-900">מתי ביצעת לאחרונה?</h2>
+              <button onClick={() => setBaselineModal(null)} className="text-gray-400">✕</button>
+            </div>
+            <p className="text-sm text-gray-500 mb-4">{baselineModal.taskTitle}</p>
+
+            {baselineModal.frequency === 'biweekly' && (
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => {
+                    const d = new Date(); d.setDate(d.getDate() - 7)
+                    confirmBaseline(d.toISOString().split('T')[0])
+                  }}
+                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
+                >שבוע שעבר <span className="text-gray-400">(תתחיל השבוע)</span></button>
+                <button
+                  onClick={() => confirmBaseline(new Date().toISOString().split('T')[0])}
+                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
+                >השבוע <span className="text-gray-400">(תתחיל שבוע הבא)</span></button>
+              </div>
+            )}
+
+            {baselineModal.frequency === 'monthly' && (
+              <div className="flex flex-col gap-2">
+                <button
+                  onClick={() => confirmBaseline(new Date().toISOString().split('T')[0])}
+                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
+                >כן, לאחרונה <span className="text-gray-400">(תתחיל חודש הבא)</span></button>
+                <button
+                  onClick={() => confirmBaseline(null)}
+                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
+                >לא לאחרונה / לא זוכר/ת <span className="text-gray-400">(תתחיל החודש)</span></button>
+              </div>
+            )}
           </div>
         </div>
       )}
