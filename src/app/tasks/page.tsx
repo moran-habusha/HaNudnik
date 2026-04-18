@@ -243,6 +243,10 @@ export default function TasksPage() {
     return d.toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric' })
   }
 
+  function localDateStr(d: Date): string {
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  }
+
   function calcNextDue(task: Task): string | null {
     const cfg = task.frequency_config
     const configDay = cfg?.day ?? 0
@@ -252,7 +256,7 @@ export default function TasksPage() {
       const base = new Date(task.last_done_at + 'T00:00:00')
       base.setDate(base.getDate() + 14)
       while (base.getDay() !== configDay) base.setDate(base.getDate() + 1)
-      return base.toISOString().split('T')[0]
+      return localDateStr(base)
     }
 
     if (task.frequency === 'monthly') {
@@ -268,7 +272,7 @@ export default function TasksPage() {
       }
       const d = new Date(yr, mo, 1)
       while (d.getDay() !== configDay) d.setDate(d.getDate() + 1)
-      return d.toISOString().split('T')[0]
+      return localDateStr(d)
     }
 
     return null
@@ -494,12 +498,12 @@ export default function TasksPage() {
                 <button
                   onClick={() => {
                     const d = new Date(); d.setDate(d.getDate() - 7)
-                    confirmBaseline(d.toISOString().split('T')[0])
+                    confirmBaseline(localDateStr(d))
                   }}
                   className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
                 >שבוע שעבר <span className="text-gray-400">(תתחיל השבוע)</span></button>
                 <button
-                  onClick={() => confirmBaseline(new Date().toISOString().split('T')[0])}
+                  onClick={() => confirmBaseline(localDateStr(new Date()))}
                   className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
                 >השבוע <span className="text-gray-400">(תתחיל שבוע הבא)</span></button>
               </div>
@@ -508,7 +512,7 @@ export default function TasksPage() {
             {baselineModal.frequency === 'monthly' && (
               <div className="flex flex-col gap-2">
                 <button
-                  onClick={() => confirmBaseline(new Date().toISOString().split('T')[0])}
+                  onClick={() => confirmBaseline(localDateStr(new Date()))}
                   className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
                 >כן, לאחרונה <span className="text-gray-400">(תתחיל חודש הבא)</span></button>
                 <button
