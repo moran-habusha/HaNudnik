@@ -260,6 +260,7 @@ export default function TasksPage() {
     }
 
     if (task.frequency === 'monthly') {
+      if (!task.last_done_at) return null
       const today = new Date()
       let yr = today.getFullYear()
       let mo = today.getMonth()
