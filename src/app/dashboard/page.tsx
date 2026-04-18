@@ -1795,7 +1795,7 @@ export default function Dashboard() {
               <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${extraWashAfterDryer ? 'border-blue-500 bg-blue-500' : 'border-gray-300'}`}>
                 {extraWashAfterDryer && <span className="text-white text-xs">✓</span>}
               </div>
-              🧺 הפעל כביסה נוספת מיד אחרי
+              🧺 הפעלת מכונת כביסה נוספת במקביל
             </button>
             <div className="flex gap-2">
               <button onClick={() => { setShowDryerModal(null); setDryerDuration('') }} className="flex-1 border border-gray-200 rounded-xl py-3 text-sm">ביטול</button>
