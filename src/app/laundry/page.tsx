@@ -42,13 +42,15 @@ export default function LaundryPage() {
   const [isEditing, setIsEditing] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [aptMode, setAptMode] = useState<string | null>(null)
-  const [machine, setMachine] = useState<MachineStatus | null>(null)
+  const [washMachine, setWashMachine] = useState<MachineStatus | null>(null)
+  const [dryMachine, setDryMachine] = useState<MachineStatus | null>(null)
   const [showDurationModal, setShowDurationModal] = useState(false)
   const [durationInput, setDurationInput] = useState('')
   const [savingMachine, setSavingMachine] = useState(false)
   const [doneChecked, setDoneChecked] = useState<Set<string>>(new Set())
   const [history, setHistory] = useState<LaundryHistoryRecord[]>([])
   const [showDismissModal, setShowDismissModal] = useState(false)
+  const [dismissMachineType, setDismissMachineType] = useState<'wash' | 'dry'>('wash')
   const [dismissRestoreRequests, setDismissRestoreRequests] = useState(false)
   const [isExtraWash, setIsExtraWash] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -92,8 +94,9 @@ export default function LaundryPage() {
         .from('laundry_machine')
         .select('id, started_by, started_at, duration_minutes, machine_type')
         .eq('apartment_id', profile.apartment_id)
-        .single()
-      setMachine(machineData ?? null)
+      const machineRows: MachineStatus[] = machineData ?? []
+      setWashMachine(machineRows.find(r => r.machine_type === 'wash') ?? null)
+      setDryMachine(machineRows.find(r => r.machine_type === 'dry') ?? null)
 
       const { data: histData } = await supabase
         .from('laundry_history')
@@ -113,11 +116,13 @@ export default function LaundryPage() {
     async function refetch() {
       const [{ data: req }, { data: machineData }, { data: histData }] = await Promise.all([
         supabase.rpc('get_laundry_requests'),
-        supabase.from('laundry_machine').select('id, started_by, started_at, duration_minutes, machine_type').eq('apartment_id', apartmentId!).maybeSingle(),
+        supabase.from('laundry_machine').select('id, started_by, started_at, duration_minutes, machine_type').eq('apartment_id', apartmentId!),
         supabase.from('laundry_history').select('id, started_at, finished_at, entries').eq('apartment_id', apartmentId!).order('started_at', { ascending: false }).limit(2),
       ])
       setEntries(req ?? [])
-      setMachine(machineData ?? null)
+      const rows: MachineStatus[] = machineData ?? []
+      setWashMachine(rows.find(r => r.machine_type === 'wash') ?? null)
+      setDryMachine(rows.find(r => r.machine_type === 'dry') ?? null)
       setHistory(histData ?? [])
     }
     const channel = supabase
@@ -165,7 +170,7 @@ export default function LaundryPage() {
       started_at: startedAt,
       duration_minutes: mins,
       machine_type: 'wash',
-    }, { onConflict: 'apartment_id' })
+    }, { onConflict: 'apartment_id,machine_type' })
 
     // Save history
     await supabase.from('laundry_history').insert({
@@ -199,8 +204,9 @@ export default function LaundryPage() {
       .from('laundry_machine')
       .select('id, started_by, started_at, duration_minutes, machine_type')
       .eq('apartment_id', apartmentId)
-      .single()
-    setMachine(machineData ?? null)
+    const updatedRows: MachineStatus[] = machineData ?? []
+    setWashMachine(updatedRows.find(r => r.machine_type === 'wash') ?? null)
+    setDryMachine(updatedRows.find(r => r.machine_type === 'dry') ?? null)
 
     const { data: reqData } = await supabase.rpc('get_laundry_requests')
     const list: LaundryEntry[] = reqData ?? []
@@ -221,31 +227,33 @@ export default function LaundryPage() {
     setSavingMachine(false)
   }
 
-  async function dismissMachine() {
-    if (!apartmentId || !machine) return
+  function openDismiss(type: 'wash' | 'dry') {
+    if (!apartmentId) return
+    setDismissMachineType(type)
     setDismissRestoreRequests(false)
     setShowDismissModal(true)
   }
 
   async function confirmDismissMachine() {
-    if (!apartmentId || !machine) return
+    if (!apartmentId) return
     setShowDismissModal(false)
-    await supabase.rpc('cancel_laundry_machine', {
-      p_apartment_id: apartmentId,
-      p_restore_requests: dismissRestoreRequests,
-    })
-    setMachine(null)
+    if (dismissMachineType === 'wash') {
+      await supabase.rpc('cancel_laundry_machine', {
+        p_apartment_id: apartmentId,
+        p_restore_requests: dismissRestoreRequests,
+      })
+      setWashMachine(null)
+    } else {
+      await supabase.from('laundry_machine').delete().eq('apartment_id', apartmentId).eq('machine_type', 'dry')
+      setDryMachine(null)
+    }
   }
 
-  function machineEndTime() {
+  function formatMachineTime(machine: MachineStatus | null, type: 'start' | 'end'): string {
     if (!machine) return ''
+    if (type === 'start') return new Date(machine.started_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
     const end = new Date(new Date(machine.started_at).getTime() + machine.duration_minutes * 60000)
     return end.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
-  }
-
-  function machineStartTime() {
-    if (!machine) return ''
-    return new Date(machine.started_at).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
   }
 
   function toggleDone(key: string) {
@@ -270,16 +278,14 @@ export default function LaundryPage() {
 
       <main className="max-w-lg mx-auto p-4 space-y-4" style={{ visibility: loaded ? 'visible' : 'hidden' }}>
 
-        {/* Machine status / activate banner */}
-        {machine ? (
-          <div className={`border rounded-xl p-4 ${machine.machine_type === 'dry' ? 'bg-red-50 border-red-200' : 'bg-blue-50 border-blue-200'}`}>
+        {/* Wash machine banner */}
+        {washMachine ? (
+          <div className="border rounded-xl p-4 bg-blue-50 border-blue-200">
             <div className="flex items-center justify-between mb-1">
-              <p className={`font-semibold text-sm ${machine.machine_type === 'dry' ? 'text-red-900' : 'text-blue-900'}`}>
-                {machine.machine_type === 'dry' ? '🌀 מייבש פועל' : '🧺 מכונה פועלת'}
-              </p>
-              <button onClick={dismissMachine} className={`text-lg leading-none ${machine.machine_type === 'dry' ? 'text-red-400 hover:text-red-600' : 'text-blue-400 hover:text-blue-600'}`}>✕</button>
+              <p className="font-semibold text-sm text-blue-900">🧺 מכונה פועלת</p>
+              <button onClick={() => openDismiss('wash')} className="text-lg leading-none text-blue-400 hover:text-blue-600">✕</button>
             </div>
-            <p className={`text-xs ${machine.machine_type === 'dry' ? 'text-red-700' : 'text-blue-700'}`}>הופעלה ב-{machineStartTime()} · מסתיימת בערך ב-{machineEndTime()}</p>
+            <p className="text-xs text-blue-700">הופעלה ב-{formatMachineTime(washMachine, 'start')} · מסתיימת בערך ב-{formatMachineTime(washMachine, 'end')}</p>
             <button
               onClick={() => { setIsExtraWash(true); setShowDurationModal(true) }}
               className="mt-2 text-xs text-blue-500 border border-blue-200 rounded-full px-3 py-1 hover:bg-blue-50 bg-white"
@@ -293,6 +299,17 @@ export default function LaundryPage() {
             <p className="font-semibold text-indigo-900 text-sm">הפעלת מכונה 🧺</p>
             <p className="text-xs text-indigo-600 mt-0.5">{aptMode === 'solo' ? 'לחצי כאן כדי לסמן הפעלת מכונה' : 'לחצי כדי לעדכן את הדיירים'}</p>
           </button>
+        )}
+
+        {/* Dryer banner */}
+        {dryMachine && (
+          <div className="border rounded-xl p-4 bg-red-50 border-red-200">
+            <div className="flex items-center justify-between mb-1">
+              <p className="font-semibold text-sm text-red-900">🌀 מייבש פועל</p>
+              <button onClick={() => openDismiss('dry')} className="text-lg leading-none text-red-400 hover:text-red-600">✕</button>
+            </div>
+            <p className="text-xs text-red-700">הופעל ב-{formatMachineTime(dryMachine, 'start')} · מסתיים בערך ב-{formatMachineTime(dryMachine, 'end')}</p>
+          </div>
         )}
 
         {/* My request */}
@@ -514,14 +531,14 @@ export default function LaundryPage() {
         </div>
       )}
       {/* Dismiss machine modal */}
-      {showDismissModal && machine && (
+      {showDismissModal && (
         <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="font-semibold text-gray-900">ביטול הפעלת {machine.machine_type === 'dry' ? 'המייבש' : 'המכונה'}</h2>
+              <h2 className="font-semibold text-gray-900">ביטול הפעלת {dismissMachineType === 'dry' ? 'המייבש' : 'המכונה'}</h2>
               <button onClick={() => setShowDismissModal(false)} className="text-gray-400">✕</button>
             </div>
-            {machine.machine_type === 'wash' && (
+            {dismissMachineType === 'wash' && (
               <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 mb-4 cursor-pointer">
                 <input
                   type="checkbox"

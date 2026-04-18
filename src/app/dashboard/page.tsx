@@ -83,7 +83,8 @@ export default function Dashboard() {
   const [requestingUncomplete, setRequestingUncomplete] = useState(false)
 
   const [showRemoveModal, setShowRemoveModal] = useState(false)
-  const [laundryMachine, setLaundryMachine] = useState<{ started_at: string; duration_minutes: number; machine_type: string } | null>(null)
+  const [washMachine, setWashMachine] = useState<{ started_at: string; duration_minutes: number; machine_type: string } | null>(null)
+  const [dryMachine, setDryMachine] = useState<{ started_at: string; duration_minutes: number; machine_type: string } | null>(null)
   const [showDryerModal, setShowDryerModal] = useState<string | null>(null)
   const [dryerDuration, setDryerDuration] = useState('')
   const [savingDryer, setSavingDryer] = useState(false)
@@ -94,7 +95,8 @@ export default function Dashboard() {
   const [washEntries, setWashEntries] = useState<{ user_id: string; display_name: string; request: string }[]>([])
   const [savingWash, setSavingWash] = useState(false)
   const [extraWashAfterDryer, setExtraWashAfterDryer] = useState(false)
-  const [machineTimeLeft, setMachineTimeLeft] = useState('')
+  const [washTimeLeft, setWashTimeLeft] = useState('')
+  const [dryTimeLeft, setDryTimeLeft] = useState('')
   const [residents, setResidents] = useState<{ id: string; display_name: string }[]>([])
   const [removingResident, setRemovingResident] = useState(false)
   const [confirmRemoveTarget, setConfirmRemoveTarget] = useState<{id: string, name: string} | null>(null)
@@ -136,8 +138,10 @@ export default function Dashboard() {
           fetchScores()
         })
         .on('postgres_changes', { event: '*', schema: 'public', table: 'laundry_machine' }, async () => {
-          const { data } = await supabase.from('laundry_machine').select('started_at, duration_minutes, machine_type').eq('apartment_id', p.apartment_id).maybeSingle()
-          setLaundryMachine(data ?? null)
+          const { data } = await supabase.from('laundry_machine').select('started_at, duration_minutes, machine_type').eq('apartment_id', p.apartment_id)
+          const rows: { started_at: string; duration_minutes: number; machine_type: string }[] = data ?? []
+          setWashMachine(rows.find(r => r.machine_type === 'wash') ?? null)
+          setDryMachine(rows.find(r => r.machine_type === 'dry') ?? null)
         })
         .subscribe()
 
@@ -145,9 +149,11 @@ export default function Dashboard() {
 
       const [{ data: apt }, { data: machineData }] = await Promise.all([
         supabase.from('apartments').select('id, name, mode, summary_day').eq('id', p.apartment_id).single(),
-        supabase.from('laundry_machine').select('started_at, duration_minutes, machine_type').eq('apartment_id', p.apartment_id).maybeSingle(),
+        supabase.from('laundry_machine').select('started_at, duration_minutes, machine_type').eq('apartment_id', p.apartment_id),
       ])
-      setLaundryMachine(machineData ?? null)
+      const machineRows: { started_at: string; duration_minutes: number; machine_type: string }[] = machineData ?? []
+      setWashMachine(machineRows.find(r => r.machine_type === 'wash') ?? null)
+      setDryMachine(machineRows.find(r => r.machine_type === 'dry') ?? null)
       setApartment(apt)
 
       if (apt?.mode === 'shared') {
@@ -193,29 +199,28 @@ export default function Dashboard() {
     }
   }, [])
 
+  function calcTimeLeft(machine: { started_at: string; duration_minutes: number } | null): string {
+    if (!machine) return ''
+    const end = new Date(new Date(machine.started_at).getTime() + machine.duration_minutes * 60000)
+    const diffMs = end.getTime() - Date.now()
+    if (diffMs <= 0) return 'הסתיים'
+    const totalMins = Math.ceil(diffMs / 60000)
+    const hours = Math.floor(totalMins / 60)
+    const mins = totalMins % 60
+    const endStr = end.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
+    if (hours > 0) return `נשאר ${hours}:${String(mins).padStart(2, '0')} שעות · מסתיים ב-${endStr}`
+    return `נשאר ${totalMins} דקות · מסתיים ב-${endStr}`
+  }
+
   useEffect(() => {
     function update() {
-      if (!laundryMachine) { setMachineTimeLeft(''); return }
-      const end = new Date(new Date(laundryMachine.started_at).getTime() + laundryMachine.duration_minutes * 60000)
-      const diffMs = end.getTime() - Date.now()
-      if (diffMs <= 0) {
-        setMachineTimeLeft('הסתיים')
-      } else {
-        const totalMins = Math.ceil(diffMs / 60000)
-        const hours = Math.floor(totalMins / 60)
-        const mins = totalMins % 60
-        const endStr = end.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })
-        if (hours > 0) {
-          setMachineTimeLeft(`נשאר ${hours}:${String(mins).padStart(2, '0')} שעות · מסתיים ב-${endStr}`)
-        } else {
-          setMachineTimeLeft(`נשאר ${totalMins} דקות · מסתיים ב-${endStr}`)
-        }
-      }
+      setWashTimeLeft(calcTimeLeft(washMachine))
+      setDryTimeLeft(calcTimeLeft(dryMachine))
     }
     update()
     const id = setInterval(update, 60000)
     return () => clearInterval(id)
-  }, [laundryMachine])
+  }, [washMachine, dryMachine])
 
   async function fetchTasks(initial = false) {
     const { data, error } = await supabase.rpc('get_tasks')
@@ -358,23 +363,26 @@ export default function Dashboard() {
   }
 
   function isLaundryTaskLocked(subtype: string | null): boolean {
-    if (!laundryMachine) return false
-    const end = new Date(new Date(laundryMachine.started_at).getTime() + laundryMachine.duration_minutes * 60000)
-    const stillRunning = end.getTime() > Date.now()
-    if (!stillRunning) return false
-    if ((subtype === 'laundry_hang' || subtype === 'laundry_dry') && laundryMachine.machine_type === 'wash') return true
-    if (subtype === 'laundry_fold' && laundryMachine.machine_type === 'dry') return true
+    if (subtype === 'laundry_hang' || subtype === 'laundry_dry') {
+      if (!washMachine) return false
+      const end = new Date(new Date(washMachine.started_at).getTime() + washMachine.duration_minutes * 60000)
+      return end.getTime() > Date.now()
+    }
+    if (subtype === 'laundry_fold') {
+      if (!dryMachine) return false
+      const end = new Date(new Date(dryMachine.started_at).getTime() + dryMachine.duration_minutes * 60000)
+      return end.getTime() > Date.now()
+    }
     return false
   }
 
   function getLaundryEndTime(subtype: string | null): string | null {
-    if (!laundryMachine) return null
-    if ((subtype === 'laundry_hang' || subtype === 'laundry_dry') && laundryMachine.machine_type === 'wash') {
-      const end = new Date(new Date(laundryMachine.started_at).getTime() + laundryMachine.duration_minutes * 60000)
+    if ((subtype === 'laundry_hang' || subtype === 'laundry_dry') && washMachine) {
+      const end = new Date(new Date(washMachine.started_at).getTime() + washMachine.duration_minutes * 60000)
       return `מכונה מסיימת ב-${end.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}`
     }
-    if (subtype === 'laundry_fold' && laundryMachine.machine_type === 'dry') {
-      const end = new Date(new Date(laundryMachine.started_at).getTime() + laundryMachine.duration_minutes * 60000)
+    if (subtype === 'laundry_fold' && dryMachine) {
+      const end = new Date(new Date(dryMachine.started_at).getTime() + dryMachine.duration_minutes * 60000)
       return `מייבש מסיים ב-${end.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' })}`
     }
     return null
@@ -398,10 +406,10 @@ export default function Dashboard() {
     if (error) { alert('שגיאה: ' + error.message); return }
     if (task.task_subtype === 'laundry_hang' && apartment) {
       await supabase.from('laundry_machine').delete().eq('apartment_id', apartment.id).eq('machine_type', 'wash')
-      setLaundryMachine(null)
+      setWashMachine(null)
     } else if (task.task_subtype === 'laundry_fold' && apartment) {
       await supabase.from('laundry_machine').delete().eq('apartment_id', apartment.id).eq('machine_type', 'dry')
-      setLaundryMachine(null)
+      setDryMachine(null)
     }
     setCompletingTask(task.task_id)
     setTimeout(() => { setCompletingTask(null); fetchTasks(); fetchScores() }, 600)
@@ -424,7 +432,7 @@ export default function Dashboard() {
     await supabase.from('laundry_machine').upsert({
       apartment_id: apartment.id, started_by: myUserId, started_at: startedAt,
       duration_minutes: mins, machine_type: 'wash',
-    }, { onConflict: 'apartment_id' })
+    }, { onConflict: 'apartment_id,machine_type' })
 
     await supabase.from('laundry_history').insert({
       apartment_id: apartment.id, started_at: startedAt,
@@ -446,8 +454,10 @@ export default function Dashboard() {
     await supabase.rpc('finish_laundry_machine', { p_apartment_id: apartment.id })
 
     const { data: machineData } = await supabase.from('laundry_machine')
-      .select('started_at, duration_minutes, machine_type').eq('apartment_id', apartment.id).maybeSingle()
-    setLaundryMachine(machineData ?? null)
+      .select('started_at, duration_minutes, machine_type').eq('apartment_id', apartment.id)
+    const washRows: { started_at: string; duration_minutes: number; machine_type: string }[] = machineData ?? []
+    setWashMachine(washRows.find(r => r.machine_type === 'wash') ?? null)
+    setDryMachine(washRows.find(r => r.machine_type === 'dry') ?? null)
     setShowWashModal(null)
     setWashDuration('')
     setWashDoneChecked(new Set())
@@ -463,20 +473,20 @@ export default function Dashboard() {
     setSavingDryer(true)
     const { error } = await supabase.rpc('complete_task', { p_instance_id: showDryerModal })
     if (error) { alert('שגיאה: ' + error.message); setSavingDryer(false); return }
-    await supabase.from('laundry_machine').delete().eq('apartment_id', apartment.id)
     await supabase.from('laundry_machine').upsert({
       apartment_id: apartment.id,
       started_by: myUserId,
       started_at: new Date().toISOString(),
       duration_minutes: mins,
       machine_type: 'dry',
-    }, { onConflict: 'apartment_id' })
+    }, { onConflict: 'apartment_id,machine_type' })
     const { data: machineData } = await supabase
       .from('laundry_machine')
       .select('started_at, duration_minutes, machine_type')
       .eq('apartment_id', apartment.id)
-      .maybeSingle()
-    setLaundryMachine(machineData ?? null)
+    const machineRows: { started_at: string; duration_minutes: number; machine_type: string }[] = machineData ?? []
+    setWashMachine(machineRows.find(r => r.machine_type === 'wash') ?? null)
+    setDryMachine(machineRows.find(r => r.machine_type === 'dry') ?? null)
     const taskId = tasks.find(t => t.instance_id === showDryerModal)?.task_id
     const shouldOpenExtraWash = extraWashAfterDryer
     setShowDryerModal(null)
@@ -856,17 +866,25 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Laundry machine timer */}
-        {laundryMachine && (
+        {/* Laundry machine timers */}
+        {washMachine && (
           <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center gap-3">
-            <span className="text-xl">{laundryMachine.machine_type === 'wash' ? '🧺' : '🌀'}</span>
+            <span className="text-xl">🧺</span>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-blue-900">
-                {laundryMachine.machine_type === 'wash' ? 'מכונת כביסה פועלת' : 'מייבש פועל'}
-              </p>
-              <p className="text-xs text-blue-700">{machineTimeLeft}</p>
+              <p className="text-sm font-semibold text-blue-900">מכונת כביסה פועלת</p>
+              <p className="text-xs text-blue-700">{washTimeLeft}</p>
             </div>
             <button onClick={() => router.push('/laundry')} className="text-xs text-blue-600 underline shrink-0">פתח</button>
+          </div>
+        )}
+        {dryMachine && (
+          <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 flex items-center gap-3">
+            <span className="text-xl">🌀</span>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-red-900">מייבש פועל</p>
+              <p className="text-xs text-red-700">{dryTimeLeft}</p>
+            </div>
+            <button onClick={() => router.push('/laundry')} className="text-xs text-red-600 underline shrink-0">פתח</button>
           </div>
         )}
 
