@@ -50,6 +50,7 @@ export default function LaundryPage() {
   const [history, setHistory] = useState<LaundryHistoryRecord[]>([])
   const [showDismissModal, setShowDismissModal] = useState(false)
   const [dismissRestoreRequests, setDismissRestoreRequests] = useState(false)
+  const [isExtraWash, setIsExtraWash] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const router = useRouter()
   const supabase = createClient()
@@ -187,9 +188,12 @@ export default function LaundryPage() {
       }
     }
 
-    // Complete wash task → gives points + creates hang task
-    await supabase.rpc('complete_wash_task', { p_apartment_id: apartmentId })
+    // Complete wash task → gives points + creates hang task (skip for extra wash cycle)
+    if (!isExtraWash) {
+      await supabase.rpc('complete_wash_task', { p_apartment_id: apartmentId })
+    }
     await supabase.rpc('finish_laundry_machine', { p_apartment_id: apartmentId })
+    setIsExtraWash(false)
 
     const { data: machineData } = await supabase
       .from('laundry_machine')
@@ -276,6 +280,10 @@ export default function LaundryPage() {
               <button onClick={dismissMachine} className={`text-lg leading-none ${machine.machine_type === 'dry' ? 'text-red-400 hover:text-red-600' : 'text-blue-400 hover:text-blue-600'}`}>✕</button>
             </div>
             <p className={`text-xs ${machine.machine_type === 'dry' ? 'text-red-700' : 'text-blue-700'}`}>הופעלה ב-{machineStartTime()} · מסתיימת בערך ב-{machineEndTime()}</p>
+            <button
+              onClick={() => { setIsExtraWash(true); setShowDurationModal(true) }}
+              className="mt-2 text-xs text-blue-500 border border-blue-200 rounded-full px-3 py-1 hover:bg-blue-50 bg-white"
+            >🧺 הפעל מכונה נוספת</button>
           </div>
         ) : (
           <button
