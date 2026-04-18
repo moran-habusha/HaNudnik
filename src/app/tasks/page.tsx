@@ -395,16 +395,9 @@ export default function TasksPage() {
                   <p className="text-xs text-gray-400 mt-0.5">{freqSummary(task)}</p>
                   {(task.frequency === 'biweekly' || task.frequency === 'monthly') && (() => {
                     const nextDue = calcNextDue(task)
-                    return (
-                      <div className="flex gap-3 mt-0.5">
-                        {task.last_done_at && (
-                          <p className="text-xs text-gray-300">ביצוע אחרון: {formatDate(task.last_done_at)}</p>
-                        )}
-                        {nextDue && (
-                          <p className="text-xs text-indigo-400">ביצוע הבא: {formatDate(nextDue)}</p>
-                        )}
-                      </div>
-                    )
+                    return nextDue ? (
+                      <p className="text-xs text-indigo-400 mt-0.5">ביצוע הבא: {formatDate(nextDue)}</p>
+                    ) : null
                   })()}
 
                   {/* fixed task actions */}
@@ -488,10 +481,9 @@ export default function TasksPage() {
         <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
             <div className="flex items-center justify-between mb-2">
-              <h2 className="font-semibold text-gray-900">מתי ביצעת לאחרונה?</h2>
+              <h2 className="font-semibold text-gray-900">{baselineModal.taskTitle}</h2>
               <button onClick={() => setBaselineModal(null)} className="text-gray-400">✕</button>
             </div>
-            <p className="text-sm text-gray-500 mb-4">{baselineModal.taskTitle}</p>
 
             {baselineModal.frequency === 'biweekly' && (() => {
               // Find next two occurrences of configDay from tomorrow
