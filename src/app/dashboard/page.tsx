@@ -1391,7 +1391,7 @@ export default function Dashboard() {
         <div className="fixed inset-0 bg-black/50 flex items-end justify-center z-50 p-4">
           <div className="bg-white rounded-2xl w-full max-w-lg p-4" dir="rtl">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="font-semibold text-gray-900">ביטול קלייים</h2>
+              <h2 className="font-semibold text-gray-900">ביטול תפיסת מטלה</h2>
               <button onClick={() => setPenaltyClaimModal(null)} className="text-gray-400">✕</button>
             </div>
             <p className="text-sm text-gray-500 mb-5">עברו יותר מ-30 דקות — יורדו לך 0.5 נקודות. להמשיך?</p>
@@ -1400,7 +1400,7 @@ export default function Dashboard() {
               <button
                 onClick={() => { const m = penaltyClaimModal; setPenaltyClaimModal(null); executeCancelClaim(m.instanceId, true) }}
                 className="flex-1 bg-red-500 text-white rounded-lg py-2.5 text-sm font-medium"
-              >כן, בטל קלייים</button>
+              >כן, בטל תפיסה</button>
             </div>
           </div>
         </div>
