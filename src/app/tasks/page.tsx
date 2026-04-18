@@ -56,7 +56,7 @@ export default function TasksPage() {
   const [confirmDeleteTaskId, setConfirmDeleteTaskId] = useState<string | null>(null)
   const [confirmReleaseTaskId, setConfirmReleaseTaskId] = useState<string | null>(null)
   const [requestingFixed, setRequestingFixed] = useState<string | null>(null)
-  const [baselineModal, setBaselineModal] = useState<{ taskId: string; taskTitle: string; frequency: 'biweekly' | 'monthly' } | null>(null)
+  const [baselineModal, setBaselineModal] = useState<{ taskId: string; taskTitle: string; frequency: 'biweekly' | 'monthly'; configDay: number } | null>(null)
   const emptyForm = { title: '', frequency: 'daily', specific_days: [] as number[], weekly_day: 0, slots: {} as Record<string, string>, emoji: '' }
   const [form, setForm] = useState(emptyForm)
   const router = useRouter()
@@ -128,7 +128,7 @@ export default function TasksPage() {
       const newTasks = await fetchTasks()
       if (freqForBaseline === 'biweekly' || freqForBaseline === 'monthly') {
         const newTask = newTasks.find(t => t.title === titleForBaseline && t.frequency === freqForBaseline)
-        if (newTask) setBaselineModal({ taskId: newTask.task_id, taskTitle: newTask.title, frequency: freqForBaseline as 'biweekly' | 'monthly' })
+        if (newTask) setBaselineModal({ taskId: newTask.task_id, taskTitle: newTask.title, frequency: freqForBaseline as 'biweekly' | 'monthly', configDay: form.weekly_day })
       }
     }
     setLoading(false)
@@ -158,7 +158,7 @@ export default function TasksPage() {
       const updatedTasks = await fetchTasks()
       if ((form.frequency === 'biweekly' || form.frequency === 'monthly') && form.frequency !== prevFrequency) {
         const edited = updatedTasks.find(t => t.task_id === editedTaskId)
-        if (edited) setBaselineModal({ taskId: edited.task_id, taskTitle: edited.title, frequency: form.frequency as 'biweekly' | 'monthly' })
+        if (edited) setBaselineModal({ taskId: edited.task_id, taskTitle: edited.title, frequency: form.frequency as 'biweekly' | 'monthly', configDay: form.weekly_day })
       }
     }
     setLoading(false)
@@ -493,21 +493,32 @@ export default function TasksPage() {
             </div>
             <p className="text-sm text-gray-500 mb-4">{baselineModal.taskTitle}</p>
 
-            {baselineModal.frequency === 'biweekly' && (
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => {
-                    const d = new Date(); d.setDate(d.getDate() - 7)
-                    confirmBaseline(localDateStr(d))
-                  }}
-                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
-                >שבוע שעבר <span className="text-gray-400">(תתחיל השבוע)</span></button>
-                <button
-                  onClick={() => confirmBaseline(localDateStr(new Date()))}
-                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
-                >השבוע <span className="text-gray-400">(תתחיל שבוע הבא)</span></button>
-              </div>
-            )}
+            {baselineModal.frequency === 'biweekly' && (() => {
+              // Find next two occurrences of configDay from tomorrow
+              const occurrences: Date[] = []
+              const d = new Date(); d.setDate(d.getDate() + 1)
+              while (occurrences.length < 2) {
+                if (d.getDay() === baselineModal.configDay) occurrences.push(new Date(d))
+                d.setDate(d.getDate() + 1)
+              }
+              return (
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs text-gray-400 mb-1">מתי תרצי שהמטלה תופיע בפעם הראשונה?</p>
+                  {occurrences.map((date, i) => {
+                    const baseline = new Date(date); baseline.setDate(baseline.getDate() - 14)
+                    return (
+                      <button key={i}
+                        onClick={() => confirmBaseline(localDateStr(baseline))}
+                        className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
+                      >
+                        {DAYS_HE_FULL[date.getDay()]} {date.getDate()}.{date.getMonth() + 1}
+                        {i === 0 && <span className="text-gray-400 text-xs"> (הקרוב)</span>}
+                      </button>
+                    )
+                  })}
+                </div>
+              )
+            })()}
 
             {baselineModal.frequency === 'monthly' && (
               <div className="flex flex-col gap-2">
