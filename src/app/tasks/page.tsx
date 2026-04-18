@@ -20,7 +20,7 @@ const TASK_EMOJIS = ['🍽️','🗑️','🌀','🧹','🧺','🛁','🏺','�
 const FREQ_LABELS: Record<string, string> = {
   daily: 'כל יום',
   multiple_daily: 'כמה פעמים ביום',
-  specific_days: 'X פעמים בשבוע',
+  specific_days: 'כמה פעמים בשבוע',
   biweekly: 'פעם בשבועיים',
   monthly: 'פעם בחודש',
 }
