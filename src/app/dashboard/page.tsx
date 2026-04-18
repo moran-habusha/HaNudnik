@@ -951,7 +951,7 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    {(task.task_subtype === 'laundry_hang' || task.task_subtype === 'laundry_dry') && (
+                    {(task.task_subtype === 'laundry_hang' || task.task_subtype === 'laundry_dry' || task.task_subtype === 'laundry_fold') && (
                       <div className="mt-2">
                         <button
                           onClick={openExtraWash}
