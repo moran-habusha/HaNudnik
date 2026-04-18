@@ -286,10 +286,12 @@ export default function LaundryPage() {
               <button onClick={() => openDismiss('wash')} className="text-lg leading-none text-blue-400 hover:text-blue-600">✕</button>
             </div>
             <p className="text-xs text-blue-700">הופעלה ב-{formatMachineTime(washMachine, 'start')} · מסתיימת בערך ב-{formatMachineTime(washMachine, 'end')}</p>
-            <button
-              onClick={() => { setIsExtraWash(true); setShowDurationModal(true) }}
-              className="mt-2 text-xs text-blue-500 border border-blue-200 rounded-full px-3 py-1 hover:bg-blue-50 bg-white"
-            >🧺 הפעל מכונה נוספת</button>
+            {new Date(new Date(washMachine.started_at).getTime() + washMachine.duration_minutes * 60000).getTime() <= Date.now() && (
+              <button
+                onClick={() => { setIsExtraWash(true); setShowDurationModal(true) }}
+                className="mt-2 text-xs text-blue-500 border border-blue-200 rounded-full px-3 py-1 hover:bg-blue-50 bg-white"
+              >🧺 הפעל מכונה נוספת</button>
+            )}
           </div>
         ) : (
           <button
