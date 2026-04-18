@@ -14,6 +14,7 @@ type Task = {
   fixed_user_name: string | null
   emoji: string | null
   last_done_at: string | null
+  last_real_done_at: string | null
 }
 
 const TASK_EMOJIS = ['🍽️','🗑️','🌀','🧹','🧺','🛁','🏺','🚪','🛒','🥛','💦','✨','🐾','💡','🌿','🛋️','🚿','🌱','📦','🔧']
@@ -396,9 +397,16 @@ export default function TasksPage() {
                   <p className="text-xs text-gray-400 mt-0.5">{freqSummary(task)}</p>
                   {(task.frequency === 'biweekly' || task.frequency === 'monthly') && (() => {
                     const nextDue = calcNextDue(task)
-                    return nextDue ? (
-                      <p className="text-xs text-indigo-400 mt-0.5">ביצוע הבא: {formatDate(nextDue)}</p>
-                    ) : null
+                    return (
+                      <div className="flex gap-3 mt-0.5">
+                        {task.last_real_done_at && (
+                          <p className="text-xs text-gray-300">ביצוע אחרון: {formatDate(task.last_real_done_at)}</p>
+                        )}
+                        {nextDue && (
+                          <p className="text-xs text-indigo-400">ביצוע הבא: {formatDate(nextDue)}</p>
+                        )}
+                      </div>
+                    )
                   })()}
 
                   {/* fixed task actions */}
