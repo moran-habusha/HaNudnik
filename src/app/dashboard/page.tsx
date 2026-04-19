@@ -1223,6 +1223,7 @@ export default function Dashboard() {
                   placeholder="שע"
                   value={hoursInput}
                   onFocus={() => setShowHoursDD(true)}
+                  onClick={e => { const l = e.currentTarget.value.length; e.currentTarget.setSelectionRange(l, l) }}
                   onBlur={() => setTimeout(() => setShowHoursDD(false), 150)}
                   onChange={e => {
                     const raw = e.target.value.replace(/\D/g, '')
@@ -1266,6 +1267,7 @@ export default function Dashboard() {
                   placeholder="דק"
                   value={minutesInput}
                   onFocus={() => setShowMinutesDD(true)}
+                  onClick={e => { const l = e.currentTarget.value.length; e.currentTarget.setSelectionRange(l, l) }}
                   onBlur={() => setTimeout(() => setShowMinutesDD(false), 150)}
                   onChange={e => {
                     const raw = e.target.value.replace(/\D/g, '')
