@@ -1212,49 +1212,47 @@ export default function Dashboard() {
             <div className="flex items-center justify-center gap-2" dir="ltr">
               <input
                 ref={hoursRef}
-                type="text"
-                inputMode="numeric"
-                maxLength={2}
+                type="number"
+                min={0}
+                max={23}
                 placeholder="שע"
-                value={reminderTime ? reminderTime.split(':')[0] : ''}
+                value={reminderTime ? String(parseInt(reminderTime.split(':')[0])) : ''}
                 onChange={e => {
-                  const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
-                  const h = raw.padStart(2, '0')
+                  const val = e.target.value
+                  const h = Math.min(23, Math.max(0, parseInt(val) || 0))
                   const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                  setReminderTime(`${h}:${m}`)
-                  if (raw.length === 2) minutesRef.current?.focus()
+                  setReminderTime(`${String(h).padStart(2, '0')}:${m}`)
+                  if (val.length >= 2) minutesRef.current?.focus()
                 }}
                 onWheel={e => {
-                  e.preventDefault()
                   const cur = reminderTime ? parseInt(reminderTime.split(':')[0]) : 0
                   const next = Math.min(23, Math.max(0, cur + (e.deltaY < 0 ? 1 : -1)))
                   const m = reminderTime ? reminderTime.split(':')[1] : '00'
                   setReminderTime(`${String(next).padStart(2, '0')}:${m}`)
                 }}
-                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
               <span className="text-2xl font-bold text-gray-400">:</span>
               <input
                 ref={minutesRef}
-                type="text"
-                inputMode="numeric"
-                maxLength={2}
+                type="number"
+                min={0}
+                max={59}
                 placeholder="דק"
-                value={reminderTime ? reminderTime.split(':')[1] : ''}
+                value={reminderTime ? String(parseInt(reminderTime.split(':')[1])) : ''}
                 onChange={e => {
-                  const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
+                  const val = e.target.value
                   const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                  const m = raw.padStart(2, '0')
-                  setReminderTime(`${h}:${m}`)
+                  const m = Math.min(59, Math.max(0, parseInt(val) || 0))
+                  setReminderTime(`${h}:${String(m).padStart(2, '0')}`)
                 }}
                 onWheel={e => {
-                  e.preventDefault()
                   const cur = reminderTime ? parseInt(reminderTime.split(':')[1]) : 0
                   const next = Math.min(59, Math.max(0, cur + (e.deltaY < 0 ? 1 : -1)))
                   const h = reminderTime ? reminderTime.split(':')[0] : '00'
                   setReminderTime(`${h}:${String(next).padStart(2, '0')}`)
                 }}
-                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
+                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
             </div>
             <div className="flex gap-2 mt-4">
