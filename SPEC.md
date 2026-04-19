@@ -801,7 +801,7 @@ Claiming does not auto-complete. Both must be explicitly set.
 - **תדירות חודשית עוצבה מחדש:** לא עוד 30 יום מגלגל — תדירות חודשית היא יום בשבוע קבוע, פעם בחודש קלנדרי. Instance נוצר רק אם היום תואם את יום השבוע שנבחר ולא קיים instance/ביצוע לחודש הנוכחי ✅
 - `ensure_today_instances`: overload ישן (ללא פרמטרים) הוסר; נשאר רק `(p_apartment_id uuid DEFAULT NULL)`; `biweekly` branch הוסף בדיקת `dow = (cfg->>'day')::int`; `monthly` branch עוצב מחדש לחודש קלנדרי; `weekly` branch הוסר ✅
 - `send_morning_nudge`: תוקן `PERFORM ensure_today_instances()` → `PERFORM ensure_today_instances(p_apartment_id)` כדי לפתור עמימות overload שגרמה ל-rollback של transaction ✅
-- **Baseline modal** — נוסף למסך מטלות: נפתח אוטומטית לאחר הוספה/עריכה של מטלה ל-biweekly/monthly. Biweekly: מציג 2 תאריכים הבאים של יום השבוע שנבחר, המשתמש בוחר מאיזה להתחיל (baseline = תאריך שנבחר −14 ימים). Monthly: "כן, לאחרונה (תתחיל חודש הבא)" / "לא לאחרונה / לא זוכר/ת (תתחיל החודש)" ✅
+- **Baseline modal** — נוסף למסך מטלות: נפתח אוטומטית לאחר הוספה/עריכה של מטלה ל-biweekly/monthly. Biweekly: מציג 2 תאריכים הבאים של יום השבוע שנבחר, המשתמש בוחר מאיזה להתחיל (baseline = תאריך שנבחר −14 ימים). Monthly: מציג 2 תאריכים הבאים של יום החודש שנבחר (DD.MM הקרוב + DD.MM שאחריו); לחיצה בוחרת מתי להופיע בפעם הראשונה (baseline = תאריך שנבחר −1 חודש) ✅
 - `set_task_baseline` RPC: מכניס instance מדומה עם `points_multiplier = 0` ו-`is_done = true` כדי לקבוע baseline תזמון. תוקן: חסר `apartment_id` ו-`is_done` ב-INSERT → instance לא נשמר. תוקן: מוחק baseline ישנים (`points_multiplier = 0`) לפני INSERT → מניעת כפל שגורם ל-`MAX(done_at)` להחזיר תאריך ישן ✅
 - `get_all_tasks`: הוסף `last_done_at date` (לחישוב ביצוע הבא — כולל baseline) ו-`last_real_done_at date` (לתצוגה בלבד — מסנן `points_multiplier = 0`) ✅
 - מסך מטלות — כרטיסי biweekly/monthly: מציגים "ביצוע הבא: DD.MM" (רק לאחר קביעת baseline); "ביצוע אחרון" מוצג רק מ-`last_real_done_at` (ביצוע אמיתי, לא baseline) ✅
@@ -814,9 +814,15 @@ Claiming does not auto-complete. Both must be explicitly set.
 
 **תיקונים ממתינים:**
 - מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
-- תזכורות כביסה לא מגיעות — `send_laundry_reminder` לא נשלח
-- התראת סיום מכונה לא מגיעה — push notification שהמכונה סיימה לא נשלח
-- Baseline modal חודשי — להציג תאריכים קונקרטיים (כמו biweekly) במקום "כן/לא לאחרונה"
+
+**תיקונים (19/04/2026):**
+- **שני מכונות במקביל:** wash + dry יכולים לרוץ בו-זמנית. `laundry_machine` אינדקס ייחודי על `(apartment_id, machine_type)` (upsert). דשבורד + מסך כביסה מחזיקים `washMachine` + `dryMachine` בנפרד. כפתור "הפעלת מכונת כביסה נוספת במקביל" מוצג רק כשהטיימר פג ✅
+- **`task_instances_unique_no_slot`:** אינדקס חלקי שונה ל-`WHERE slot IS NULL AND done_at IS NULL` — מאפשר יצירת instance שני לאותו task_id + due_date לאחר ביצוע הראשון (לכביסה ב') ✅
+- **ניקוד שבועי מתאפס ביום ראשון:** `get_weekly_scores` + `complete_task` תוקנו — `v_week_start := (date_trunc('week', current_date + interval '1 day') - interval '1 day')::date` (ראשון, לא שני ISO) ✅
+- **`finish_laundry_machine` שולחת push בסיום:** אחרי יצירת מטלת תלייה/ייבוש — אם מישהו תפס את המטלה (`claimed_by IS NOT NULL`) ההודעה נשלחת רק אליו; אחרת לכולם (שאינם away). `triggered_by = 'laundry_machine_done'` ✅
+- **`send_laundry_reminder` לא שלחה** — לא באג; התדירות שונתה אחרי יום שישי האחרון, לכן לא ניפתחה תנאי השליחה. תשלח בשישי הקרוב ✅
+- **Baseline modal חודשי** — עוצב מחדש כמו biweekly: "מתי תרצי שהמטלה תופיע בפעם הראשונה?" + שני כפתורים עם תאריכים קונקרטיים (DD.MM) ✅
+- **לקיחת מטלה — תזכורת חובה:** picker שעות/דקות עם dropdown מעוצב; שעות 0–23, דקות ברבעי שעה (00/15/30/45) + הקלדה חופשית; ספרה שלישית מוחקת ומתחילה מחדש; כפתור "אני על זה" מושבת עד שנבחרת שעה ✅
 
 ### ~~לוז בדיקות — מחזור הוצאת/הזמנת דיירים~~ נבדק ✅ (18/04/2026)
 
