@@ -2,7 +2,7 @@
   "name": "HaNudnik",
   "short_name": "HaNudnik",
   "description": "ניהול דירה משותפת",
-  "start_url": "/dashboard",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#BBBBF7",
   "theme_color": "#ffffff",
