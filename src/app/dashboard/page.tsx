@@ -63,6 +63,8 @@ export default function Dashboard() {
   const [claimingInstance, setClaimingInstance] = useState<string | null>(null)
   const [savingClaim, setSavingClaim] = useState(false)
   const [reminderTime, setReminderTime] = useState('')
+  const [hoursInput, setHoursInput] = useState('')
+  const [minutesInput, setMinutesInput] = useState('')
   const [showHoursDD, setShowHoursDD] = useState(false)
   const [showMinutesDD, setShowMinutesDD] = useState(false)
   const [delayingInstance, setDelayingInstance] = useState<string | null>(null)
@@ -276,6 +278,8 @@ export default function Dashboard() {
 
   function openClaim(instanceId: string) {
     setReminderTime('')
+    setHoursInput('')
+    setMinutesInput('')
     setClaimingInstance(instanceId)
   }
 
@@ -1217,34 +1221,38 @@ export default function Dashboard() {
                   type="text"
                   inputMode="numeric"
                   placeholder="שע"
-                  maxLength={2}
-                  value={reminderTime ? reminderTime.split(':')[0] : ''}
-                  onFocus={e => { e.target.select(); setShowHoursDD(true) }}
+                  value={hoursInput}
+                  onFocus={() => setShowHoursDD(true)}
                   onBlur={() => setTimeout(() => setShowHoursDD(false), 150)}
                   onChange={e => {
-                    const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
-                    const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                    if (raw === '') { setReminderTime(''); return }
-                    setReminderTime(`${raw.padStart(2, '0')}:${m}`)
-                    if (raw.length === 2) minutesRef.current?.focus()
+                    const raw = e.target.value.replace(/\D/g, '')
+                    const next = raw.length > 2 ? raw.slice(-1) : raw
+                    const clamped = next.length === 2 && parseInt(next) > 23 ? '23' : next
+                    setHoursInput(clamped)
+                    const m = minutesInput || '00'
+                    setReminderTime(clamped ? `${clamped.padStart(2, '0')}:${m.padStart(2, '0')}` : '')
+                    if (clamped.length === 2) minutesRef.current?.focus()
                   }}
                   className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center focus:outline-none focus:ring-2 focus:ring-gray-900"
                 />
                 {showHoursDD && (
                   <div className="absolute bottom-full left-0 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-44 overflow-y-auto z-50 mb-1">
-                    {Array.from({ length: 24 }, (_, i) => (
-                      <div key={i}
-                        onMouseDown={e => {
-                          e.preventDefault()
-                          const h = String(i).padStart(2, '0')
-                          const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                          setReminderTime(`${h}:${m}`)
-                          setShowHoursDD(false)
-                          minutesRef.current?.focus()
-                        }}
-                        className={`py-2 text-xl text-center cursor-pointer hover:bg-indigo-50 ${reminderTime?.split(':')[0] === String(i).padStart(2,'0') ? 'bg-indigo-100 font-bold' : ''}`}
-                      >{String(i).padStart(2, '0')}</div>
-                    ))}
+                    {Array.from({ length: 24 }, (_, i) => {
+                      const val = String(i).padStart(2, '0')
+                      return (
+                        <div key={i}
+                          onMouseDown={e => {
+                            e.preventDefault()
+                            const m = minutesInput || '00'
+                            setHoursInput(val)
+                            setReminderTime(`${val}:${m.padStart(2, '0')}`)
+                            setShowHoursDD(false)
+                            minutesRef.current?.focus()
+                          }}
+                          className={`py-2 text-xl text-center cursor-pointer hover:bg-indigo-50 ${hoursInput.padStart(2,'0') === val ? 'bg-indigo-100 font-bold' : ''}`}
+                        >{val}</div>
+                      )
+                    })}
                   </div>
                 )}
               </div>
@@ -1256,31 +1264,36 @@ export default function Dashboard() {
                   type="text"
                   inputMode="numeric"
                   placeholder="דק"
-                  maxLength={2}
-                  value={reminderTime ? reminderTime.split(':')[1] : ''}
-                  onFocus={e => { e.target.select(); setShowMinutesDD(true) }}
+                  value={minutesInput}
+                  onFocus={() => setShowMinutesDD(true)}
                   onBlur={() => setTimeout(() => setShowMinutesDD(false), 150)}
                   onChange={e => {
-                    const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
-                    const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                    if (raw === '') { setReminderTime(h ? `${h}:00` : ''); return }
-                    setReminderTime(`${h}:${raw.padStart(2, '0')}`)
+                    const raw = e.target.value.replace(/\D/g, '')
+                    const next = raw.length > 2 ? raw.slice(-1) : raw
+                    const clamped = next.length === 2 && parseInt(next) > 59 ? '59' : next
+                    setMinutesInput(clamped)
+                    const h = hoursInput || '00'
+                    setReminderTime(hoursInput ? `${h.padStart(2, '0')}:${clamped.padStart(2, '0')}` : '')
                   }}
                   className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center focus:outline-none focus:ring-2 focus:ring-gray-900"
                 />
                 {showMinutesDD && (
                   <div className="absolute bottom-full left-0 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-50 mb-1">
-                    {[0, 15, 30, 45].map(i => (
-                      <div key={i}
-                        onMouseDown={e => {
-                          e.preventDefault()
-                          const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                          setReminderTime(`${h}:${String(i).padStart(2, '0')}`)
-                          setShowMinutesDD(false)
-                        }}
-                        className={`py-2 text-xl text-center cursor-pointer hover:bg-indigo-50 ${reminderTime?.split(':')[1] === String(i).padStart(2,'0') ? 'bg-indigo-100 font-bold' : ''}`}
-                      >{String(i).padStart(2, '0')}</div>
-                    ))}
+                    {[0, 15, 30, 45].map(i => {
+                      const val = String(i).padStart(2, '0')
+                      return (
+                        <div key={i}
+                          onMouseDown={e => {
+                            e.preventDefault()
+                            const h = hoursInput || '00'
+                            setMinutesInput(val)
+                            setReminderTime(`${h.padStart(2, '0')}:${val}`)
+                            setShowMinutesDD(false)
+                          }}
+                          className={`py-2 text-xl text-center cursor-pointer hover:bg-indigo-50 ${minutesInput.padStart(2,'0') === val ? 'bg-indigo-100 font-bold' : ''}`}
+                        >{val}</div>
+                      )
+                    })}
                   </div>
                 )}
               </div>
