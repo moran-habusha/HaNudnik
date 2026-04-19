@@ -283,14 +283,16 @@ export default function Dashboard() {
     setSavingClaim(true)
     const { error } = await supabase.rpc('claim_task', {
       p_instance_id: claimingInstance,
-      p_reminder_time: reminderTime,
+      p_reminder_time: reminderTime || null,
     })
     if (error) { alert('שגיאה: ' + error.message); setSavingClaim(false); return }
-    await supabase.rpc('schedule_reminder_after_claim', {
-      p_instance_id: claimingInstance,
-      p_reminder_time: reminderTime,
-      p_user_id: myUserId,
-    })
+    if (reminderTime) {
+      await supabase.rpc('schedule_reminder_after_claim', {
+        p_instance_id: claimingInstance,
+        p_reminder_time: reminderTime,
+        p_user_id: myUserId,
+      })
+    }
     setClaimingInstance(null)
     setSavingClaim(false)
     fetchTasks()
@@ -1208,7 +1210,7 @@ export default function Dashboard() {
               <h2 className="font-semibold text-gray-900">מתי לתזכר אותך?</h2>
               <button onClick={() => setClaimingInstance(null)} className="text-gray-400">✕</button>
             </div>
-            <p className="text-sm text-gray-500 mb-3">HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
+            <p className="text-sm text-gray-500 mb-3">אופציונלי — HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
             <input
               type="time"
               value={reminderTime}
