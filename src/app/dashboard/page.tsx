@@ -272,9 +272,7 @@ export default function Dashboard() {
   }
 
   function openClaim(instanceId: string) {
-    const now = new Date()
-    now.setMinutes(now.getMinutes() + 60)
-    setReminderTime(now.toTimeString().slice(0, 5))
+    setReminderTime('')
     setClaimingInstance(instanceId)
   }
 
@@ -283,16 +281,14 @@ export default function Dashboard() {
     setSavingClaim(true)
     const { error } = await supabase.rpc('claim_task', {
       p_instance_id: claimingInstance,
-      p_reminder_time: reminderTime || null,
+      p_reminder_time: reminderTime,
     })
     if (error) { alert('שגיאה: ' + error.message); setSavingClaim(false); return }
-    if (reminderTime) {
-      await supabase.rpc('schedule_reminder_after_claim', {
-        p_instance_id: claimingInstance,
-        p_reminder_time: reminderTime,
-        p_user_id: myUserId,
-      })
-    }
+    await supabase.rpc('schedule_reminder_after_claim', {
+      p_instance_id: claimingInstance,
+      p_reminder_time: reminderTime,
+      p_user_id: myUserId,
+    })
     setClaimingInstance(null)
     setSavingClaim(false)
     fetchTasks()
@@ -1210,7 +1206,7 @@ export default function Dashboard() {
               <h2 className="font-semibold text-gray-900">מתי לתזכר אותך?</h2>
               <button onClick={() => setClaimingInstance(null)} className="text-gray-400">✕</button>
             </div>
-            <p className="text-sm text-gray-500 mb-3">אופציונלי — HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
+            <p className="text-sm text-gray-500 mb-3">HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
             <input
               type="time"
               value={reminderTime}
@@ -1219,7 +1215,7 @@ export default function Dashboard() {
             />
             <div className="flex gap-2 mt-4">
               <button onClick={() => setClaimingInstance(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
-              <button onClick={confirmClaim} disabled={savingClaim} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-60">{savingClaim ? '...' : apartment?.mode === 'solo' ? `${profile?.gender === 'female' ? 'קבעי' : 'קבע'} תזכורת ✓` : 'אני על זה ✓'}</button>
+              <button onClick={confirmClaim} disabled={savingClaim || !reminderTime} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-60">{savingClaim ? '...' : apartment?.mode === 'solo' ? `${profile?.gender === 'female' ? 'קבעי' : 'קבע'} תזכורת ✓` : 'אני על זה ✓'}</button>
             </div>
           </div>
         </div>
