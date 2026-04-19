@@ -521,18 +521,31 @@ export default function TasksPage() {
               )
             })()}
 
-            {baselineModal.frequency === 'monthly' && (
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => confirmBaseline(localDateStr(new Date()))}
-                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
-                >כן, לאחרונה <span className="text-gray-400">(תתחיל חודש הבא)</span></button>
-                <button
-                  onClick={() => confirmBaseline(null)}
-                  className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
-                >לא לאחרונה / לא זוכר/ת <span className="text-gray-400">(תתחיל החודש)</span></button>
-              </div>
-            )}
+            {baselineModal.frequency === 'monthly' && (() => {
+              const now = new Date()
+              const occurrences: Date[] = []
+              let d = new Date(now.getFullYear(), now.getMonth(), baselineModal.configDay)
+              if (d <= now) d = new Date(now.getFullYear(), now.getMonth() + 1, baselineModal.configDay)
+              occurrences.push(new Date(d))
+              occurrences.push(new Date(d.getFullYear(), d.getMonth() + 1, d.getDate()))
+              return (
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs text-gray-400 mb-1">מתי תרצי שהמטלה תופיע בפעם הראשונה?</p>
+                  {occurrences.map((date, i) => {
+                    const baseline = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate())
+                    return (
+                      <button key={i}
+                        onClick={() => confirmBaseline(localDateStr(baseline))}
+                        className="w-full border border-gray-200 rounded-lg py-3 text-sm text-right px-4 hover:bg-gray-50"
+                      >
+                        {date.getDate()}.{date.getMonth() + 1}
+                        {i === 0 && <span className="text-gray-400 text-xs"> (הקרוב)</span>}
+                      </button>
+                    )
+                  })}
+                </div>
+              )
+            })()}
           </div>
         </div>
       )}

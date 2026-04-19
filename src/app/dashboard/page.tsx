@@ -1207,12 +1207,35 @@ export default function Dashboard() {
               <button onClick={() => setClaimingInstance(null)} className="text-gray-400">✕</button>
             </div>
             <p className="text-sm text-gray-500 mb-3">HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
-            <input
-              type="time"
-              value={reminderTime}
-              onChange={e => setReminderTime(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-3 text-lg text-center focus:outline-none focus:ring-2 focus:ring-gray-900"
-            />
+            <div className="flex items-center justify-center gap-2" dir="ltr">
+              <input
+                type="number"
+                min={0}
+                max={23}
+                placeholder="שע"
+                value={reminderTime ? reminderTime.split(':')[0] : ''}
+                onChange={e => {
+                  const h = e.target.value.padStart(2, '0').slice(-2)
+                  const m = reminderTime ? reminderTime.split(':')[1] : '00'
+                  setReminderTime(`${h}:${m}`)
+                }}
+                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
+              />
+              <span className="text-2xl font-bold text-gray-400">:</span>
+              <input
+                type="number"
+                min={0}
+                max={59}
+                placeholder="דק"
+                value={reminderTime ? reminderTime.split(':')[1] : ''}
+                onChange={e => {
+                  const h = reminderTime ? reminderTime.split(':')[0] : '00'
+                  const m = e.target.value.padStart(2, '0').slice(-2)
+                  setReminderTime(`${h}:${m}`)
+                }}
+                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
+              />
+            </div>
             <div className="flex gap-2 mt-4">
               <button onClick={() => setClaimingInstance(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
               <button onClick={confirmClaim} disabled={savingClaim || !reminderTime} className="flex-1 bg-indigo-600 text-white rounded-lg py-2.5 text-sm font-medium disabled:opacity-60">{savingClaim ? '...' : apartment?.mode === 'solo' ? `${profile?.gender === 'female' ? 'קבעי' : 'קבע'} תזכורת ✓` : 'אני על זה ✓'}</button>
