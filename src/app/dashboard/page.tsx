@@ -57,8 +57,7 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [fadingOut, setFadingOut] = useState<Set<string>>(new Set())
   const tasksRef = useRef<Task[]>([])
-  const hoursRef = useRef<HTMLInputElement>(null)
-  const minutesRef = useRef<HTMLInputElement>(null)
+  const minutesRef = useRef<HTMLSelectElement>(null)
   const [vetos, setVetos] = useState<Veto[]>([])
   const [vetoCandidates, setVetoCandidates] = useState<{ task_id: string; task_title: string; weekly_count: number }[]>([])
   const [claimingInstance, setClaimingInstance] = useState<string | null>(null)
@@ -1210,68 +1209,36 @@ export default function Dashboard() {
             </div>
             <p className="text-sm text-gray-500 mb-3">HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
             <div className="flex items-center justify-center gap-2" dir="ltr">
-              <div className="flex flex-col items-center gap-1">
-                <button type="button" onClick={() => {
-                  const cur = reminderTime ? parseInt(reminderTime.split(':')[0]) : -1
-                  const next = Math.min(23, cur + 1)
+              <select
+                value={reminderTime ? reminderTime.split(':')[0] : ''}
+                onChange={e => {
+                  const h = e.target.value
                   const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                  setReminderTime(`${String(next).padStart(2, '0')}:${m}`)
-                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▲</button>
-                <input
-                  ref={hoursRef}
-                  type="number"
-                  min={0}
-                  max={23}
-                  placeholder="שע"
-                  value={reminderTime ? String(parseInt(reminderTime.split(':')[0])) : ''}
-                  onChange={e => {
-                    const val = e.target.value
-                    if (val === '') { setReminderTime(''); return }
-                    const h = Math.min(23, Math.max(0, parseInt(val) || 0))
-                    const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                    setReminderTime(`${String(h).padStart(2, '0')}:${m}`)
-                    if (val.length >= 2) minutesRef.current?.focus()
-                  }}
-                  className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                />
-                <button type="button" onClick={() => {
-                  const cur = reminderTime ? parseInt(reminderTime.split(':')[0]) : 1
-                  const next = Math.max(0, cur - 1)
-                  const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                  setReminderTime(`${String(next).padStart(2, '0')}:${m}`)
-                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▼</button>
-              </div>
+                  setReminderTime(`${h}:${m}`)
+                  if (h) minutesRef.current?.focus()
+                }}
+                className="w-20 border border-gray-200 rounded-lg px-1 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+              >
+                <option value="">שע</option>
+                {Array.from({ length: 24 }, (_, i) => (
+                  <option key={i} value={String(i).padStart(2, '0')}>{String(i).padStart(2, '0')}</option>
+                ))}
+              </select>
               <span className="text-2xl font-bold text-gray-400">:</span>
-              <div className="flex flex-col items-center gap-1">
-                <button type="button" onClick={() => {
-                  const cur = reminderTime ? parseInt(reminderTime.split(':')[1]) : -1
-                  const next = Math.min(59, cur + 1)
+              <select
+                ref={minutesRef}
+                value={reminderTime ? reminderTime.split(':')[1] : ''}
+                onChange={e => {
                   const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                  setReminderTime(`${h}:${String(next).padStart(2, '0')}`)
-                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▲</button>
-                <input
-                  ref={minutesRef}
-                  type="number"
-                  min={0}
-                  max={59}
-                  placeholder="דק"
-                  value={reminderTime ? String(parseInt(reminderTime.split(':')[1])) : ''}
-                  onChange={e => {
-                    const val = e.target.value
-                    if (val === '') { setReminderTime(''); return }
-                    const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                    const m = Math.min(59, Math.max(0, parseInt(val) || 0))
-                    setReminderTime(`${h}:${String(m).padStart(2, '0')}`)
-                  }}
-                  className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                />
-                <button type="button" onClick={() => {
-                  const cur = reminderTime ? parseInt(reminderTime.split(':')[1]) : 1
-                  const next = Math.max(0, cur - 1)
-                  const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                  setReminderTime(`${h}:${String(next).padStart(2, '0')}`)
-                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▼</button>
-              </div>
+                  setReminderTime(`${h}:${e.target.value}`)
+                }}
+                className="w-20 border border-gray-200 rounded-lg px-1 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
+              >
+                <option value="">דק</option>
+                {Array.from({ length: 60 }, (_, i) => (
+                  <option key={i} value={String(i).padStart(2, '0')}>{String(i).padStart(2, '0')}</option>
+                ))}
+              </select>
             </div>
             <div className="flex gap-2 mt-4">
               <button onClick={() => setClaimingInstance(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
