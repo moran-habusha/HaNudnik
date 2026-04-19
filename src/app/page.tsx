@@ -33,9 +33,8 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="h-screen overflow-hidden flex flex-col items-center justify-center gap-4" style={{ backgroundColor: '#BBBBF7' }}>
-      <img src="/HaNudnik Logo.png" alt="HaNudnik" className="w-64 h-64 object-contain" />
-      <p className="text-2xl font-bold" style={{ color: '#3b3b8f' }}>הנודניק</p>
+    <div className="h-screen overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#BBBBF7' }}>
+      <img src="/HaNudnik Logo.png" alt="HaNudnik" className="w-72 h-72 object-contain" />
     </div>
   )
 }
