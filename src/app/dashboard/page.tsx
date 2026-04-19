@@ -57,6 +57,8 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [fadingOut, setFadingOut] = useState<Set<string>>(new Set())
   const tasksRef = useRef<Task[]>([])
+  const hoursRef = useRef<HTMLInputElement>(null)
+  const minutesRef = useRef<HTMLInputElement>(null)
   const [vetos, setVetos] = useState<Veto[]>([])
   const [vetoCandidates, setVetoCandidates] = useState<{ task_id: string; task_title: string; weekly_count: number }[]>([])
   const [claimingInstance, setClaimingInstance] = useState<string | null>(null)
@@ -1209,29 +1211,48 @@ export default function Dashboard() {
             <p className="text-sm text-gray-500 mb-3">HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
             <div className="flex items-center justify-center gap-2" dir="ltr">
               <input
-                type="number"
-                min={0}
-                max={23}
+                ref={hoursRef}
+                type="text"
+                inputMode="numeric"
+                maxLength={2}
                 placeholder="שע"
                 value={reminderTime ? reminderTime.split(':')[0] : ''}
                 onChange={e => {
-                  const h = e.target.value.padStart(2, '0').slice(-2)
+                  const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
+                  const h = raw.padStart(2, '0')
                   const m = reminderTime ? reminderTime.split(':')[1] : '00'
                   setReminderTime(`${h}:${m}`)
+                  if (raw.length === 2) minutesRef.current?.focus()
+                }}
+                onWheel={e => {
+                  e.preventDefault()
+                  const cur = reminderTime ? parseInt(reminderTime.split(':')[0]) : 0
+                  const next = Math.min(23, Math.max(0, cur + (e.deltaY < 0 ? 1 : -1)))
+                  const m = reminderTime ? reminderTime.split(':')[1] : '00'
+                  setReminderTime(`${String(next).padStart(2, '0')}:${m}`)
                 }}
                 className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
               <span className="text-2xl font-bold text-gray-400">:</span>
               <input
-                type="number"
-                min={0}
-                max={59}
+                ref={minutesRef}
+                type="text"
+                inputMode="numeric"
+                maxLength={2}
                 placeholder="דק"
                 value={reminderTime ? reminderTime.split(':')[1] : ''}
                 onChange={e => {
+                  const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
                   const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                  const m = e.target.value.padStart(2, '0').slice(-2)
+                  const m = raw.padStart(2, '0')
                   setReminderTime(`${h}:${m}`)
+                }}
+                onWheel={e => {
+                  e.preventDefault()
+                  const cur = reminderTime ? parseInt(reminderTime.split(':')[1]) : 0
+                  const next = Math.min(59, Math.max(0, cur + (e.deltaY < 0 ? 1 : -1)))
+                  const h = reminderTime ? reminderTime.split(':')[0] : '00'
+                  setReminderTime(`${h}:${String(next).padStart(2, '0')}`)
                 }}
                 className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
               />
