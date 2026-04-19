@@ -523,16 +523,25 @@ export default function TasksPage() {
 
             {baselineModal.frequency === 'monthly' && (() => {
               const now = new Date()
-              const occurrences: Date[] = []
-              let d = new Date(now.getFullYear(), now.getMonth(), baselineModal.configDay)
-              if (d <= now) d = new Date(now.getFullYear(), now.getMonth() + 1, baselineModal.configDay)
-              occurrences.push(new Date(d))
-              occurrences.push(new Date(d.getFullYear(), d.getMonth() + 1, d.getDate()))
+              // configDay = day of week (0-6), same as biweekly
+              const firstInMonth = (year: number, month: number): Date => {
+                const d = new Date(year, month, 1)
+                while (d.getDay() !== baselineModal.configDay) d.setDate(d.getDate() + 1)
+                return d
+              }
+              // Next occurrence from tomorrow
+              const tomorrow = new Date(now); tomorrow.setDate(now.getDate() + 1)
+              const opt1 = new Date(tomorrow)
+              while (opt1.getDay() !== baselineModal.configDay) opt1.setDate(opt1.getDate() + 1)
+              // Second option: first configDay in the month after opt1's month
+              const opt2 = firstInMonth(opt1.getFullYear(), opt1.getMonth() + 1)
+              const occurrences = [opt1, opt2]
               return (
                 <div className="flex flex-col gap-2">
                   <p className="text-xs text-gray-400 mb-1">מתי תרצי שהמטלה תופיע בפעם הראשונה?</p>
                   {occurrences.map((date, i) => {
-                    const baseline = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate())
+                    // baseline = first configDay in the month BEFORE date's month
+                    const baseline = firstInMonth(date.getFullYear(), date.getMonth() - 1)
                     return (
                       <button key={i}
                         onClick={() => confirmBaseline(localDateStr(baseline))}
