@@ -1210,50 +1210,68 @@ export default function Dashboard() {
             </div>
             <p className="text-sm text-gray-500 mb-3">HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
             <div className="flex items-center justify-center gap-2" dir="ltr">
-              <input
-                ref={hoursRef}
-                type="number"
-                min={0}
-                max={23}
-                placeholder="שע"
-                value={reminderTime ? String(parseInt(reminderTime.split(':')[0])) : ''}
-                onChange={e => {
-                  const val = e.target.value
-                  const h = Math.min(23, Math.max(0, parseInt(val) || 0))
-                  const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                  setReminderTime(`${String(h).padStart(2, '0')}:${m}`)
-                  if (val.length >= 2) minutesRef.current?.focus()
-                }}
-                onWheel={e => {
-                  const cur = reminderTime ? parseInt(reminderTime.split(':')[0]) : 0
-                  const next = Math.min(23, Math.max(0, cur + (e.deltaY < 0 ? 1 : -1)))
+              <div className="flex flex-col items-center gap-1">
+                <button type="button" onClick={() => {
+                  const cur = reminderTime ? parseInt(reminderTime.split(':')[0]) : -1
+                  const next = Math.min(23, cur + 1)
                   const m = reminderTime ? reminderTime.split(':')[1] : '00'
                   setReminderTime(`${String(next).padStart(2, '0')}:${m}`)
-                }}
-                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              />
+                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▲</button>
+                <input
+                  ref={hoursRef}
+                  type="number"
+                  min={0}
+                  max={23}
+                  placeholder="שע"
+                  value={reminderTime ? String(parseInt(reminderTime.split(':')[0])) : ''}
+                  onChange={e => {
+                    const val = e.target.value
+                    if (val === '') { setReminderTime(''); return }
+                    const h = Math.min(23, Math.max(0, parseInt(val) || 0))
+                    const m = reminderTime ? reminderTime.split(':')[1] : '00'
+                    setReminderTime(`${String(h).padStart(2, '0')}:${m}`)
+                    if (val.length >= 2) minutesRef.current?.focus()
+                  }}
+                  className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
+                <button type="button" onClick={() => {
+                  const cur = reminderTime ? parseInt(reminderTime.split(':')[0]) : 1
+                  const next = Math.max(0, cur - 1)
+                  const m = reminderTime ? reminderTime.split(':')[1] : '00'
+                  setReminderTime(`${String(next).padStart(2, '0')}:${m}`)
+                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▼</button>
+              </div>
               <span className="text-2xl font-bold text-gray-400">:</span>
-              <input
-                ref={minutesRef}
-                type="number"
-                min={0}
-                max={59}
-                placeholder="דק"
-                value={reminderTime ? String(parseInt(reminderTime.split(':')[1])) : ''}
-                onChange={e => {
-                  const val = e.target.value
-                  const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                  const m = Math.min(59, Math.max(0, parseInt(val) || 0))
-                  setReminderTime(`${h}:${String(m).padStart(2, '0')}`)
-                }}
-                onWheel={e => {
-                  const cur = reminderTime ? parseInt(reminderTime.split(':')[1]) : 0
-                  const next = Math.min(59, Math.max(0, cur + (e.deltaY < 0 ? 1 : -1)))
+              <div className="flex flex-col items-center gap-1">
+                <button type="button" onClick={() => {
+                  const cur = reminderTime ? parseInt(reminderTime.split(':')[1]) : -1
+                  const next = Math.min(59, cur + 1)
                   const h = reminderTime ? reminderTime.split(':')[0] : '00'
                   setReminderTime(`${h}:${String(next).padStart(2, '0')}`)
-                }}
-                className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              />
+                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▲</button>
+                <input
+                  ref={minutesRef}
+                  type="number"
+                  min={0}
+                  max={59}
+                  placeholder="דק"
+                  value={reminderTime ? String(parseInt(reminderTime.split(':')[1])) : ''}
+                  onChange={e => {
+                    const val = e.target.value
+                    if (val === '') { setReminderTime(''); return }
+                    const h = reminderTime ? reminderTime.split(':')[0] : '00'
+                    const m = Math.min(59, Math.max(0, parseInt(val) || 0))
+                    setReminderTime(`${h}:${String(m).padStart(2, '0')}`)
+                  }}
+                  className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
+                <button type="button" onClick={() => {
+                  const cur = reminderTime ? parseInt(reminderTime.split(':')[1]) : 1
+                  const next = Math.max(0, cur - 1)
+                  const h = reminderTime ? reminderTime.split(':')[0] : '00'
+                  setReminderTime(`${h}:${String(next).padStart(2, '0')}`)
+                }} className="text-gray-400 hover:text-gray-700 text-xl leading-none px-3 py-1">▼</button>
+              </div>
             </div>
             <div className="flex gap-2 mt-4">
               <button onClick={() => setClaimingInstance(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
