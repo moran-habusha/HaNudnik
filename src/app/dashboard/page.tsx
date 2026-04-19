@@ -57,12 +57,14 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [fadingOut, setFadingOut] = useState<Set<string>>(new Set())
   const tasksRef = useRef<Task[]>([])
-  const minutesRef = useRef<HTMLSelectElement>(null)
+  const minutesRef = useRef<HTMLInputElement>(null)
   const [vetos, setVetos] = useState<Veto[]>([])
   const [vetoCandidates, setVetoCandidates] = useState<{ task_id: string; task_title: string; weekly_count: number }[]>([])
   const [claimingInstance, setClaimingInstance] = useState<string | null>(null)
   const [savingClaim, setSavingClaim] = useState(false)
   const [reminderTime, setReminderTime] = useState('')
+  const [showHoursDD, setShowHoursDD] = useState(false)
+  const [showMinutesDD, setShowMinutesDD] = useState(false)
   const [delayingInstance, setDelayingInstance] = useState<string | null>(null)
   const [delayTime, setDelayTime] = useState('')
   const [completingTask, setCompletingTask] = useState<string | null>(null)
@@ -1208,37 +1210,81 @@ export default function Dashboard() {
               <button onClick={() => setClaimingInstance(null)} className="text-gray-400">✕</button>
             </div>
             <p className="text-sm text-gray-500 mb-3">HaNudnik יתזכר אותך בשעה זו אם המשימה עדיין לא הושלמה</p>
-            <div className="flex items-center justify-center gap-2" dir="ltr">
-              <select
-                value={reminderTime ? reminderTime.split(':')[0] : ''}
-                onChange={e => {
-                  const h = e.target.value
-                  const m = reminderTime ? reminderTime.split(':')[1] : '00'
-                  setReminderTime(`${h}:${m}`)
-                  if (h) minutesRef.current?.focus()
-                }}
-                className="w-20 border border-gray-200 rounded-lg px-1 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
-              >
-                <option value="">שע</option>
-                {Array.from({ length: 24 }, (_, i) => (
-                  <option key={i} value={String(i).padStart(2, '0')}>{String(i).padStart(2, '0')}</option>
-                ))}
-              </select>
+            <div className="flex items-center justify-center gap-3" dir="ltr">
+              {/* Hours */}
+              <div className="relative">
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="שע"
+                  maxLength={2}
+                  value={reminderTime ? reminderTime.split(':')[0] : ''}
+                  onFocus={() => setShowHoursDD(true)}
+                  onBlur={() => setTimeout(() => setShowHoursDD(false), 150)}
+                  onChange={e => {
+                    const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
+                    const m = reminderTime ? reminderTime.split(':')[1] : '00'
+                    if (raw === '') { setReminderTime(''); return }
+                    const h = Math.min(23, parseInt(raw) || 0)
+                    setReminderTime(`${String(h).padStart(2, '0')}:${m}`)
+                  }}
+                  className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
+                />
+                {showHoursDD && (
+                  <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-44 overflow-y-auto z-50 mt-1">
+                    {Array.from({ length: 24 }, (_, i) => (
+                      <div key={i}
+                        onMouseDown={e => {
+                          e.preventDefault()
+                          const h = String(i).padStart(2, '0')
+                          const m = reminderTime ? reminderTime.split(':')[1] : '00'
+                          setReminderTime(`${h}:${m}`)
+                          setShowHoursDD(false)
+                          minutesRef.current?.focus()
+                        }}
+                        className={`py-2 text-xl text-center font-mono cursor-pointer hover:bg-indigo-50 ${reminderTime?.split(':')[0] === String(i).padStart(2,'0') ? 'bg-indigo-100 font-bold' : ''}`}
+                      >{String(i).padStart(2, '0')}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
               <span className="text-2xl font-bold text-gray-400">:</span>
-              <select
-                ref={minutesRef}
-                value={reminderTime ? reminderTime.split(':')[1] : ''}
-                onChange={e => {
-                  const h = reminderTime ? reminderTime.split(':')[0] : '00'
-                  setReminderTime(`${h}:${e.target.value}`)
-                }}
-                className="w-20 border border-gray-200 rounded-lg px-1 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white"
-              >
-                <option value="">דק</option>
-                {Array.from({ length: 60 }, (_, i) => (
-                  <option key={i} value={String(i).padStart(2, '0')}>{String(i).padStart(2, '0')}</option>
-                ))}
-              </select>
+              {/* Minutes */}
+              <div className="relative">
+                <input
+                  ref={minutesRef}
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="דק"
+                  maxLength={2}
+                  value={reminderTime ? reminderTime.split(':')[1] : ''}
+                  onFocus={() => setShowMinutesDD(true)}
+                  onBlur={() => setTimeout(() => setShowMinutesDD(false), 150)}
+                  onChange={e => {
+                    const raw = e.target.value.replace(/\D/g, '').slice(0, 2)
+                    const h = reminderTime ? reminderTime.split(':')[0] : '00'
+                    if (raw === '') { setReminderTime(h ? `${h}:` : ''); return }
+                    const m = Math.min(59, parseInt(raw) || 0)
+                    setReminderTime(`${h}:${String(m).padStart(2, '0')}`)
+                  }}
+                  className="w-20 border border-gray-200 rounded-lg px-2 py-3 text-2xl text-center font-mono focus:outline-none focus:ring-2 focus:ring-gray-900"
+                />
+                {showMinutesDD && (
+                  <div className="absolute top-full left-0 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-44 overflow-y-auto z-50 mt-1">
+                    {[0, 15, 30, 45].map(i => (
+                      <div key={i}
+                        onMouseDown={e => {
+                          e.preventDefault()
+                          const h = reminderTime ? reminderTime.split(':')[0] : '00'
+                          setReminderTime(`${h}:${String(i).padStart(2, '0')}`)
+                          setShowMinutesDD(false)
+                        }}
+                        className={`py-2 text-xl text-center font-mono cursor-pointer hover:bg-indigo-50 ${reminderTime?.split(':')[1] === String(i).padStart(2,'0') ? 'bg-indigo-100 font-bold' : ''}`}
+                      >{String(i).padStart(2, '0')}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex gap-2 mt-4">
               <button onClick={() => setClaimingInstance(null)} className="flex-1 border border-gray-200 rounded-lg py-2.5 text-sm">ביטול</button>
