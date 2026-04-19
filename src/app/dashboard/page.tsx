@@ -807,17 +807,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Summary day banner */}
-        {apartment.mode === 'shared' && showSummaryBanner && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-3 flex items-center gap-3">
-            <span className="text-xl">🏆</span>
-            <p className="text-sm text-yellow-900">
-              {leaders.length === 1
-                ? `${leaders[0].display_name} ניצח/ה השבוע עם ${leaders[0].points} נק׳`
-                : `תיקו! ${leaders.map(l => l.display_name).join(', ')} - ${leaders[0].points} נק׳`}
-            </p>
-          </div>
-        )}
 
         {/* Weekly scores */}
         {apartment.mode === 'shared' && (
