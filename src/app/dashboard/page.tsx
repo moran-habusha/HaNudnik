@@ -671,7 +671,7 @@ export default function Dashboard() {
   const maxPoints = scores.length > 0 ? Math.max(...scores.map(s => s.points)) : 0
   const isSummaryDay = apartment.summary_day !== null && new Date().getDay() === apartment.summary_day
   const leaders = scores.filter(s => s.points > 0 && s.points === maxPoints)
-  const showSummaryBanner = isSummaryDay && leaders.length > 0
+  const showSummaryBanner = isSummaryDay && leaders.length > 0 && !winnerNotif && !summaryNotif
 
   // Only today's tasks (have an instance)
   const todayTasks = tasks.filter(t => t.instance_id !== null)
