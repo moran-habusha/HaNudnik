@@ -1,19 +1,22 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const router = useRouter()
   const supabase = createClient()
+  const [isAndroid, setIsAndroid] = useState(false)
 
   useEffect(() => {
+    const android = /Android/i.test(navigator.userAgent)
+    setIsAndroid(android)
+
     async function checkAuth() {
-      const isAndroid = /Android/i.test(navigator.userAgent)
       const [{ data: { session } }] = await Promise.all([
         supabase.auth.getSession(),
-        isAndroid ? Promise.resolve() : new Promise(r => setTimeout(r, 1500)),
+        android ? Promise.resolve() : new Promise(r => setTimeout(r, 1500)),
       ])
       const user = session?.user
       if (!user) { router.push('/auth'); return }
@@ -32,6 +35,8 @@ export default function Home() {
     }
     checkAuth()
   }, [])
+
+  if (isAndroid) return null
 
   return (
     <div className="h-screen overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#BBBBF7' }}>
