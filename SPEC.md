@@ -808,12 +808,12 @@ Claiming does not auto-complete. Both must be explicitly set.
 - `calcNextDue`: תוקן באג timezone — `toISOString()` החזיר תאריך UTC (יום לפני) בגלל offset ישראל +3. הוחלף ב-`localDateStr()` שמשתמש ב-`getFullYear/getMonth/getDate` ✅
 - תיקון נוסף: biweekly ו-monthly לא מציגים "ביצוע הבא" לפני שה-baseline modal נענה (מניעת תאריך שמתעלם מהבחירה) ✅
 
-**בדיקות ממתינות:**
-- תזכורת בוקר: לוודא שהספירה כוללת מטלות multiple_daily (אוכל/טיול לרובי) — תיקון `send_morning_nudge` עדיין לא אושש בלייב
-- יום ראשון 19/04: סיכום שבוע מגיע ב-07:00 ✓ + באנר מנצח צהוב מופיע למנצח/ת
-
-**תיקונים ממתינים:**
-- מסך splash בטלפון לא מציג את שם האפליקציה — `HaNudnik Logo.png` נטען אך הטקסט לא נראה; ייתכן שאנדרואיד מציג splash משלו (מ-icon-512.png) לפני שהדף נטען
+**תיקונים (20/04/2026):**
+- **תזכורת בוקר עם `multiple_daily`** — אושש בלייב ✅
+- **`send_weekly_summary` — נקודות שגויות:** `v_week date` חושב כ-`date_trunc('week', current_date)` (שני ISO) במקום ראשון קודם. תוקן ל-`(date_trunc('week', current_date + interval '1 day') - interval '1 day')::date - interval '7 days'` — מחזיר את הראשון של השבוע שנגמר ✅
+- **באנר צהוב "סיכום יום"** הוסר — הציג נקודות חיות של השבוע החדש (לאחר איפוס) במקום נקודות השבוע שנגמר; הנוטיפיקציות מהבוט מטפלות בסיכום ✅
+- **Splash אנדרואיד:** `start_url` שונה ל-`/`; `page.tsx` מזהה אנדרואיד ומחזיר `null` (ללא web splash) — native splash של אנדרואיד בלבד; אייפון מציג את הלוגו 1.5 שניות ✅
+- **`icon-512.png`** שונה ל-`HaNudnik Logo No name` — אייקון האפליקציה על המכשיר ✅
 
 **תיקונים (19/04/2026):**
 - **שני מכונות במקביל:** wash + dry יכולים לרוץ בו-זמנית. `laundry_machine` אינדקס ייחודי על `(apartment_id, machine_type)` (upsert). דשבורד + מסך כביסה מחזיקים `washMachine` + `dryMachine` בנפרד. כפתור "הפעלת מכונת כביסה נוספת במקביל" מוצג רק כשהטיימר פג ✅
