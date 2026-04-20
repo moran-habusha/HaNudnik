@@ -814,6 +814,7 @@ Claiming does not auto-complete. Both must be explicitly set.
 - **באנר צהוב "סיכום יום"** הוסר — הציג נקודות חיות של השבוע החדש (לאחר איפוס) במקום נקודות השבוע שנגמר; הנוטיפיקציות מהבוט מטפלות בסיכום ✅
 - **Splash אנדרואיד:** `start_url` שונה ל-`/`; `page.tsx` מזהה אנדרואיד ומחזיר `null` (ללא web splash) — native splash של אנדרואיד בלבד; אייפון מציג את הלוגו 1.5 שניות ✅
 - **`icon-512.png`** שונה ל-`HaNudnik Logo No name` — אייקון האפליקציה על המכשיר ✅
+- **אונבורדינג + התראות:** הודעות אונבורדינג (סולו/מולטי) ללא כפתור; נוספה הודעה נפרדת (`send_onboarding_notification_prompt`) עם 2 כפתורים — "אפשר התראות 🔔" (`enable_notifications`) + "בוא/י נתחיל 🕺/💃". `PushSubscribe` הוזז מהבוט לדשבורד (fallback אוטומטי). `enable_notifications` נוסף ל-`NAV_ACTIONS` — כפתורים נשארים פעילים אחרי לחיצה ✅
 
 **תיקונים (19/04/2026):**
 - **שני מכונות במקביל:** wash + dry יכולים לרוץ בו-זמנית. `laundry_machine` אינדקס ייחודי על `(apartment_id, machine_type)` (upsert). דשבורד + מסך כביסה מחזיקים `washMachine` + `dryMachine` בנפרד. כפתור "הפעלת מכונת כביסה נוספת במקביל" מוצג רק כשהטיימר פג ✅
