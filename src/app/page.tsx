@@ -10,9 +10,10 @@ export default function Home() {
 
   useEffect(() => {
     async function checkAuth() {
+      const isAndroid = /Android/i.test(navigator.userAgent)
       const [{ data: { session } }] = await Promise.all([
         supabase.auth.getSession(),
-        new Promise(r => setTimeout(r, 1500)),
+        isAndroid ? Promise.resolve() : new Promise(r => setTimeout(r, 1500)),
       ])
       const user = session?.user
       if (!user) { router.push('/auth'); return }
