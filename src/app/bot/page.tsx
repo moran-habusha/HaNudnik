@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
-import PushSubscribe from '@/components/PushSubscribe'
+import { subscribeToPush } from '@/components/PushSubscribe'
 
 type BotMessage = {
   id: string
@@ -219,6 +219,11 @@ export default function BotPage() {
     if (action === 'apartment_type_multi') {
       const aptId = await getApartmentId()
       await supabase.rpc('send_onboarding_message', { p_user_id: myUserId, p_apartment_id: aptId })
+      return
+    }
+
+    if (action === 'enable_notifications') {
+      await subscribeToPush()
       return
     }
 
@@ -543,7 +548,6 @@ export default function BotPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col" dir="rtl" style={{ visibility: loading ? 'hidden' : 'visible' }}>
-      <PushSubscribe />
       {/* header */}
       <div className="bg-white border-b border-gray-100 px-4 py-3 flex items-center gap-3 sticky top-0 z-10">
         <button onClick={() => router.back()} className="text-gray-500 text-xl">→</button>

@@ -17,61 +17,53 @@ function getPlatform(): 'ios' | 'android' {
   return /iphone|ipad|ipod/i.test(ua) ? 'ios' : 'android'
 }
 
-export default function PushSubscribe() {
-  useEffect(() => {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return
+export async function subscribeToPush(): Promise<boolean> {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return false
+  try {
+    const supabase = createClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    const user = session?.user
+    if (!user) return false
 
-    async function subscribe() {
-      try {
-        const supabase = createClient()
-        const { data: { session } } = await supabase.auth.getSession()
-        const user = session?.user
-        if (!user) return
+    const reg = await navigator.serviceWorker.ready
+    let sub = await reg.pushManager.getSubscription()
 
-        const reg = await navigator.serviceWorker.ready
-
-        // בדוק אם יש כבר subscription במכשיר הזה
-        let sub = await reg.pushManager.getSubscription()
-
-        if (!sub) {
-          // אין subscription — בקש הרשאה ותצור
-          const permission = await Notification.requestPermission()
-          if (permission !== 'granted') return
-
-          sub = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-          })
-        }
-
-        // שמור ב-DB (upsert — בטוח לקרוא כל פעם)
-        const { endpoint, keys } = sub.toJSON() as {
-          endpoint: string
-          keys: { p256dh: string; auth: string }
-        }
-        const platform = getPlatform()
-
-        // מחק subscriptions ישנות של אותו משתמש+פלטפורמה עם endpoint שונה
-        await supabase.from('push_subscriptions')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('platform', platform)
-          .neq('endpoint', endpoint)
-
-        await supabase.from('push_subscriptions').upsert({
-          user_id: user.id,
-          endpoint,
-          p256dh: keys.p256dh,
-          auth: keys.auth,
-          platform,
-        }, { onConflict: 'user_id,endpoint' })
-
-      } catch (e) {
-        console.error('push subscribe error', e)
-      }
+    if (!sub) {
+      const permission = await Notification.requestPermission()
+      if (permission !== 'granted') return false
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+      })
     }
 
-    subscribe()
+    const { endpoint, keys } = sub.toJSON() as { endpoint: string; keys: { p256dh: string; auth: string } }
+    const platform = getPlatform()
+
+    await supabase.from('push_subscriptions')
+      .delete()
+      .eq('user_id', user.id)
+      .eq('platform', platform)
+      .neq('endpoint', endpoint)
+
+    await supabase.from('push_subscriptions').upsert({
+      user_id: user.id,
+      endpoint,
+      p256dh: keys.p256dh,
+      auth: keys.auth,
+      platform,
+    }, { onConflict: 'user_id,endpoint' })
+
+    return true
+  } catch (e) {
+    console.error('push subscribe error', e)
+    return false
+  }
+}
+
+export default function PushSubscribe() {
+  useEffect(() => {
+    subscribeToPush()
   }, [])
 
   return null

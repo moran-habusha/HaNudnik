@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import PushSubscribe from '@/components/PushSubscribe'
 
 type Profile = { display_name: string; apartment_id: string; is_away: boolean; away_return_date: string | null; away_start_date: string | null; gender: string | null }
 type Apartment = { id: string; name: string; mode: 'solo' | 'shared'; summary_day: number | null }
@@ -738,6 +739,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
+      <PushSubscribe />
       {/* Header */}
       <header className="bg-white border-b border-gray-100 px-4 py-4 flex items-center justify-between">
         <div>
