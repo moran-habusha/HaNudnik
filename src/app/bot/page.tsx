@@ -157,7 +157,7 @@ export default function BotPage() {
     const doneAction = (NEGATIVE_ACTIONS.has(action) || NEGATIVE_ACTIONS.has(baseAction)) ? '__rejected__' : '__done__'
 
     // navigation-only actions don't disable the message
-    const NAV_ACTIONS = new Set(['go_tasks', 'go_dashboard', 'go_shopping', 'go_calendar', 'go_bills', 'go_settings', 'go_veto'])
+    const NAV_ACTIONS = new Set(['go_tasks', 'go_dashboard', 'go_shopping', 'go_calendar', 'go_bills', 'go_settings', 'go_veto', 'enable_notifications'])
     if (!NAV_ACTIONS.has(action) && !NAV_ACTIONS.has(baseAction)) {
       // disable the message buttons by updating it
       await supabase.from('bot_messages').update({
