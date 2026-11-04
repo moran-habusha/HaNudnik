@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase'
 
-const HIDE_ON = ['/auth', '/setup']
+const HIDE_ON = ['/auth', '/setup', '/babiez']
 
 const TABS = [
   { label: 'בית', emoji: '🏠', href: '/dashboard' },

@@ -1,0 +1,16 @@
+{
+  "name": "The Babiez List",
+  "short_name": "Babiez List",
+  "description": "רשימת קניות משותפת",
+  "start_url": "/babiez",
+  "scope": "/babiez",
+  "display": "standalone",
+  "background_color": "#7F5FFF",
+  "theme_color": "#7F5FFF",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/babiez/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/babiez/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/babiez/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

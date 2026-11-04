@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import BottomNav from './BottomNav'
 
-const SKIP_PATHS = ['/auth', '/setup']
+const SKIP_PATHS = ['/auth', '/setup', '/babiez']
 
 export default function AwayGuard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
